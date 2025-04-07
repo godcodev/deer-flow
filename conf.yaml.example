@@ -1,0 +1,15 @@
+# LLM Config
+REASONING_MODEL:
+  model: "qwq-plus"
+  api_key: sk-xxx
+  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+
+BASIC_MODEL:
+  model: "qwen-max"
+  api_key: sk-xxx
+  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+
+VISION_MODEL:
+  model: "qwen2.5-vl-32b-instruct"
+  api_key: sk-xxx
+  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
