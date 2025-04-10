@@ -1,4 +1,4 @@
-from .tools import TAVILY_MAX_RESULTS
+from .tools import SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine
 from .loader import load_yaml_config
 
 from dotenv import load_dotenv
@@ -38,5 +38,7 @@ __all__ = [
     # Other configurations
     "TEAM_MEMBERS",
     "TEAM_MEMBER_CONFIGRATIONS",
-    "TAVILY_MAX_RESULTS",
+    "SEARCH_MAX_RESULTS",
+    "SELECTED_SEARCH_ENGINE",
+    "SearchEngine",
 ]
