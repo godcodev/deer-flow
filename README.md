@@ -74,7 +74,7 @@ The system employs a streamlined workflow with the following components:
 
 3. **Research Team**: A collection of specialized agents that execute the plan:
    - **Researcher**: Conducts web searches and information gathering using tools like Tavily and web crawling
-   - **Coder**: Handles code analysis, execution, and technical tasks using Python REPL and Bash tools
+   - **Coder**: Handles code analysis, execution, and technical tasks using Python REPL tool
    Each agent has access to specific tools optimized for their role and operates within the LangGraph framework
 
 4. **Reporter**: Final stage processor for research outputs
