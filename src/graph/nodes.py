@@ -113,6 +113,15 @@ def reporter_node(state: State):
     messages = apply_prompt_template("reporter", state)
     observations = state.get("observations", [])
     invoke_messages = messages[:2]
+
+    # Add a reminder about the new report format and citation style
+    invoke_messages.append(
+        HumanMessage(
+            content="IMPORTANT: Structure your report according to the format in the prompt. Remember to include:\n\n1. Key Points - A bulleted list of the most important findings\n2. Overview - A brief introduction to the topic\n3. Detailed Analysis - Organized into logical sections\n4. Survey Note (optional) - For more comprehensive reports\n5. Key Citations - List all references at the end\n\nFor citations, DO NOT include inline citations in the text. Instead, place all citations in the 'Key Citations' section at the end using the format: `- [Source Title](URL)`. Include an empty line between each citation for better readability.",
+            name="system",
+        )
+    )
+
     for observation in observations:
         invoke_messages.append(
             HumanMessage(
@@ -169,6 +178,15 @@ def _execute_agent_step(
             )
         ]
     }
+
+    # Add citation reminder for researcher agent
+    if agent_name == "researcher":
+        agent_input["messages"].append(
+            HumanMessage(
+                content="IMPORTANT: DO NOT include inline citations in the text. Instead, track all sources and include a References section at the end using link reference format. Include an empty line between each citation for better readability. Use this format for each reference:\n- [Source Title](URL)\n\n- [Another Source](URL)",
+                name="system",
+            )
+        )
 
     # Invoke the agent
     result = agent.invoke(input=agent_input)

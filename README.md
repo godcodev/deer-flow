@@ -88,18 +88,30 @@ The following examples demonstrate the capabilities of lite-deep-researcher:
 
 ### Research Reports
 
-1. **What is MCP?** - A comprehensive analysis of the term "MCP" across multiple contexts
+1. **OpenAI Sora Report** - Analysis of OpenAI's Sora AI tool
+   - Discusses features, access, prompt engineering, limitations, and ethical considerations
+   - [View full report](examples/openai_sora_report.md)
+
+2. **Google's Agent to Agent Protocol Report** - Overview of Google's Agent to Agent (A2A) protocol
+   - Discusses its role in AI agent communication and its relationship with Anthropic's Model Context Protocol (MCP)
+   - [View full report](examples/what_is_agent_to_agent_protocol.md)
+
+3. **What is MCP?** - A comprehensive analysis of the term "MCP" across multiple contexts
    - Explores Model Context Protocol in AI, Monocalcium Phosphate in chemistry, and Micro-channel Plate in electronics
    - [View full report](examples/what_is_mcp.md)
 
-2. **Bitcoin Price Fluctuations** - Analysis of recent Bitcoin price movements
+4. **Bitcoin Price Fluctuations** - Analysis of recent Bitcoin price movements
    - Examines market trends, regulatory influences, and technical indicators
    - Provides recommendations based on historical data
    - [View full report](examples/bitcoin_price_fluctuation.md)
 
-3. **What is LLM?** - An in-depth exploration of Large Language Models
+5. **What is LLM?** - An in-depth exploration of Large Language Models
    - Discusses architecture, training, applications, and ethical considerations
    - [View full report](examples/what_is_llm.md)
+
+6. **How to Use Claude for Deep Research?** - Best practices and workflows for using Claude in deep research
+   - Covers prompt engineering, data analysis, and integration with other tools
+   - [View full report](examples/how_to_use_claude_deep_research.md)
 
 To run these examples or create your own research reports, you can use the following commands:
 
