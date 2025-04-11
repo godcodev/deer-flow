@@ -59,7 +59,9 @@ Structure your report in the following format:
 2. Formatting:
    - Use proper markdown syntax
    - Include headers for sections
-   - Use lists and tables when appropriate
+   - Prioritize using Markdown tables for data presentation and comparison
+   - Use tables whenever presenting comparative data, statistics, features, or options
+   - Structure tables with clear headers and aligned columns
    - Add emphasis for important points
    - DO NOT include inline citations in the text
    - Use horizontal rules (---) to separate major sections
@@ -72,6 +74,30 @@ Structure your report in the following format:
 - Never create fictional examples or scenarios
 - If data seems incomplete, acknowledge the limitations
 - Do not make assumptions about missing information
+
+# Table Guidelines
+
+- Use Markdown tables to present comparative data, statistics, features, or options
+- Always include a clear header row with column names
+- Align columns appropriately (left for text, right for numbers)
+- Keep tables concise and focused on key information
+- Use proper Markdown table syntax:
+
+```
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Data 1   | Data 2   | Data 3   |
+| Data 4   | Data 5   | Data 6   |
+```
+
+- For feature comparison tables, use this format:
+
+```
+| Feature/Option | Description | Pros | Cons |
+|----------------|-------------|------|------|
+| Feature 1      | Description | Pros | Cons |
+| Feature 2      | Description | Pros | Cons |
+```
 
 # Notes
 

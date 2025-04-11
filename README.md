@@ -17,11 +17,13 @@ cd lite-deep-researcher
 # Install dependencies, uv will take care of the python interpreter and venv creation
 uv sync
 
-# Configure .env
+# Configure .env with your Search Engine API keys
+# Tavily: https://app.tavily.com/home
 cp .env.example .env
 
-# Configure config.yaml
-cp config.yaml.example config.yaml
+# Configure conf.yaml for your LLM model and API keys
+# Gemini: https://ai.google.dev/gemini-api/docs/openai
+cp conf.yaml.example conf.yaml
 
 # Run the project
 uv run main.py
@@ -113,6 +115,10 @@ The following examples demonstrate the capabilities of lite-deep-researcher:
    - Covers prompt engineering, data analysis, and integration with other tools
    - [View full report](examples/how_to_use_claude_deep_research.md)
 
+7. **AI Adoption in Healthcare: Influencing Factors** - Analysis of factors driving AI adoption in healthcare
+   - Discusses AI technologies, data quality, ethical considerations, economic evaluations, organizational readiness, and digital infrastructure
+   - [View full report](examples/AI_adoption_in_healthcare.md)
+
 To run these examples or create your own research reports, you can use the following commands:
 
 ```bash
@@ -122,18 +128,37 @@ uv run main.py "What factors are influencing AI adoption in healthcare?"
 # Run with custom planning parameters
 uv run main.py --max_plan_iterations 3 "How does quantum computing impact cryptography?"
 
-# Or run interactively
+# Run in interactive mode with built-in questions
+uv run main.py --interactive
+
+# Or run with basic interactive prompt
 uv run main.py
 
 # View all available options
 uv run main.py --help
 ```
 
+### Interactive Mode
+
+The application now supports an interactive mode with built-in questions in both English and Chinese:
+
+1. Launch the interactive mode:
+   ```bash
+   uv run main.py --interactive
+   ```
+
+2. Select your preferred language (English or 中文)
+
+3. Choose from a list of built-in questions or select the option to ask your own question
+
+4. The system will process your question and generate a comprehensive research report
+
 ### Command Line Arguments
 
 The application supports several command-line arguments to customize its behavior:
 
 - **query**: The research query to process (can be multiple words)
+- **--interactive**: Run in interactive mode with built-in questions
 - **--max_plan_iterations**: Maximum number of planning cycles (default: 1)
 - **--max_step_num**: Maximum number of steps in a research plan (default: 3)
 - **--debug**: Enable detailed debug logging

@@ -1,5 +1,6 @@
 from .tools import SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine
 from .loader import load_yaml_config
+from .questions import BUILT_IN_QUESTIONS, BUILT_IN_QUESTIONS_ZH_CN
 
 from dotenv import load_dotenv
 
@@ -41,4 +42,6 @@ __all__ = [
     "SEARCH_MAX_RESULTS",
     "SELECTED_SEARCH_ENGINE",
     "SearchEngine",
+    "BUILT_IN_QUESTIONS",
+    "BUILT_IN_QUESTIONS_ZH_CN",
 ]
