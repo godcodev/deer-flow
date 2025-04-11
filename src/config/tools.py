@@ -8,6 +8,8 @@ load_dotenv()
 class SearchEngine(enum.Enum):
     TAVILY = "tavily"
     DUCKDUCKGO = "duckduckgo"
+    BRAVE_SEARCH = "brave_search"
+    ARXIV = "arxiv"
 
 
 # Tool configuration
