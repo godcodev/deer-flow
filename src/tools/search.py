@@ -13,7 +13,10 @@ logger = logging.getLogger(__name__)
 
 LoggedTavilySearch = create_logged_tool(TavilySearchResults)
 tavily_search_tool = LoggedTavilySearch(
-    name="web_search", max_results=SEARCH_MAX_RESULTS
+    name="web_search",
+    max_results=SEARCH_MAX_RESULTS,
+    include_raw_content=True,
+    include_images=True,
 )
 
 LoggedDuckDuckGoSearch = create_logged_tool(DuckDuckGoSearchResults)

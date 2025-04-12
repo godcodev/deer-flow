@@ -148,6 +148,10 @@ The following examples demonstrate the capabilities of lite-deep-researcher:
    - Discusses AI technologies, data quality, ethical considerations, economic evaluations, organizational readiness, and digital infrastructure
    - [View full report](examples/AI_adoption_in_healthcare.md)
 
+8. **Quantum Computing Impact on Cryptography** - Analysis of quantum computing's impact on cryptography
+   - Discusses vulnerabilities of classical cryptography, post-quantum cryptography, and quantum-resistant cryptographic solutions
+   - [View full report](examples/Quantum_Computing_Impact_on_Cryptography.md)
+
 To run these examples or create your own research reports, you can use the following commands:
 
 ```bash
