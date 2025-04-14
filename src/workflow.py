@@ -46,6 +46,7 @@ def run_agent_workflow(
     initial_state = {
         # Runtime Variables
         "messages": [{"role": "user", "content": user_input}],
+        "auto_accepted_plan": True,
     }
     config = {
         "configurable": {

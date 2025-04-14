@@ -11,6 +11,6 @@ class State(MessagesState):
     # Runtime Variables
     observations: Annotated[list[str], operator.add] = []
     plan_iterations: int = 0
-    last_plan: Plan = None
-    current_plan: Plan = None
+    current_plan: Plan | str = None
     final_report: str = ""
+    auto_accepted_plan: bool = False

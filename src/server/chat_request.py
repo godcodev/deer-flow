@@ -35,3 +35,9 @@ class ChatRequest(BaseModel):
     max_step_num: Optional[int] = Field(
         3, description="The maximum number of steps in a plan"
     )
+    auto_accepted_plan: Optional[bool] = Field(
+        False, description="Whether to automatically accept the plan"
+    )
+    feedback: Optional[str] = Field(
+        None, description="Feedback from the user on the plan"
+    )

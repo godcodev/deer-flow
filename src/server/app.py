@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage
+from langgraph.types import Command
 
 from src.graph.builder import build_graph
 from src.server.chat_request import ChatMessage, ChatRequest
@@ -42,6 +43,8 @@ async def chat_stream(request: ChatRequest):
             thread_id,
             request.max_plan_iterations,
             request.max_step_num,
+            request.auto_accepted_plan,
+            request.feedback,
         ),
         media_type="text/event-stream",
     )
@@ -52,9 +55,14 @@ async def _astream_workflow_generator(
     thread_id: str,
     max_plan_iterations: int,
     max_step_num: int,
+    auto_accepted_plan: bool,
+    feedback: str,
 ):
+    input_ = {"messages": messages, "auto_accepted_plan": auto_accepted_plan}
+    if not auto_accepted_plan and feedback:
+        input_ = Command(resume=feedback)
     async for agent, _, event_data in graph.astream(
-        {"messages": messages},
+        input_,
         config={
             "thread_id": thread_id,
             "max_plan_iterations": max_plan_iterations,
