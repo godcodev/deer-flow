@@ -44,7 +44,7 @@ async def chat_stream(request: ChatRequest):
             request.max_plan_iterations,
             request.max_step_num,
             request.auto_accepted_plan,
-            request.feedback,
+            request.interrupt_feedback,
         ),
         media_type="text/event-stream",
     )
@@ -56,11 +56,15 @@ async def _astream_workflow_generator(
     max_plan_iterations: int,
     max_step_num: int,
     auto_accepted_plan: bool,
-    feedback: str,
+    interrupt_feedback: str,
 ):
     input_ = {"messages": messages, "auto_accepted_plan": auto_accepted_plan}
-    if not auto_accepted_plan and feedback:
-        input_ = Command(resume=feedback)
+    if not auto_accepted_plan and interrupt_feedback:
+        resume_msg = f"[{interrupt_feedback}]"
+        # add the last message to the resume message
+        if messages:
+            resume_msg += f" {messages[-1]["content"]}"
+        input_ = Command(resume=resume_msg)
     async for agent, _, event_data in graph.astream(
         input_,
         config={
@@ -68,9 +72,26 @@ async def _astream_workflow_generator(
             "max_plan_iterations": max_plan_iterations,
             "max_step_num": max_step_num,
         },
-        stream_mode=["messages"],
+        stream_mode=["messages", "updates"],
         subgraphs=True,
     ):
+        if isinstance(event_data, dict):
+            if "__interrupt__" in event_data:
+                yield _make_event(
+                    "interrupt",
+                    {
+                        "thread_id": thread_id,
+                        "id": event_data["__interrupt__"][0].ns[0],
+                        "role": "assistant",
+                        "content": event_data["__interrupt__"][0].value,
+                        "finish_reason": "interrupt",
+                        "options": [
+                            {"text": "Accept", "value": "accepted"},
+                            {"text": "Edit", "value": "edit_plan"},
+                        ],
+                    },
+                )
+            continue
         message_chunk, message_metadata = cast(
             tuple[AIMessageChunk, dict[str, any]], event_data
         )

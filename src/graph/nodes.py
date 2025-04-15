@@ -75,10 +75,10 @@ def human_feedback_node(
     # check if the plan is auto accepted
     auto_accepted_plan = state.get("auto_accepted_plan", False)
     if not auto_accepted_plan:
-        feedback = interrupt(current_plan)
+        feedback = interrupt("Please Review the Plan.")
 
         # if the feedback is not accepted, return the planner node
-        if feedback and str(feedback).upper() != "[ACCEPTED]":
+        if feedback and str(feedback).upper().startswith("[EDIT_PLAN]"):
             return Command(
                 update={
                     "messages": [
@@ -87,7 +87,7 @@ def human_feedback_node(
                 },
                 goto="planner",
             )
-        elif feedback and str(feedback).upper() == "[ACCEPTED]":
+        elif feedback and str(feedback).upper().startswith("[ACCEPTED]"):
             logger.info("Plan is accepted by user.")
         else:
             raise TypeError(f"Interrupt value of {feedback} is not supported.")

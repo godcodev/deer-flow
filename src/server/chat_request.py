@@ -22,8 +22,8 @@ class ChatMessage(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    messages: List[ChatMessage] = Field(
-        ..., description="History of messages between the user and the assistant"
+    messages: Optional[List[ChatMessage]] = Field(
+        [], description="History of messages between the user and the assistant"
     )
     debug: Optional[bool] = Field(False, description="Whether to enable debug logging")
     thread_id: Optional[str] = Field(
@@ -38,6 +38,6 @@ class ChatRequest(BaseModel):
     auto_accepted_plan: Optional[bool] = Field(
         False, description="Whether to automatically accept the plan"
     )
-    feedback: Optional[str] = Field(
-        None, description="Feedback from the user on the plan"
+    interrupt_feedback: Optional[str] = Field(
+        None, description="Interrupt feedback from the user on the plan"
     )
