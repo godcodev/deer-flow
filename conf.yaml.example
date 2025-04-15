@@ -1,15 +1,15 @@
 # LLM Config
 REASONING_MODEL:
-  model: "qwq-plus"
-  api_key: sk-xxx
-  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+  model: "gemini-2.0-flash"
+  api_key: xxxx
+  base_url: https://generativelanguage.googleapis.com/v1beta/openai/
 
 BASIC_MODEL:
-  model: "qwen-max"
-  api_key: sk-xxx
-  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+  model: "gemini-2.0-flash"
+  api_key: xxxx
+  base_url: https://generativelanguage.googleapis.com/v1beta/openai/
 
 VISION_MODEL:
-  model: "qwen2.5-vl-32b-instruct"
-  api_key: sk-xxx
-  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+  model: "gemini-2.0-flash"
+  api_key: xxxx
+  base_url: https://generativelanguage.googleapis.com/v1beta/openai/

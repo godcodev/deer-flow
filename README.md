@@ -152,6 +152,10 @@ The following examples demonstrate the capabilities of lite-deep-researcher:
    - Discusses vulnerabilities of classical cryptography, post-quantum cryptography, and quantum-resistant cryptographic solutions
    - [View full report](examples/Quantum_Computing_Impact_on_Cryptography.md)
 
+9. **Cristiano Ronaldo's Performance Highlights** - Analysis of Cristiano Ronaldo's performance highlights
+   - Discusses his career achievements, international goals, and performance in various matches
+   - [View full report](examples/Cristiano_Ronaldo's_Performance_Highlights.md)
+
 To run these examples or create your own research reports, you can use the following commands:
 
 ```bash
@@ -185,6 +189,30 @@ The application now supports an interactive mode with built-in questions in both
 3. Choose from a list of built-in questions or select the option to ask your own question
 
 4. The system will process your question and generate a comprehensive research report
+
+### Human in the Loop
+
+Lite-deep-researcher includes a human in the loop mechanism that allows you to review, edit, and approve research plans before they are executed:
+
+1. **Plan Review**: When human in the loop is enabled, the system will present the generated research plan for your review before execution
+
+2. **Providing Feedback**: You can:
+   - Accept the plan by responding with `[ACCEPTED]`
+   - Edit the plan by providing feedback (e.g., `[EDIT PLAN] Add more steps about technical implementation`)
+   - The system will incorporate your feedback and generate a revised plan
+
+3. **Auto-acceptance**: You can enable auto-acceptance to skip the review process:
+   - Via API: Set `auto_accepted_plan: true` in your request
+
+4. **API Integration**: When using the API, you can provide feedback through the `feedback` parameter:
+   ```json
+   {
+     "messages": [{"role": "user", "content": "What is quantum computing?"}],
+     "thread_id": "my_thread_id",
+     "auto_accepted_plan": false,
+     "feedback": "[EDIT PLAN] Include more about quantum algorithms"
+   }
+   ```
 
 ### Command Line Arguments
 
