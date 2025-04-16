@@ -32,24 +32,31 @@ cp conf.yaml.example conf.yaml
 uv run main.py
 ```
 
+## Web UI
+
+This project also includes a web UI that allows you to interact with the deep researcher.
+
+Please visit the [lite-deep-researcher-web](https://github.com/MagicCube/lite-deep-researcher-web) repository for more details.
+
+
 ## Supported Search Engines
 
 Lite-deep-researcher supports multiple search engines that can be configured in your `.env` file using the `SEARCH_API` variable:
 
 - **Tavily** (default): A specialized search API for AI applications
-  - Requires `TAVILY_API_KEY` in your `.env` file
-  - Sign up at: https://app.tavily.com/home
+    - Requires `TAVILY_API_KEY` in your `.env` file
+    - Sign up at: https://app.tavily.com/home
 
 - **DuckDuckGo**: Privacy-focused search engine
-  - No API key required
+    - No API key required
 
 - **Brave Search**: Privacy-focused search engine with advanced features
-  - Requires `BRAVE_SEARCH_API_KEY` in your `.env` file
-  - Sign up at: https://brave.com/search/api/
+    - Requires `BRAVE_SEARCH_API_KEY` in your `.env` file
+    - Sign up at: https://brave.com/search/api/
 
 - **Arxiv**: Scientific paper search for academic research
-  - No API key required
-  - Specialized for scientific and academic papers
+    - No API key required
+    - Specialized for scientific and academic papers
 
 To configure your preferred search engine, set the `SEARCH_API` variable in your `.env` file:
 
