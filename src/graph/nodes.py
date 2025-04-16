@@ -206,7 +206,7 @@ def _execute_agent_step(
     agent_input = {
         "messages": [
             HumanMessage(
-                content=f"#Task\n\n##title: {step.title}\n\n##description: {step.description}"
+                content=f"#Task\n\n##title\n\n{step.title}\n\n##description\n\n{step.description}"
             )
         ]
     }
