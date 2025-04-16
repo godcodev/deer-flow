@@ -49,26 +49,20 @@ curl --location 'http://localhost:8000/api/chat/stream' \
     "messages": [
         {
             "role": "user",
-            "content": "what is mcp?"
+            "content": "make the last step be comprehensive"
         }
     ],
     "thread_id": "test_thread_2",
     "auto_accepted_plan": false,
-    "feedback": "[EDIT PLAN] make the last step be comprehensive"
+    "interrupt_feedback": "edit_plan"
 }
 ```
 
-### Accepted the plan
+### Accept the plan
 ```
 {
-    "messages": [
-        {
-            "role": "user",
-            "content": "what is mcp?"
-        }
-    ],
     "thread_id": "test_thread_2",
     "auto_accepted_plan": false,
-    "feedback": "[ACCEPTED]"
+    "interrupt_feedback": "accepted"
 }
 ```
