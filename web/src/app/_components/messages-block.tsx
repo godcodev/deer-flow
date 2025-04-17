@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { useCallback, useRef, useState } from "react";
 
 import type { Option } from "~/core/messages";

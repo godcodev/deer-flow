@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { useStickToBottom } from "use-stick-to-bottom";
 
 import { cn } from "~/lib/utils";

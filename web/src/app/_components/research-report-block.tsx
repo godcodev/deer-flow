@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { useMessage } from "~/core/store";
 import { cn } from "~/lib/utils";
 

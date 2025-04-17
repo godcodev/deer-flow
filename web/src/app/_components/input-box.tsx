@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { ArrowUpOutlined, CloseOutlined } from "@ant-design/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import {

@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
 import { useMemo, useState } from "react";
 import ReactMarkdown, {

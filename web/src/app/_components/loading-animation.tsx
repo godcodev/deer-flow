@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { cn } from "~/lib/utils";
 
 import styles from "./loading-animation.module.css";
