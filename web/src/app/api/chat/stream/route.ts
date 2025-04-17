@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { NextResponse, type NextRequest } from "next/server";
 
 import { env } from "~/env";
