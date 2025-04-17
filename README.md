@@ -11,7 +11,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/hetaoBackend/deer.git
+git clone https://github.com/bytedance/deer.git
 cd deer
 
 # Install dependencies, uv will take care of the python interpreter and venv creation, and install the required packages
@@ -36,7 +36,7 @@ uv run main.py
 
 This project also includes a web UI that allows you to interact with the deep researcher.
 
-Please visit the [deer-web](https://github.com/MagicCube/deer-web) repository for more details.
+Please visit the [deer-web](https://github.com/bytedance/deer-web) repository for more details.
 
 
 ## Supported Search Engines

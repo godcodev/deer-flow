@@ -18,7 +18,7 @@ There are many ways you can contribute to Deer:
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/hetaoBackend/deer.git
+   git clone https://github.com/bytedance/deer.git
    cd deer
    ```
 3. Set up your development environment:
