@@ -13,16 +13,32 @@ This is the web UI project for [`DeerFlow`](https://github.com/bytedance/deer-fl
 DeerFlow Web UI uses `pnpm` as package manager.
 
 ```bash
+cd web
 pnpm install
 ```
 
 ## How to Run in Development Mode
 
+**Note**: You need to start the Python API service before running the web UI.
+
+Start the web UI development server:
+
 ```bash
+cd web
 pnpm dev
 ```
 
 By default, the web UI will be available at `http://localhost:3000`.
+
+This project uses a inverted proxy to access the API service.
+By default, the post request to `http://localhost:3000/api/chat/stream` will be proxied to `http://localhost:8000/api/chat/stream`.
+
+You can set the `NEXT_PUBLIC_API_URL` environment variable to change the default API service URL.
+
+```ini
+# .env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
+```
 
 
 ## License
