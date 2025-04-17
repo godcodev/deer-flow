@@ -1,0 +1,204 @@
+import {
+  BookOutlined,
+  PythonOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { parse } from "best-effort-json-parser";
+import { motion } from "framer-motion";
+import { LRUCache } from "lru-cache";
+import { useMemo } from "react";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
+import type { ToolCallRuntime } from "~/core/messages";
+import { useMessage, useStore } from "~/core/store";
+import { cn } from "~/lib/utils";
+
+import { FavIcon } from "./fav-icon";
+import { LoadingAnimation } from "./loading-animation";
+import { Markdown } from "./markdown";
+import { RainbowText } from "./rainbow-text";
+
+export function ResearchActivitiesBlock({
+  className,
+  researchId,
+}: {
+  className?: string;
+  researchId: string;
+}) {
+  const activityIds = useStore((state) =>
+    state.researchActivityIds.get(researchId),
+  )!;
+  const ongoing = useStore((state) => state.ongoingResearchId === researchId);
+  return (
+    <>
+      <ul className={cn("flex flex-col py-4", className)}>
+        {activityIds.map(
+          (activityId, i) =>
+            i !== 0 && (
+              <motion.li
+                key={activityId}
+                style={{ transition: "all 0.4s ease-out" }}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut",
+                }}
+              >
+                <ActivityMessage messageId={activityId} />
+                <ActivityListItem messageId={activityId} />
+                {i !== activityIds.length - 1 && <hr className="my-8" />}
+              </motion.li>
+            ),
+        )}
+      </ul>
+      {ongoing && <LoadingAnimation className="mx-4 my-12" />}
+    </>
+  );
+}
+
+function ActivityMessage({ messageId }: { messageId: string }) {
+  const message = useMessage(messageId);
+  if (message?.agent && message.content) {
+    if (message.agent !== "reporter" && message.agent !== "planner") {
+      return (
+        <div className="px-4 py-2">
+          <Markdown animate>{message.content}</Markdown>
+        </div>
+      );
+    }
+  }
+  return null;
+}
+
+function ActivityListItem({ messageId }: { messageId: string }) {
+  const message = useMessage(messageId);
+  if (message) {
+    if (!message.isStreaming && message.toolCalls?.length) {
+      for (const toolCall of message.toolCalls) {
+        if (toolCall.name === "web_search") {
+          return <WebSearchToolCall key={toolCall.id} toolCall={toolCall} />;
+        } else if (toolCall.name === "crawl_tool") {
+          return <CrawlToolCall key={toolCall.id} toolCall={toolCall} />;
+        } else if (toolCall.name === "python_repl_tool") {
+          return <PythonToolCall key={toolCall.id} toolCall={toolCall} />;
+        }
+      }
+    }
+  }
+  return null;
+}
+
+const __pageCache = new LRUCache<string, string>({ max: 100 });
+function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
+  const searchResults = useMemo<
+    { title: string; url: string; content: string }[]
+  >(() => {
+    let results: { title: string; url: string; content: string }[] | undefined =
+      undefined;
+    try {
+      results = toolCall.result ? parse(toolCall.result) : undefined;
+    } catch {
+      results = undefined;
+    }
+    if (Array.isArray(results)) {
+      results.forEach((result: { url: string; title: string }) => {
+        __pageCache.set(result.url, result.title);
+      });
+    } else {
+      results = [];
+    }
+    return results;
+  }, [toolCall.result]);
+  return (
+    <section>
+      <div className="font-medium italic">
+        <RainbowText
+          className="flex items-center"
+          animated={searchResults === undefined}
+        >
+          <SearchOutlined className={"mr-2"} />
+          <span>Searching for&nbsp;</span>
+          <span className="max-w-[500px] overflow-hidden text-ellipsis whitespace-nowrap">
+            {(toolCall.args as { query: string }).query}
+          </span>
+        </RainbowText>
+      </div>
+      {searchResults && (
+        <div className="px-5">
+          <ul className="mt-2 flex flex-wrap gap-4">
+            {searchResults.map((searchResult, i) => (
+              <motion.li
+                key={`search-result-${i}`}
+                className="text-muted-foreground flex max-w-40 gap-2 rounded-md bg-slate-100 px-2 py-1 text-sm"
+                initial={{ opacity: 0, y: 10, scale: 0.66 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.2,
+                  delay: i * 0.1,
+                  ease: "easeOut",
+                }}
+              >
+                <FavIcon url={searchResult.url} title={searchResult.title} />
+                <a href={searchResult.url} target="_blank">
+                  {searchResult.title}
+                </a>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
+  const url = useMemo(
+    () => (toolCall.args as { url: string }).url,
+    [toolCall.args],
+  );
+  const title = useMemo(() => __pageCache.get(url), [url]);
+  return (
+    <section>
+      <div className="font-medium italic">
+        <RainbowText
+          className="flex items-center"
+          animated={toolCall.result === undefined}
+        >
+          <BookOutlined className={"mr-2"} />
+          <span>Reading&nbsp;</span>
+          <li className="flex w-fit gap-1 px-2 py-1 text-sm">
+            <FavIcon url={url} title={title} />
+            <a className="hover:underline" href={url} target="_blank">
+              {title}
+            </a>
+          </li>
+        </RainbowText>
+      </div>
+    </section>
+  );
+}
+
+function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
+  const code = useMemo<string>(() => {
+    return (toolCall.args as { code: string }).code;
+  }, [toolCall.args]);
+  return (
+    <section>
+      <div className="font-medium italic">
+        <PythonOutlined className={"mr-2"} />
+        <RainbowText animated={toolCall.result === undefined}>
+          Running Python code
+        </RainbowText>
+      </div>
+      <div className="px-5">
+        <div className="mt-2 rounded-md bg-slate-50 p-2 text-sm">
+          <SyntaxHighlighter language="python" style={docco}>
+            {code}
+          </SyntaxHighlighter>
+        </div>
+      </div>
+    </section>
+  );
+}

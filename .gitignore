@@ -19,3 +19,6 @@ static/browser_history/*.gif
 conf.yaml
 
 .idea/
+
+# mock data
+mock-*-*.txt
