@@ -3,6 +3,7 @@
 
 import { useStickToBottom } from "use-stick-to-bottom";
 
+import { ScrollArea } from "~/components/ui/scroll-area";
 import { cn } from "~/lib/utils";
 
 export function ScrollContainer({
@@ -47,11 +48,11 @@ export function ScrollContainer({
           ></div>
         </>
       )}
-      <div ref={scrollRef} className={"h-full w-full overflow-y-scroll"}>
+      <ScrollArea ref={scrollRef} className="h-full w-full">
         <div className="h-fit w-full" ref={contentRef}>
           {children}
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

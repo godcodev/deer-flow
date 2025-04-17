@@ -68,7 +68,7 @@ export function MessageListView({
   return (
     <ScrollContainer
       className={cn(
-        "flex h-full w-full flex-col overflow-y-auto pt-4",
+        "flex h-full w-full flex-col overflow-hidden pt-4",
         className,
       )}
       scrollShadowColor="#f7f5f3"
