@@ -1,18 +1,18 @@
-# lite-deep-researcher
+# Deer
 
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > Come from Open Source, Back to Open Source
 
-lite-deep-researcher is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
+**Deer** (**D**eep **E**xploration and **E**fficient **R**esearch) is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
 ## Quick Start
 
 ```bash
 # Clone the repository
-git clone https://github.com/hetaoBackend/lite-deep-researcher.git
-cd lite-deep-researcher
+git clone https://github.com/hetaoBackend/deer.git
+cd deer
 
 # Install dependencies, uv will take care of the python interpreter and venv creation, and install the required packages
 uv sync
@@ -36,12 +36,12 @@ uv run main.py
 
 This project also includes a web UI that allows you to interact with the deep researcher.
 
-Please visit the [lite-deep-researcher-web](https://github.com/MagicCube/lite-deep-researcher-web) repository for more details.
+Please visit the [deer-web](https://github.com/MagicCube/deer-web) repository for more details.
 
 
 ## Supported Search Engines
 
-Lite-deep-researcher supports multiple search engines that can be configured in your `.env` file using the `SEARCH_API` variable:
+Deer supports multiple search engines that can be configured in your `.env` file using the `SEARCH_API` variable:
 
 - **Tavily** (default): A specialized search API for AI applications
     - Requires `TAVILY_API_KEY` in your `.env` file
@@ -94,7 +94,7 @@ make format
 
 ## Architecture
 
-lite-deep-researcher implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.
+Deer implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.
 
 ![Architecture Diagram](./assets/architecture.png)
 
@@ -122,7 +122,7 @@ The system employs a streamlined workflow with the following components:
 
 ## Examples
 
-The following examples demonstrate the capabilities of lite-deep-researcher:
+The following examples demonstrate the capabilities of Deer:
 
 ### Research Reports
 
@@ -199,7 +199,7 @@ The application now supports an interactive mode with built-in questions in both
 
 ### Human in the Loop
 
-Lite-deep-researcher includes a human in the loop mechanism that allows you to review, edit, and approve research plans before they are executed:
+Deer includes a human in the loop mechanism that allows you to review, edit, and approve research plans before they are executed:
 
 1. **Plan Review**: When human in the loop is enabled, the system will present the generated research plan for your review before execution
 
@@ -237,10 +237,10 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-Special thanks to all the open source projects and contributors that make lite-deep-researcher possible. We stand on the shoulders of giants.
+Special thanks to all the open source projects and contributors that make Deer possible. We stand on the shoulders of giants.
 
 In particular, we want to express our deep appreciation for:
 - [LangChain](https://github.com/langchain-ai/langchain) for their exceptional framework that powers our LLM interactions and chains
 - [LangGraph](https://github.com/langchain-ai/langgraph) for enabling our sophisticated multi-agent orchestration
 
-These amazing projects form the foundation of lite-deep-researcher and demonstrate the power of open source collaboration.
+These amazing projects form the foundation of Deer and demonstrate the power of open source collaboration.

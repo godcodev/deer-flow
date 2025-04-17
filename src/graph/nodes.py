@@ -57,7 +57,7 @@ def planner_node(
         for chunk in response:
             full_response += chunk.content
     logger.debug(f"Current state messages: {state['messages']}")
-    logger.debug(f"Planner response: {full_response}")
+    logger.info(f"Planner response: {full_response}")
 
     return Command(
         update={

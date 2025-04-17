@@ -1,5 +1,5 @@
 """
-Built-in questions for the Lite Deep Researcher.
+Built-in questions for Deer.
 """
 
 # English built-in questions

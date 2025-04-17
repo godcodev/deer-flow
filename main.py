@@ -1,5 +1,5 @@
 """
-Entry point script for the Lite Deep Researcher project.
+Entry point script for the Deer project.
 """
 
 import argparse
@@ -76,7 +76,7 @@ def main(debug=False, max_plan_iterations=1, max_step_num=3):
 
 if __name__ == "__main__":
     # Set up argument parser
-    parser = argparse.ArgumentParser(description="Run the Lite Deep Researcher")
+    parser = argparse.ArgumentParser(description="Run the Deer")
     parser.add_argument("query", nargs="*", help="The query to process")
     parser.add_argument(
         "--interactive",

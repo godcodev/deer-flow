@@ -1,5 +1,5 @@
 """
-Server script for running the Lite Deep Research API.
+Server script for running the Deer API.
 """
 
 import logging
@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
-    logger.info("Starting Lite Deep Research API server")
+    logger.info("Starting Deer API server")
     reload = True
     if sys.platform.startswith("win"):
         reload = False

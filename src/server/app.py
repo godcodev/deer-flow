@@ -15,8 +15,8 @@ from src.server.chat_request import ChatMessage, ChatRequest
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Lite Deep Research API",
-    description="API for Lite Deep Research",
+    title="Deer API",
+    description="API for Deer",
     version="0.1.0",
 )
 

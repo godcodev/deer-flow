@@ -25,13 +25,13 @@ def log_io(func: Callable) -> Callable:
         params = ", ".join(
             [*(str(arg) for arg in args), *(f"{k}={v}" for k, v in kwargs.items())]
         )
-        logger.debug(f"Tool {func_name} called with parameters: {params}")
+        logger.info(f"Tool {func_name} called with parameters: {params}")
 
         # Execute the function
         result = func(*args, **kwargs)
 
         # Log the output
-        logger.debug(f"Tool {func_name} returned: {result}")
+        logger.info(f"Tool {func_name} returned: {result}")
 
         return result
 
