@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+# SPDX-License-Identifier: MIT
+
 import logging
 import functools
 from typing import Any, Callable, Type, TypeVar

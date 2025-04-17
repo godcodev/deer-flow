@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+# SPDX-License-Identifier: MIT
+
 from langchain_openai import ChatOpenAI
 from src.config import load_yaml_config
 from pathlib import Path

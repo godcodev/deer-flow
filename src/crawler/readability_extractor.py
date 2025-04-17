@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+# SPDX-License-Identifier: MIT
+
 from readabilipy import simple_json_from_html_string
 
 from .article import Article

@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+# SPDX-License-Identifier: MIT
+
 """
 Entry point script for the Deer project.
 """

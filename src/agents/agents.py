@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+# SPDX-License-Identifier: MIT
+
 from langgraph.prebuilt import create_react_agent
 
 from src.prompts import apply_prompt_template
