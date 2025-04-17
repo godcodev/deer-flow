@@ -1,18 +1,18 @@
-# 🦌 Deer
+# 🦌 DeerFlow
 
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > Come from Open Source, Back to Open Source
 
-**Deer** (**D**eep **E**xploration and **E**fficient **R**esearch) is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
+**DeerFlow** (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
 ## Quick Start
 
 ```bash
 # Clone the repository
-git clone https://github.com/bytedance/deer.git
-cd deer
+git clone https://github.com/bytedance/deer-flow.git
+cd deer-flow
 
 # Install dependencies, uv will take care of the python interpreter and venv creation, and install the required packages
 uv sync
@@ -36,7 +36,7 @@ uv run main.py
 
 This project also includes a web UI that allows you to interact with the deep researcher.
 
-Please visit the [deer-web](./web/) directory for more details.
+Please visit the [deer-flow-web](./web/) directory for more details.
 
 
 ## Supported Search Engines
@@ -94,7 +94,7 @@ make format
 
 ## Architecture
 
-Deer implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.
+DeerFlow implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.
 
 ![Architecture Diagram](./assets/architecture.png)
 
@@ -122,7 +122,7 @@ The system employs a streamlined workflow with the following components:
 
 ## Examples
 
-The following examples demonstrate the capabilities of Deer:
+The following examples demonstrate the capabilities of DeerFlow:
 
 ### Research Reports
 
@@ -199,7 +199,7 @@ The application now supports an interactive mode with built-in questions in both
 
 ### Human in the Loop
 
-Deer includes a human in the loop mechanism that allows you to review, edit, and approve research plans before they are executed:
+DeerFlow includes a human in the loop mechanism that allows you to review, edit, and approve research plans before they are executed:
 
 1. **Plan Review**: When human in the loop is enabled, the system will present the generated research plan for your review before execution
 
@@ -237,10 +237,10 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-Special thanks to all the open source projects and contributors that make Deer possible. We stand on the shoulders of giants.
+Special thanks to all the open source projects and contributors that make DeerFlow possible. We stand on the shoulders of giants.
 
 In particular, we want to express our deep appreciation for:
 - [LangChain](https://github.com/langchain-ai/langchain) for their exceptional framework that powers our LLM interactions and chains
 - [LangGraph](https://github.com/langchain-ai/langgraph) for enabling our sophisticated multi-agent orchestration
 
-These amazing projects form the foundation of Deer and demonstrate the power of open source collaboration.
+These amazing projects form the foundation of DeerFlow and demonstrate the power of open source collaboration.
