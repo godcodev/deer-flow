@@ -22,7 +22,7 @@ export function chatStream(
     return chatStreamMock(userMessage, params, options);
   }
   return fetchStream<ChatEvent>(
-    (env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api") + "/chat/stream",
+    (env.NEXT_PUBLIC_API_URL ?? "/api") + "/chat/stream",
     {
       body: JSON.stringify({
         messages: [{ role: "user", content: userMessage }],
