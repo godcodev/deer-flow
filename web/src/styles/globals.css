@@ -205,4 +205,12 @@ textarea {
       @apply bg-muted;
     }
   }
+
+  code:not([class*="language-"]) {
+    @apply bg-muted;
+    @apply rounded-md;
+    @apply px-1;
+    @apply py-0.5;
+    @apply border;
+  }
 }
