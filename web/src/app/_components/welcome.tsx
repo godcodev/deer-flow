@@ -19,12 +19,12 @@ export function Welcome({ className }: { className?: string }) {
       <div className="px-4 text-center text-lg text-gray-400">
         Welcome to{" "}
         <a
-          href="https://github.com/bytedance/deer"
+          href="https://github.com/bytedance/deer-flow"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"
         >
-          🦌 Deer
+          🦌 DeerFlow
         </a>
         , a research tool built on cutting-edge language models, helps you
         search on web, browse information, and handle complex tasks.

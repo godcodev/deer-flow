@@ -31,7 +31,7 @@ export default function HomePage() {
           size="icon"
           asChild
         >
-          <Link href="https://github.com/bytedance/deer" target="_blank">
+          <Link href="https://github.com/bytedance/deer-flow" target="_blank">
             <GithubOutlined />
           </Link>
         </Button>

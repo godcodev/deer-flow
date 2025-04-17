@@ -9,7 +9,7 @@ import { Geist } from "next/font/google";
 import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
-  title: "🦌 Deer",
+  title: "🦌 DeerFlow",
   description:
     "Deep Exploration and Efficient Research, an AI tool that combines language models with specialized tools for research tasks.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
