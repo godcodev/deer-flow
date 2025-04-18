@@ -1,7 +1,7 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict, Any
 
 from pydantic import BaseModel, Field
 
@@ -44,3 +44,19 @@ class ChatRequest(BaseModel):
     interrupt_feedback: Optional[str] = Field(
         None, description="Interrupt feedback from the user on the plan"
     )
+
+
+class TTSRequest(BaseModel):
+    text: str = Field(..., description="The text to convert to speech")
+    voice_type: Optional[str] = Field(
+        "BV700_V2_streaming", description="The voice type to use"
+    )
+    encoding: Optional[str] = Field("mp3", description="The audio encoding format")
+    speed_ratio: Optional[float] = Field(1.0, description="Speech speed ratio")
+    volume_ratio: Optional[float] = Field(1.0, description="Speech volume ratio")
+    pitch_ratio: Optional[float] = Field(1.0, description="Speech pitch ratio")
+    text_type: Optional[str] = Field("plain", description="Text type (plain or ssml)")
+    with_frontend: Optional[int] = Field(
+        1, description="Whether to use frontend processing"
+    )
+    frontend_type: Optional[str] = Field("unitTson", description="Frontend type")

@@ -1,6 +1,8 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
+import os
+
 from .crawl import crawl_tool
 from .python_repl import python_repl_tool
 from .search import (
@@ -9,6 +11,7 @@ from .search import (
     brave_search_tool,
     arxiv_search_tool,
 )
+from .tts import VolcengineTTS
 from src.config import SELECTED_SEARCH_ENGINE, SearchEngine
 
 # Map search engine names to their respective tools
@@ -25,4 +28,5 @@ __all__ = [
     "crawl_tool",
     "web_search_tool",
     "python_repl_tool",
+    "VolcengineTTS",
 ]

@@ -17,12 +17,13 @@ cd deer-flow
 # Install dependencies, uv will take care of the python interpreter and venv creation, and install the required packages
 uv sync
 
-# Configure .env with your Search Engine API keys
+# Configure .env with your API keys
 # Tavily: https://app.tavily.com/home
 # Brave_SEARCH: https://brave.com/search/api/
+# volcengine TTS: Add your TTS credentials if you have them
 cp .env.example .env
 
-# See the 'Supported Search Engines' section below for all available options
+# See the 'Supported Search Engines' and 'Text-to-Speech Integration' sections below for all available options
 
 # Configure conf.yaml for your LLM model and API keys
 # Gemini: https://ai.google.dev/gemini-api/docs/openai
@@ -119,6 +120,34 @@ The system employs a streamlined workflow with the following components:
    - Aggregates findings from the research team
    - Processes and structures the collected information
    - Generates comprehensive research reports
+
+## Text-to-Speech Integration
+
+DeerFlow now includes a Text-to-Speech (TTS) feature that allows you to convert research reports to speech. This feature uses the volcengine TTS API to generate high-quality audio from text.
+
+### Features
+
+- Convert any text or research report to natural-sounding speech
+- Adjust speech parameters like speed, volume, and pitch
+- Support for multiple voice types
+- Available through both API and web interface
+
+### Using the TTS API
+
+You can access the TTS functionality through the `/api/tts` endpoint:
+
+```bash
+# Example API call using curl
+curl --location 'http://localhost:8000/api/tts' \
+--header 'Content-Type: application/json' \
+--data '{
+    "text": "This is a test of the text-to-speech functionality.",
+    "speed_ratio": 1.0,
+    "volume_ratio": 1.0,
+    "pitch_ratio": 1.0
+}' \
+--output speech.mp3
+```
 
 ## Examples
 
