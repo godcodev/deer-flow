@@ -1,7 +1,7 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
-from typing import List, Optional, Union, Dict, Any
+from typing import List, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -60,3 +60,7 @@ class TTSRequest(BaseModel):
         1, description="Whether to use frontend processing"
     )
     frontend_type: Optional[str] = Field("unitTson", description="Frontend type")
+
+
+class GeneratePodcastRequest(BaseModel):
+    content: str = Field(..., description="The content of the podcast")

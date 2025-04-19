@@ -16,7 +16,12 @@ from langgraph.types import Command
 
 from src.graph.builder import build_graph
 from src.podcast.graph.builder import build_graph as build_podcast_graph
-from src.server.chat_request import ChatMessage, ChatRequest, TTSRequest
+from src.server.chat_request import (
+    ChatMessage,
+    ChatRequest,
+    GeneratePodcastRequest,
+    TTSRequest,
+)
 from src.tools import VolcengineTTS
 
 logger = logging.getLogger(__name__)
@@ -199,10 +204,11 @@ async def text_to_speech(request: TTSRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/api/podcast/generate")
-async def generate_podcast():
+@app.post("/api/podcast/generate")
+async def generate_podcast(request: GeneratePodcastRequest):
     try:
-        report_content = open("examples/nanjing_tangbao.md").read()
+        report_content = request.content
+        print(report_content)
         workflow = build_podcast_graph()
         final_state = workflow.invoke({"input": report_content})
         audio_bytes = final_state["output"]
