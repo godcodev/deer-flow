@@ -12,9 +12,8 @@ export async function POST(request: NextRequest) {
     async start(controller) {
       try {
         const response = await fetch(
-          (env.NEXT_PUBLIC_API_URL
-            ? env.NEXT_PUBLIC_API_URL
-            : "http://localhost:8000/api") + "/chat/stream",
+          (env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api") +
+            "/chat/stream",
           {
             method: "POST",
             headers: {
