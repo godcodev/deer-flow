@@ -39,6 +39,10 @@ export function Markdown({
     }
     return [rehypeKatex];
   }, [animate]);
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.style.display = "none";
+    console.warn(`Markdown: Image "${e.currentTarget.src}" failed to load`);
+  };
   return (
     <div
       className={cn(className, "markdown flex flex-col gap-4")}
@@ -52,6 +56,9 @@ export function Markdown({
             <a href={href} target="_blank" rel="noopener noreferrer">
               {children}
             </a>
+          ),
+          img: ({ src, alt }) => (
+            <img src={src} alt={alt} onError={handleImgError} />
           ),
         }}
         {...props}
