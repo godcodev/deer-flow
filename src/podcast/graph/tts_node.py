@@ -18,7 +18,7 @@ def tts_node(state: PodcastState):
         tts_client.voice_type = (
             "BV002_streaming" if line.speaker == "male" else "BV001_streaming"
         )
-        result = tts_client.text_to_speech(line.text, speed_ratio=1.1)
+        result = tts_client.text_to_speech(line.text, speed_ratio=1.05)
         if result["success"]:
             audio_data = result["audio_data"]
             audio_chunk = base64.b64decode(audio_data)
