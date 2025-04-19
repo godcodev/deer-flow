@@ -10,11 +10,12 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse, Response
+from fastapi.responses import Response, StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage
 from langgraph.types import Command
 
 from src.graph.builder import build_graph
+from src.podcast.graph.builder import build_graph as build_podcast_graph
 from src.server.chat_request import ChatMessage, ChatRequest, TTSRequest
 from src.tools import VolcengineTTS
 
@@ -195,4 +196,17 @@ async def text_to_speech(request: TTSRequest):
         )
     except Exception as e:
         logger.exception(f"Error in TTS endpoint: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/podcast/generate")
+async def generate_podcast():
+    try:
+        report_content = open("examples/nanjing_tangbao.md").read()
+        workflow = build_podcast_graph()
+        final_state = workflow.invoke({"input": report_content})
+        audio_bytes = final_state["output"]
+        return Response(content=audio_bytes, media_type="audio/mp3")
+    except Exception as e:
+        logger.exception(f"Error occurred during podcast generation: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
