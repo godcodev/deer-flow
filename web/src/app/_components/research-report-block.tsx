@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { PauseCircleOutlined, SoundOutlined } from "@ant-design/icons";
+import { SoundOutlined } from "@ant-design/icons";
 import { useCallback, useRef, useState } from "react";
 
 import { Button } from "~/components/ui/button";
@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "~/components/ui/tooltip";
-import { useMessage } from "~/core/store";
+import { listenToPodcast, useMessage } from "~/core/store";
 import { cn } from "~/lib/utils";
 
 import { LoadingAnimation } from "./loading-animation";
@@ -18,29 +18,23 @@ import { Markdown } from "./markdown";
 
 export function ResearchReportBlock({
   className,
+  researchId,
   messageId,
 }: {
   className?: string;
+  researchId: string;
   messageId: string;
 }) {
   const message = useMessage(messageId);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [isTTS, setIsTTS] = useState(false);
-  const handleTTS = useCallback(() => {
-    if (contentRef.current) {
-      if (isTTS) {
-        window.speechSynthesis.cancel();
-        setIsTTS(false);
-      } else {
-        const text = contentRef.current.textContent;
-        if (text) {
-          const utterance = new SpeechSynthesisUtterance(text);
-          setIsTTS(true);
-          window.speechSynthesis.speak(utterance);
-        }
-      }
+  const [isGenerated, setGenerated] = useState(false);
+  const handleListenToReport = useCallback(async () => {
+    if (isGenerated) {
+      return;
     }
-  }, [isTTS]);
+    setGenerated(true);
+    await listenToPodcast(researchId);
+  }, [isGenerated, researchId]);
   return (
     <div
       ref={contentRef}
@@ -54,14 +48,16 @@ export function ResearchReportBlock({
                 variant="outline"
                 size="icon"
                 onClick={() => {
-                  handleTTS();
+                  void handleListenToReport();
                 }}
               >
-                {isTTS ? <PauseCircleOutlined /> : <SoundOutlined />}
+                <SoundOutlined />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{isTTS ? "Pause" : "Listen to the report"}</p>
+              <p>
+                {isGenerated ? "The podcast is generated" : "Generate podcast"}
+              </p>
             </TooltipContent>
           </Tooltip>
         )}

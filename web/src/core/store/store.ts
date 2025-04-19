@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 import { create } from "zustand";
 
 import { chatStream } from "../api";
+import { generatePodcast } from "../api/podcast";
 import type { Message } from "../messages";
 import { mergeMessage } from "../messages";
 
@@ -88,7 +89,7 @@ export async function sendMessage(
         };
         appendMessage(message);
       }
-      message ??= findMessage(messageId);
+      message ??= getMessage(messageId);
       if (message) {
         message = mergeMessage(message, event);
         updateMessage(message);
@@ -107,7 +108,7 @@ function existsMessage(id: string) {
   return useStore.getState().messageIds.includes(id);
 }
 
-function findMessage(id: string) {
+function getMessage(id: string) {
   return useStore.getState().messages.get(id);
 }
 
@@ -175,7 +176,7 @@ function appendResearch(researchId: string) {
   let planMessage: Message | undefined;
   const reversedMessageIds = [...useStore.getState().messageIds].reverse();
   for (const messageId of reversedMessageIds) {
-    const message = findMessage(messageId);
+    const message = getMessage(messageId);
     if (message?.agent === "planner") {
       planMessage = message;
       break;
@@ -224,6 +225,46 @@ export function openResearch(researchId: string | null) {
   });
 }
 
+export async function listenToPodcast(researchId: string) {
+  const planMessageId = useStore.getState().researchPlanIds.get(researchId);
+  const reportMessageId = useStore.getState().researchReportIds.get(researchId);
+  if (planMessageId && reportMessageId) {
+    const planMessage = getMessage(planMessageId)!;
+    const title = (JSON.parse(planMessage.content) as { title: string }).title;
+    const reportMessage = getMessage(reportMessageId);
+    if (reportMessage?.content) {
+      appendMessage({
+        id: nanoid(),
+        threadId: THREAD_ID,
+        role: "user",
+        content: "Please generate a podcast for the above research.",
+        contentChunks: [],
+      });
+      const podCastMessageId = nanoid();
+      const podcastObject = { title, researchId };
+      const podcastMessage: Message = {
+        id: podCastMessageId,
+        threadId: THREAD_ID,
+        role: "assistant",
+        agent: "podcast",
+        content: JSON.stringify(podcastObject),
+        contentChunks: [],
+        isStreaming: true,
+      };
+      appendMessage(podcastMessage);
+      // Generating podcast...
+      const audioUrl = await generatePodcast(reportMessage.content);
+      useStore.setState((state) => ({
+        messages: new Map(useStore.getState().messages).set(podCastMessageId, {
+          ...state.messages.get(podCastMessageId)!,
+          content: JSON.stringify({ ...podcastObject, audioUrl }),
+          isStreaming: false,
+        }),
+      }));
+    }
+  }
+}
+
 export function useResearchTitle(researchId: string) {
   const planMessage = useMessage(
     useStore.getState().researchPlanIds.get(researchId),
@@ -236,7 +277,3 @@ export function useMessage(messageId: string | null | undefined) {
     messageId ? state.messages.get(messageId) : undefined,
   );
 }
-
-// void sendMessage(
-//   "How many times taller is the Eiffel Tower than the tallest building in the world?",
-// );

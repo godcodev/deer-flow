@@ -80,8 +80,12 @@ export function ResearchBlock({
           </div>
           <TabsContent className="h-full min-h-0 flex-grow px-8" value="report">
             <ScrollContainer className="px-5pb-20 h-full">
-              {reportId && (
-                <ResearchReportBlock className="mt-4" messageId={reportId} />
+              {reportId && researchId && (
+                <ResearchReportBlock
+                  className="mt-4"
+                  researchId={researchId}
+                  messageId={reportId}
+                />
               )}
             </ScrollContainer>
           </TabsContent>

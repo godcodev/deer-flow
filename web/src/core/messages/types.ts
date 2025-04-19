@@ -6,7 +6,13 @@ export type MessageRole = "user" | "assistant" | "tool";
 export interface Message {
   id: string;
   threadId: string;
-  agent?: "coordinator" | "planner" | "researcher" | "coder" | "reporter";
+  agent?:
+    | "coordinator"
+    | "planner"
+    | "researcher"
+    | "coder"
+    | "reporter"
+    | "podcast";
   role: MessageRole;
   isStreaming?: boolean;
   content: string;

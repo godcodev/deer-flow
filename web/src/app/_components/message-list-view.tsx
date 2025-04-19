@@ -1,9 +1,14 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
+import {
+  DownloadOutlined,
+  SoundOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { parse } from "best-effort-json-parser";
 import { motion } from "framer-motion";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -13,6 +18,11 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
 import type { Message, Option } from "~/core/messages";
 import {
   openResearch,
@@ -114,6 +124,7 @@ function MessageListItem({
       message.role === "user" ||
       message.agent === "coordinator" ||
       message.agent === "planner" ||
+      message.agent === "podcast" ||
       startOfResearch
     ) {
       let content: React.ReactNode;
@@ -126,6 +137,12 @@ function MessageListItem({
               interruptMessage={interruptMessage}
               onFeedback={onFeedback}
             />
+          </div>
+        );
+      } else if (message.agent === "podcast") {
+        content = (
+          <div className="w-full px-4">
+            <PodcastCard message={message} />
           </div>
         );
       } else if (startOfResearch) {
@@ -345,6 +362,66 @@ function PlanCard({
           </motion.div>
         )}
       </CardFooter>
+    </Card>
+  );
+}
+
+function PodcastCard({
+  className,
+  message,
+}: {
+  className?: string;
+  message: Message;
+}) {
+  const data = useMemo(() => {
+    return parse(message.content ?? "");
+  }, [message.content]);
+  const title = useMemo(() => data?.title, [data]);
+  const audioUrl = useMemo(() => data?.audioUrl, [data]);
+  const isGenerating = useMemo(() => {
+    return message.isStreaming;
+  }, [message.isStreaming]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  return (
+    <Card className={cn("w-[508px] bg-white", className)}>
+      <CardHeader>
+        <div className="text-muted-foreground flex items-center justify-between text-sm">
+          <div className="flex items-center gap-2">
+            {isGenerating ? <LoadingOutlined /> : <SoundOutlined />}
+            <RainbowText animated={isGenerating}>
+              {isGenerating
+                ? "Generating podcast..."
+                : isPlaying
+                  ? "Now playing podcast..."
+                  : "Podcast"}
+            </RainbowText>
+          </div>
+          <div className="flex">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <DownloadOutlined />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Download podcast</TooltipContent>
+            </Tooltip>
+          </div>
+        </div>
+        <CardTitle>
+          <div className="text-lg font-medium">
+            <RainbowText animated={isGenerating}>{title}</RainbowText>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <audio
+          className="w-full"
+          src={audioUrl}
+          controls
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        />
+      </CardContent>
     </Card>
   );
 }
