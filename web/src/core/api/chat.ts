@@ -66,7 +66,7 @@ async function* chatStreamMock(
     if (event === "message_chunk") {
       await sleep(100);
     } else if (event === "tool_call_result") {
-      await sleep(1500);
+      await sleep(2000);
     }
     try {
       yield {
