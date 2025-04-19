@@ -36,18 +36,24 @@ export function chatStream(
 
 async function* chatStreamMock(
   userMessage: string,
-  _: {
+  params: {
     thread_id: string;
     max_plan_iterations: number;
     max_step_num: number;
+    interrupt_feedback?: string;
   } = {
     thread_id: "__mock__",
     max_plan_iterations: 3,
     max_step_num: 1,
+    interrupt_feedback: undefined,
   },
   options: { abortSignal?: AbortSignal } = {},
 ): AsyncIterable<ChatEvent> {
-  const res = await fetch("/mock.txt", {
+  const mockFile =
+    params.interrupt_feedback === "accepted"
+      ? "/mock-before-interrupt.txt"
+      : "/mock-after-interrupt.txt";
+  const res = await fetch(mockFile, {
     signal: options.abortSignal,
   });
   await sleep(800);
@@ -58,7 +64,7 @@ async function* chatStreamMock(
     const [, event] = eventRaw.split("event: ", 2) as [string, string];
     const [, data] = dataRaw.split("data: ", 2) as [string, string];
     if (event === "message_chunk") {
-      await sleep(0);
+      await sleep(100);
     } else if (event === "tool_call_result") {
       await sleep(1500);
     }
