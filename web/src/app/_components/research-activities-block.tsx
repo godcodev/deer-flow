@@ -18,6 +18,7 @@ import { useMessage, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
 import { FavIcon } from "./fav-icon";
+import Image from "./image";
 import { LoadingAnimation } from "./loading-animation";
 import { Markdown } from "./markdown";
 import { RainbowText } from "./rainbow-text";
@@ -123,7 +124,6 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
     } else {
       results = [];
     }
-    console.info(results);
     return results;
   }, [toolCall.result]);
   const pageResults = useMemo(
@@ -172,20 +172,30 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
                 </motion.li>
               ))}
             {imageResults.map((searchResult, i) => (
-              <li key={`search-result-${i}`}>
+              <motion.li
+                key={`search-result-${i}`}
+                initial={{ opacity: 0, y: 10, scale: 0.66 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.2,
+                  delay: i * 0.1,
+                  ease: "easeOut",
+                }}
+              >
                 <a
-                  className="flex flex-col gap-2 opacity-75 transition-opacity duration-300 hover:opacity-100"
+                  className="flex flex-col gap-2 overflow-hidden rounded-md opacity-75 transition-opacity duration-300 hover:opacity-100"
                   href={searchResult.image_url}
                   target="_blank"
                 >
-                  <div
+                  <Image
+                    src={searchResult.image_url}
+                    alt={searchResult.image_description}
                     className="h-40 w-40 max-w-full rounded-md bg-slate-100 bg-cover bg-center bg-no-repeat"
-                    style={{
-                      backgroundImage: `url(${searchResult.image_url})`,
-                    }}
+                    imageClassName="hover:scale-110"
+                    imageTransition
                   />
                 </a>
-              </li>
+              </motion.li>
             ))}
           </ul>
         )}

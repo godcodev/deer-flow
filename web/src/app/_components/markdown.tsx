@@ -20,6 +20,8 @@ import {
 import { rehypeSplitWordsIntoSpans } from "~/core/rehype";
 import { cn } from "~/lib/utils";
 
+import Image from "./image";
+
 export function Markdown({
   className,
   children,
@@ -39,10 +41,6 @@ export function Markdown({
     }
     return [rehypeKatex];
   }, [animate]);
-  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.style.display = "none";
-    console.warn(`Markdown: Image "${e.currentTarget.src}" failed to load`);
-  };
   return (
     <div
       className={cn(className, "markdown flex flex-col gap-4")}
@@ -58,7 +56,9 @@ export function Markdown({
             </a>
           ),
           img: ({ src, alt }) => (
-            <img src={src} alt={alt} onError={handleImgError} />
+            <a href={src as string} target="_blank" rel="noopener noreferrer">
+              <Image className="rounded" src={src as string} alt={alt ?? ""} />
+            </a>
           ),
         }}
         {...props}
