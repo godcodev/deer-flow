@@ -8,6 +8,13 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  rewrites: async () => [
+    {
+      source: "/api/podcast/:path*",
+      destination: "http://localhost:8000/api/podcast/:path*",
+    },
+  ],
+};
 
 export default config;
