@@ -139,7 +139,7 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
     [searchResults],
   );
   return (
-    <section>
+    <section className="mt-4">
       <div className="font-medium italic">
         <RainbowText
           className="flex items-center"
@@ -224,21 +224,33 @@ function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   );
   const title = useMemo(() => __pageCache.get(url), [url]);
   return (
-    <section>
+    <section className="mt-4">
       <div className="font-medium italic">
         <RainbowText
           className="flex items-center"
           animated={toolCall.result === undefined}
         >
           <BookOutlined className={"mr-2"} />
-          <span>Reading&nbsp;</span>
-          <li className="flex w-fit gap-1 px-2 py-1 text-sm">
+          <span>Reading</span>
+        </RainbowText>
+      </div>
+      <div className="px-5">
+        <ul className="mt-2 flex flex-wrap gap-4">
+          <motion.li
+            className="text-muted-foreground flex h-40 w-40 gap-2 rounded-md bg-slate-100 px-2 py-1 text-sm"
+            initial={{ opacity: 0, y: 10, scale: 0.66 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              duration: 0.2,
+              ease: "easeOut",
+            }}
+          >
             <FavIcon url={url} title={title} />
-            <a className="hover:underline" href={url} target="_blank">
+            <a href={url} target="_blank">
               {title}
             </a>
-          </li>
-        </RainbowText>
+          </motion.li>
+        </ul>
       </div>
     </section>
   );
