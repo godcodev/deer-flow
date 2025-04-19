@@ -376,8 +376,8 @@ function PodcastCard({
   const data = useMemo(() => {
     return parse(message.content ?? "");
   }, [message.content]);
-  const title = useMemo(() => data?.title, [data]);
-  const audioUrl = useMemo(() => data?.audioUrl, [data]);
+  const title = useMemo<string | undefined>(() => data?.title, [data]);
+  const audioUrl = useMemo<string | undefined>(() => data?.audioUrl, [data]);
   const isGenerating = useMemo(() => {
     return message.isStreaming;
   }, [message.isStreaming]);
@@ -396,16 +396,23 @@ function PodcastCard({
                   : "Podcast"}
             </RainbowText>
           </div>
-          <div className="flex">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <DownloadOutlined />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Download podcast</TooltipContent>
-            </Tooltip>
-          </div>
+          {!isGenerating && (
+            <div className="flex">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" asChild>
+                    <a
+                      href={audioUrl}
+                      download={`${(title ?? "podcast").replaceAll(" ", "-")}.mp3`}
+                    >
+                      <DownloadOutlined />
+                    </a>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Download podcast</TooltipContent>
+              </Tooltip>
+            </div>
+          )}
         </div>
         <CardTitle>
           <div className="text-lg font-medium">
