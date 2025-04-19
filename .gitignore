@@ -20,5 +20,3 @@ conf.yaml
 
 .idea/
 
-# mock data
-mock-*-*.txt
