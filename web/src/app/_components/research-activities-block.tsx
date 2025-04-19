@@ -94,26 +94,46 @@ function ActivityListItem({ messageId }: { messageId: string }) {
 }
 
 const __pageCache = new LRUCache<string, string>({ max: 100 });
+type SearchResult =
+  | {
+      type: "page";
+      title: string;
+      url: string;
+      content: string;
+    }
+  | {
+      type: "image";
+      image_url: string;
+      image_description: string;
+    };
 function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
-  const searchResults = useMemo<
-    { title: string; url: string; content: string }[]
-  >(() => {
-    let results: { title: string; url: string; content: string }[] | undefined =
-      undefined;
+  const searchResults = useMemo<SearchResult[]>(() => {
+    let results: SearchResult[] | undefined = undefined;
     try {
       results = toolCall.result ? parse(toolCall.result) : undefined;
     } catch {
       results = undefined;
     }
     if (Array.isArray(results)) {
-      results.forEach((result: { url: string; title: string }) => {
-        __pageCache.set(result.url, result.title);
+      results.forEach((result) => {
+        if (result.type === "page") {
+          __pageCache.set(result.url, result.title);
+        }
       });
     } else {
       results = [];
     }
+    console.info(results);
     return results;
   }, [toolCall.result]);
+  const pageResults = useMemo(
+    () => searchResults?.filter((result) => result.type === "page"),
+    [searchResults],
+  );
+  const imageResults = useMemo(
+    () => searchResults?.filter((result) => result.type === "image"),
+    [searchResults],
+  );
   return (
     <section>
       <div className="font-medium italic">
@@ -128,30 +148,48 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
           </span>
         </RainbowText>
       </div>
-      {searchResults && (
-        <div className="px-5">
+      <div className="px-5">
+        {pageResults && (
           <ul className="mt-2 flex flex-wrap gap-4">
-            {searchResults.map((searchResult, i) => (
-              <motion.li
-                key={`search-result-${i}`}
-                className="text-muted-foreground flex max-w-40 gap-2 rounded-md bg-slate-100 px-2 py-1 text-sm"
-                initial={{ opacity: 0, y: 10, scale: 0.66 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  duration: 0.2,
-                  delay: i * 0.1,
-                  ease: "easeOut",
-                }}
-              >
-                <FavIcon url={searchResult.url} title={searchResult.title} />
-                <a href={searchResult.url} target="_blank">
-                  {searchResult.title}
+            {pageResults
+              .filter((result) => result.type === "page")
+              .map((searchResult, i) => (
+                <motion.li
+                  key={`search-result-${i}`}
+                  className="text-muted-foreground flex max-w-40 gap-2 rounded-md bg-slate-100 px-2 py-1 text-sm"
+                  initial={{ opacity: 0, y: 10, scale: 0.66 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{
+                    duration: 0.2,
+                    delay: i * 0.1,
+                    ease: "easeOut",
+                  }}
+                >
+                  <FavIcon url={searchResult.url} title={searchResult.title} />
+                  <a href={searchResult.url} target="_blank">
+                    {searchResult.title}
+                  </a>
+                </motion.li>
+              ))}
+            {imageResults.map((searchResult, i) => (
+              <li key={`search-result-${i}`}>
+                <a
+                  className="flex flex-col gap-2 opacity-75 transition-opacity duration-300 hover:opacity-100"
+                  href={searchResult.image_url}
+                  target="_blank"
+                >
+                  <div
+                    className="h-40 w-40 max-w-full rounded-md bg-slate-100 bg-cover bg-center bg-no-repeat"
+                    style={{
+                      backgroundImage: `url(${searchResult.image_url})`,
+                    }}
+                  />
                 </a>
-              </motion.li>
+              </li>
             ))}
           </ul>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }

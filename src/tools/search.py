@@ -1,25 +1,31 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
+import json
 import logging
 import os
-from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_community.tools import DuckDuckGoSearchResults
-from langchain_community.tools import BraveSearch
+
+from langchain_community.tools import BraveSearch, DuckDuckGoSearchResults
 from langchain_community.tools.arxiv import ArxivQueryRun
 from langchain_community.utilities import ArxivAPIWrapper, BraveSearchWrapper
+
 from src.config import SEARCH_MAX_RESULTS
+from src.tools.tavily_search.tavily_search_results_with_images import (
+    TavilySearchResultsWithImages,
+)
+
 from .decorators import create_logged_tool
 
 logger = logging.getLogger(__name__)
 
 
-LoggedTavilySearch = create_logged_tool(TavilySearchResults)
+LoggedTavilySearch = create_logged_tool(TavilySearchResultsWithImages)
 tavily_search_tool = LoggedTavilySearch(
     name="web_search",
     max_results=SEARCH_MAX_RESULTS,
     include_raw_content=True,
     include_images=True,
+    include_image_descriptions=True,
 )
 
 LoggedDuckDuckGoSearch = create_logged_tool(DuckDuckGoSearchResults)
@@ -45,3 +51,7 @@ arxiv_search_tool = LoggedArxivSearch(
         load_all_available_meta=True,
     ),
 )
+
+if __name__ == "__main__":
+    results = tavily_search_tool.invoke("cute panda")
+    print(json.dumps(results, indent=2, ensure_ascii=False))

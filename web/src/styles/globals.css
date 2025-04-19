@@ -190,6 +190,12 @@ textarea {
     @apply list-decimal pl-4;
   }
 
+  img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
   table {
     @apply w-full;
     table-layout: fixed;
