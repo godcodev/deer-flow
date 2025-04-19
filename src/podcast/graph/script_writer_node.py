@@ -19,12 +19,12 @@ def script_writer_node(state: PodcastState):
     logger.info("Generating script for podcast...")
     model = get_llm_by_type(
         AGENT_LLM_MAP["podcast_script_writer"]
-    ).with_structured_output(Script)
+    ).with_structured_output(Script, method="json_mode")
     script = model.invoke(
         [
             SystemMessage(content=get_prompt_template("podcast_script_writer")),
             HumanMessage(content=state["input"]),
         ],
     )
-    logging.info(script)
+    print(script)
     return {"script": script, "audio_chunks": []}
