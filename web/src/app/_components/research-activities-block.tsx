@@ -159,8 +159,7 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
               [...Array(6)].map((_, i) => (
                 <li
                   key={`search-result-${i}`}
-                  className="flex w-40 gap-2 rounded-md text-sm"
-                  style={{ height: i >= 3 ? 160 : 108 }}
+                  className="flex h-40 w-40 gap-2 rounded-md text-sm"
                 >
                   <Skeleton className="h-full w-full rounded-md bg-gradient-to-tl from-slate-50 to-slate-200" />
                 </li>
