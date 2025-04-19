@@ -13,6 +13,7 @@ import { useMemo } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
+import { Skeleton } from "~/components/ui/skeleton";
 import type { ToolCallRuntime } from "~/core/messages";
 import { useMessage, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
@@ -108,6 +109,9 @@ type SearchResult =
       image_description: string;
     };
 function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
+  const searching = useMemo(() => {
+    return toolCall.result === undefined;
+  }, [toolCall.result]);
   const searchResults = useMemo<SearchResult[]>(() => {
     let results: SearchResult[] | undefined = undefined;
     try {
@@ -151,6 +155,16 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
       <div className="px-5">
         {pageResults && (
           <ul className="mt-2 flex flex-wrap gap-4">
+            {searching &&
+              [...Array(6)].map((_, i) => (
+                <li
+                  key={`search-result-${i}`}
+                  className="flex w-40 gap-2 rounded-md text-sm"
+                  style={{ height: i >= 3 ? 160 : 108 }}
+                >
+                  <Skeleton className="h-full w-full rounded-md bg-gradient-to-tl from-slate-50 to-slate-200" />
+                </li>
+              ))}
             {pageResults
               .filter((result) => result.type === "page")
               .map((searchResult, i) => (
