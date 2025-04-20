@@ -16,7 +16,7 @@ export function Welcome({ className }: { className?: string }) {
       <h3 className="mb-2 text-center text-3xl font-medium">
         👋 Hello, there!
       </h3>
-      <div className="px-4 text-center text-lg text-gray-400">
+      <div className="text-muted-foreground px-4 text-center text-lg">
         Welcome to{" "}
         <a
           href="https://github.com/bytedance/deer-flow"
