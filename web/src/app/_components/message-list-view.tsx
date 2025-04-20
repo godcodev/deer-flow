@@ -81,7 +81,7 @@ export function MessageListView({
         "flex h-full w-full flex-col overflow-hidden pt-4",
         className,
       )}
-      scrollShadowColor="#f7f5f3"
+      scrollShadowColor="var(--app-background)"
     >
       <ul className="flex flex-col">
         {messageIds.map((messageId) => (
@@ -205,10 +205,10 @@ function MessageListItem({
     return (
       <div
         className={cn(
-          `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow-xs`,
+          `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow`,
           message.role === "user" &&
-            "text-primary-foreground rounded-ee-none bg-[#007aff]",
-          message.role === "assistant" && "rounded-es-none bg-white",
+            "text-primary-foreground bg-brand rounded-ee-none",
+          message.role === "assistant" && "bg-card rounded-es-none",
           className,
         )}
       >
@@ -249,7 +249,7 @@ function MessageListItem({
       }
     }, [openResearchId, researchId]);
     return (
-      <Card className={cn("w-full bg-white", className)}>
+      <Card className={cn("w-full", className)}>
         <CardHeader>
           <CardTitle>
             <RainbowText animated={state !== "Report generated"}>
@@ -259,7 +259,7 @@ function MessageListItem({
         </CardHeader>
         <CardFooter>
           <div className="flex w-full">
-            <RollingText className="flex-grow text-sm opacity-50">
+            <RollingText className="text-muted-foreground flex-grow text-sm">
               {state}
             </RollingText>
             <Button onClick={handleOpen}>
@@ -302,7 +302,7 @@ function PlanCard({
     );
   }, []);
   return (
-    <Card className={cn("w-full bg-white", className)}>
+    <Card className={cn("w-full", className)}>
       <CardHeader>
         <CardTitle>
           <h1 className="text-xl font-medium">
@@ -336,7 +336,7 @@ function PlanCard({
       <CardFooter className="flex justify-end">
         {!message.isStreaming && interruptMessage?.options?.length && (
           <motion.div
-            className="flex gap-2"
+            className="flex gap-4"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
@@ -383,7 +383,7 @@ function PodcastCard({
   }, [message.isStreaming]);
   const [isPlaying, setIsPlaying] = useState(false);
   return (
-    <Card className={cn("w-[508px] bg-white", className)}>
+    <Card className={cn("w-[508px]", className)}>
       <CardHeader>
         <div className="text-muted-foreground flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">

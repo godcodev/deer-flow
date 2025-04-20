@@ -161,7 +161,10 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
                   key={`search-result-${i}`}
                   className="flex h-40 w-40 gap-2 rounded-md text-sm"
                 >
-                  <Skeleton className="h-full w-full rounded-md bg-gradient-to-tl from-slate-50 to-slate-200" />
+                  <Skeleton
+                    className="to-accent h-full w-full rounded-md bg-gradient-to-tl from-slate-300"
+                    style={{ animationDelay: `${i * 0.2}s` }}
+                  />
                 </li>
               ))}
             {pageResults
@@ -169,7 +172,7 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
               .map((searchResult, i) => (
                 <motion.li
                   key={`search-result-${i}`}
-                  className="text-muted-foreground flex max-w-40 gap-2 rounded-md bg-slate-100 px-2 py-1 text-sm"
+                  className="text-muted-foreground bg-accent flex max-w-40 gap-2 rounded-md px-2 py-1 text-sm"
                   initial={{ opacity: 0, y: 10, scale: 0.66 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{
@@ -178,7 +181,11 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
                     ease: "easeOut",
                   }}
                 >
-                  <FavIcon url={searchResult.url} title={searchResult.title} />
+                  <FavIcon
+                    className="mt-1"
+                    url={searchResult.url}
+                    title={searchResult.title}
+                  />
                   <a href={searchResult.url} target="_blank">
                     {searchResult.title}
                   </a>
@@ -203,7 +210,7 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
                   <Image
                     src={searchResult.image_url}
                     alt={searchResult.image_description}
-                    className="h-40 w-40 max-w-full rounded-md bg-slate-100 bg-cover bg-center bg-no-repeat"
+                    className="bg-accent h-40 w-40 max-w-full rounded-md bg-cover bg-center bg-no-repeat"
                     imageClassName="hover:scale-110"
                     imageTransition
                   />
@@ -237,7 +244,7 @@ function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
       <div className="px-5">
         <ul className="mt-2 flex flex-wrap gap-4">
           <motion.li
-            className="text-muted-foreground flex h-40 w-40 gap-2 rounded-md bg-slate-100 px-2 py-1 text-sm"
+            className="text-muted-foreground bg-accent flex h-40 w-40 gap-2 rounded-md px-2 py-1 text-sm"
             initial={{ opacity: 0, y: 10, scale: 0.66 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
@@ -245,7 +252,7 @@ function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
               ease: "easeOut",
             }}
           >
-            <FavIcon url={url} title={title} />
+            <FavIcon className="mt-1" url={url} title={title} />
             <a href={url} target="_blank">
               {title}
             </a>
@@ -269,7 +276,7 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
         </RainbowText>
       </div>
       <div className="px-5">
-        <div className="mt-2 rounded-md bg-slate-50 p-2 text-sm">
+        <div className="bg-accent mt-2 rounded-md p-2 text-sm">
           <SyntaxHighlighter language="python" style={docco}>
             {code}
           </SyntaxHighlighter>

@@ -79,7 +79,10 @@ export function ResearchBlock({
             </TabsList>
           </div>
           <TabsContent className="h-full min-h-0 flex-grow px-8" value="report">
-            <ScrollContainer className="px-5pb-20 h-full">
+            <ScrollContainer
+              className="px-5pb-20 h-full"
+              scrollShadowColor="var(--card)"
+            >
               {reportId && researchId && (
                 <ResearchReportBlock
                   className="mt-4"
@@ -93,7 +96,7 @@ export function ResearchBlock({
             className="h-full min-h-0 flex-grow px-8"
             value="activities"
           >
-            <ScrollContainer className="h-full">
+            <ScrollContainer className="h-full" scrollShadowColor="var(--card)">
               {researchId && (
                 <ResearchActivitiesBlock
                   className="mt-4"

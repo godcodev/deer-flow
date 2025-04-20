@@ -10,7 +10,7 @@ export function ScrollContainer({
   className,
   children,
   scrollShadow = true,
-  scrollShadowColor = "white",
+  scrollShadowColor = "var(--background)",
 }: {
   className?: string;
   children: React.ReactNode;

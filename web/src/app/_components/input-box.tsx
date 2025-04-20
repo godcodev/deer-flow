@@ -93,23 +93,23 @@ export function InputBox({
   );
 
   return (
-    <div className={cn("relative rounded-[24px] border bg-white", className)}>
+    <div className={cn("bg-card relative rounded-[24px] border", className)}>
       <div className="w-full">
         <AnimatePresence>
           {feedback && (
             <motion.div
               ref={feedbackRef}
-              className="absolute top-0 left-0 mt-3 ml-2 flex items-center justify-center gap-1 rounded-2xl border border-[#007aff] bg-white px-2 py-0.5"
+              className="bg-background border-brand absolute top-0 left-0 mt-3 ml-2 flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
             >
-              <div className="flex h-full w-full items-center justify-center text-sm text-[#007aff] opacity-90">
+              <div className="text-brand flex h-full w-full items-center justify-center text-sm opacity-90">
                 {feedback.option.text}
               </div>
               <CloseOutlined
-                className="cursor-pointer text-[9px]"
+                className="cursor-pointer text-[9px] opacity-60"
                 onClick={onRemoveFeedback}
               />
             </motion.div>
@@ -144,15 +144,12 @@ export function InputBox({
               <Button
                 variant="outline"
                 size="icon"
-                className={cn(
-                  "h-10 w-10 rounded-full",
-                  responding ? "bg-button-hover" : "bg-button",
-                )}
+                className={cn("h-10 w-10 rounded-full")}
                 onClick={handleSendMessage}
               >
                 {responding ? (
                   <div className="flex h-10 w-10 items-center justify-center">
-                    <div className="h-4 w-4 rounded-sm bg-red-300" />
+                    <div className="bg-foreground h-4 w-4 rounded-sm opacity-70" />
                   </div>
                 ) : (
                   <ArrowUpOutlined />

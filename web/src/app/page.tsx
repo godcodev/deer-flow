@@ -14,6 +14,7 @@ import { cn } from "~/lib/utils";
 import { Logo } from "./_components/logo";
 import { MessagesBlock } from "./_components/messages-block";
 import { ResearchBlock } from "./_components/research-block";
+import { ThemeToggle } from "./_components/theme-toggle";
 
 export default function HomePage() {
   const openResearchId = useStore((state) => state.openResearchId);
@@ -25,16 +26,14 @@ export default function HomePage() {
     <div className="flex h-full w-full justify-center">
       <header className="fixed top-0 left-0 flex h-12 w-full w-screen items-center justify-between px-4">
         <Logo />
-        <Button
-          className="opacity-70 transition-opacity duration-300 hover:opacity-100"
-          variant="ghost"
-          size="icon"
-          asChild
-        >
-          <Link href="https://github.com/bytedance/deer-flow" target="_blank">
-            <GithubOutlined />
-          </Link>
-        </Button>
+        <div className="flex items-center">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="https://github.com/bytedance/deer-flow" target="_blank">
+              <GithubOutlined />
+            </Link>
+          </Button>
+          <ThemeToggle />
+        </div>
       </header>
       <div
         className={cn(

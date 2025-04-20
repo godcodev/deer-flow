@@ -6,6 +6,7 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
+import { ThemeProvider } from "~/components/theme-provider";
 import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
@@ -24,9 +25,15 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable}`}>
-      <body className="h-screen w-screen overflow-hidden overscroll-none bg-[#f7f5f3]">
-        <TooltipProvider>{children}</TooltipProvider>
+    <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
+      <body className="bg-app h-screen w-screen overflow-hidden overscroll-none">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+        >
+          <TooltipProvider>{children}</TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -64,9 +64,9 @@ async function* chatStreamMock(
     const [, event] = eventRaw.split("event: ", 2) as [string, string];
     const [, data] = dataRaw.split("data: ", 2) as [string, string];
     if (event === "message_chunk") {
-      await sleep(0);
+      await sleep(100);
     } else if (event === "tool_call_result") {
-      await sleep(0);
+      await sleep(4000);
     }
     try {
       yield {
