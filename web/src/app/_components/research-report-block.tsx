@@ -47,6 +47,7 @@ export function ResearchReportBlock({
               <Button
                 variant="outline"
                 size="icon"
+                disabled={isGenerated}
                 onClick={() => {
                   void handleListenToReport();
                 }}
