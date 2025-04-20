@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Check, Copy, Headphones, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { openResearch, useStore } from "~/core/store";
+import { listenToPodcast, openResearch, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
 import { ResearchActivitiesBlock } from "./research-activities-block";
@@ -29,16 +29,66 @@ export function ResearchBlock({
   const hasReport = useStore((state) =>
     researchId ? state.researchReportIds.has(researchId) : false,
   );
+  const reportStreaming = useStore((state) =>
+    reportId ? (state.messages.get(reportId)?.isStreaming ?? false) : false,
+  );
   useEffect(() => {
     if (hasReport) {
       setActiveTab("report");
     }
   }, [hasReport]);
 
+  const handleGeneratePodcast = useCallback(async () => {
+    if (!researchId) {
+      return;
+    }
+    await listenToPodcast(researchId);
+  }, [researchId]);
+
+  const [copied, setCopied] = useState(false);
+  const handleCopy = useCallback(() => {
+    if (!reportId) {
+      return;
+    }
+    const report = useStore.getState().messages.get(reportId);
+    if (!report) {
+      return;
+    }
+    void navigator.clipboard.writeText(report.content);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  }, [reportId]);
+
   return (
     <div className={cn("h-full w-full", className)}>
       <Card className={cn("relative h-full w-full pt-4", className)}>
-        <div className="absolute right-4 flex h-9 items-center">
+        <div className="absolute right-4 flex h-9 items-center justify-center">
+          {hasReport && !reportStreaming && (
+            <>
+              <Tooltip title="Generate podcast">
+                <Button
+                  className="text-gray-400"
+                  size="icon"
+                  variant="ghost"
+                  onClick={handleGeneratePodcast}
+                >
+                  <Headphones />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Copy">
+                <Button
+                  className="text-gray-400"
+                  size="icon"
+                  variant="ghost"
+                  onClick={handleCopy}
+                >
+                  {copied ? <Check /> : <Copy />}
+                </Button>
+              </Tooltip>
+            </>
+          )}
           <Tooltip title="Close">
             <Button
               className="text-gray-400"
