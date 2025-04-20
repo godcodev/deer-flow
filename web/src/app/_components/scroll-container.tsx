@@ -26,8 +26,8 @@ export function ScrollContainer({
         <>
           <div
             className={cn(
-              "absolute top-[-1px] right-0 left-0 z-10 h-10 bg-gradient-to-b",
-              `from-[var(--scroll-shadow-color)] to-transparent`,
+              "absolute top-0 right-0 left-0 z-10 h-10 bg-gradient-to-t",
+              `from-transparent to-[var(--scroll-shadow-color)]`,
             )}
             style={
               {
