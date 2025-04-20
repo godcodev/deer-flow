@@ -43,7 +43,7 @@ export default function HomePage() {
       </header>
       <div
         className={cn(
-          "flex h-full w-full justify-center px-4 pt-12",
+          "flex h-full w-full justify-center px-4 pt-12 pb-4",
           doubleColumnMode && "gap-8",
         )}
       >
