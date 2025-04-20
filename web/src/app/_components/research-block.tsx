@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { CloseOutlined } from "@ant-design/icons";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "~/components/ui/button";
@@ -48,7 +48,7 @@ export function ResearchBlock({
                 openResearch(null);
               }}
             >
-              <CloseOutlined />
+              <X />
             </Button>
           </Tooltip>
         </div>

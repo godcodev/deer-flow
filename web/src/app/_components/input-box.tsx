@@ -1,8 +1,8 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { ArrowUpOutlined, CloseOutlined } from "@ant-design/icons";
 import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUp, X } from "lucide-react";
 import {
   type KeyboardEvent,
   useCallback,
@@ -105,8 +105,9 @@ export function InputBox({
               <div className="text-brand flex h-full w-full items-center justify-center text-sm opacity-90">
                 {feedback.option.text}
               </div>
-              <CloseOutlined
-                className="cursor-pointer text-[9px] opacity-60"
+              <X
+                className="cursor-pointer opacity-60"
+                size={16}
                 onClick={onRemoveFeedback}
               />
             </motion.div>
@@ -148,7 +149,7 @@ export function InputBox({
                   <div className="bg-foreground h-4 w-4 rounded-sm opacity-70" />
                 </div>
               ) : (
-                <ArrowUpOutlined />
+                <ArrowUp />
               )}
             </Button>
           </Tooltip>

@@ -1,14 +1,11 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import {
-  BookOutlined,
-  PythonOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { PythonOutlined } from "@ant-design/icons";
 import { parse } from "best-effort-json-parser";
 import { motion } from "framer-motion";
 import { LRUCache } from "lru-cache";
+import { BookOpenText, Search } from "lucide-react";
 import { useMemo } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -139,20 +136,20 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
     [searchResults],
   );
   return (
-    <section className="mt-4">
+    <section className="mt-4 pl-4">
       <div className="font-medium italic">
         <RainbowText
           className="flex items-center"
           animated={searchResults === undefined}
         >
-          <SearchOutlined className={"mr-2"} />
+          <Search className={"mr-2"} />
           <span>Searching for&nbsp;</span>
           <span className="max-w-[500px] overflow-hidden text-ellipsis whitespace-nowrap">
             {(toolCall.args as { query: string }).query}
           </span>
         </RainbowText>
       </div>
-      <div className="px-5">
+      <div className="pr-4">
         {pageResults && (
           <ul className="mt-2 flex flex-wrap gap-4">
             {searching &&
@@ -231,34 +228,32 @@ function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   );
   const title = useMemo(() => __pageCache.get(url), [url]);
   return (
-    <section className="mt-4">
+    <section className="mt-4 pl-4">
       <div className="font-medium italic">
         <RainbowText
           className="flex items-center"
           animated={toolCall.result === undefined}
         >
-          <BookOutlined className={"mr-2"} />
+          <BookOpenText className={"mr-2"} />
           <span>Reading</span>
         </RainbowText>
       </div>
-      <div className="px-5">
-        <ul className="mt-2 flex flex-wrap gap-4">
-          <motion.li
-            className="text-muted-foreground bg-accent flex h-40 w-40 gap-2 rounded-md px-2 py-1 text-sm"
-            initial={{ opacity: 0, y: 10, scale: 0.66 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{
-              duration: 0.2,
-              ease: "easeOut",
-            }}
-          >
-            <FavIcon className="mt-1" url={url} title={title} />
-            <a href={url} target="_blank">
-              {title}
-            </a>
-          </motion.li>
-        </ul>
-      </div>
+      <ul className="mt-2 flex flex-wrap gap-4">
+        <motion.li
+          className="text-muted-foreground bg-accent flex h-40 w-40 gap-2 rounded-md px-2 py-1 text-sm"
+          initial={{ opacity: 0, y: 10, scale: 0.66 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            duration: 0.2,
+            ease: "easeOut",
+          }}
+        >
+          <FavIcon className="mt-1" url={url} title={title} />
+          <a href={url} target="_blank">
+            {title}
+          </a>
+        </motion.li>
+      </ul>
     </section>
   );
 }
@@ -268,7 +263,7 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
     return (toolCall.args as { code: string }).code;
   }, [toolCall.args]);
   return (
-    <section>
+    <section className="mt-4 pl-4">
       <div className="font-medium italic">
         <PythonOutlined className={"mr-2"} />
         <RainbowText animated={toolCall.result === undefined}>

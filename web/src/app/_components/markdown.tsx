@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
+import { Check, Copy } from "lucide-react";
 import { useMemo, useState } from "react";
 import ReactMarkdown, {
   type Options as ReactMarkdownOptions,
@@ -91,9 +91,9 @@ function CopyButton({ content }: { content: string }) {
         }}
       >
         {copied ? (
-          <CheckOutlined className="h-4 w-4" />
+          <Check className="h-4 w-4" />
         ) : (
-          <CopyOutlined className="h-4 w-4" />
+          <Copy className="h-4 w-4" />
         )}{" "}
       </Button>
     </Tooltip>

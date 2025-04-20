@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { SoundOutlined } from "@ant-design/icons";
+import { Podcast } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
 import { Button } from "~/components/ui/button";
@@ -51,7 +51,7 @@ export function ResearchReportBlock({
                 void handleListenToReport();
               }}
             >
-              <SoundOutlined />
+              <Podcast />
             </Button>
           </Tooltip>
         )}
