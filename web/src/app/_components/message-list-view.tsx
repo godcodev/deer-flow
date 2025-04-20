@@ -4,7 +4,7 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { parse } from "best-effort-json-parser";
 import { motion } from "framer-motion";
-import { Download, Podcast } from "lucide-react";
+import { Download, Headphones } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 
 import { Button } from "~/components/ui/button";
@@ -380,7 +380,7 @@ function PodcastCard({
       <CardHeader>
         <div className="text-muted-foreground flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">
-            {isGenerating ? <LoadingOutlined /> : <Podcast />}
+            {isGenerating ? <LoadingOutlined /> : <Headphones size={16} />}
             <RainbowText animated={isGenerating}>
               {isGenerating
                 ? "Generating podcast..."
@@ -397,7 +397,7 @@ function PodcastCard({
                     href={audioUrl}
                     download={`${(title ?? "podcast").replaceAll(" ", "-")}.mp3`}
                   >
-                    <Download />
+                    <Download size={16} />
                   </a>
                 </Button>
               </Tooltip>
