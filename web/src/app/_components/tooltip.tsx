@@ -14,7 +14,7 @@ export function Tooltip({
 }: {
   className?: string;
   children: React.ReactNode;
-  title: React.ReactNode;
+  title?: React.ReactNode;
 }) {
   return (
     <ShadcnTooltip>
