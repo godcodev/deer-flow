@@ -162,7 +162,7 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
                   className="flex h-40 w-40 gap-2 rounded-md text-sm"
                 >
                   <Skeleton
-                    className="to-accent h-full w-full rounded-md bg-gradient-to-tl from-slate-300"
+                    className="to-accent h-full w-full rounded-md bg-gradient-to-tl from-slate-400"
                     style={{ animationDelay: `${i * 0.2}s` }}
                   />
                 </li>
