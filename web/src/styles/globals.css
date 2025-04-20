@@ -61,7 +61,7 @@
 
 :root {
   --radius: 0.625rem;
-  --app-background: #f7f5f3;
+  --app-background: #eee7dc;
   --background: oklch(1 0 0);
   --foreground: rgba(0, 0, 0, 0.72);
   --card: oklch(1 0 0);
