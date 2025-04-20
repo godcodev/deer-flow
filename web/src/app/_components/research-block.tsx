@@ -7,17 +7,13 @@ import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import { openResearch, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
 import { ResearchActivitiesBlock } from "./research-activities-block";
 import { ResearchReportBlock } from "./research-report-block";
 import { ScrollContainer } from "./scroll-container";
+import { Tooltip } from "./tooltip";
 
 export function ResearchBlock({
   className,
@@ -43,20 +39,17 @@ export function ResearchBlock({
     <div className={cn("h-full w-full", className)}>
       <Card className={cn("relative h-full w-full pt-4", className)}>
         <div className="absolute right-4 flex h-9 items-center">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                className="text-gray-400"
-                size="sm"
-                variant="ghost"
-                onClick={() => {
-                  openResearch(null);
-                }}
-              >
-                <CloseOutlined />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Close</TooltipContent>
+          <Tooltip title="Close">
+            <Button
+              className="text-gray-400"
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                openResearch(null);
+              }}
+            >
+              <CloseOutlined />
+            </Button>
           </Tooltip>
         </div>
         <Tabs

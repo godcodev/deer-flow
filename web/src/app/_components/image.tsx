@@ -1,11 +1,11 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { memo, useCallback, useEffect, useState } from "react";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
+
+import { Tooltip } from "./tooltip";
 
 function Image({
   className,
@@ -47,23 +47,18 @@ function Image({
       {isError ? (
         fallback
       ) : (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <img
-              className={cn(
-                "size-full object-cover",
-                imageTransition && "transition-all duration-200 ease-out",
-                imageClassName,
-              )}
-              src={src}
-              alt={alt}
-              onLoad={handleLoad}
-              onError={handleError}
-            />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p className="max-w-64 text-sm">{alt ?? "No caption"}</p>
-          </TooltipContent>
+        <Tooltip title={alt ?? "No caption"}>
+          <img
+            className={cn(
+              "size-full object-cover",
+              imageTransition && "transition-all duration-200 ease-out",
+              imageClassName,
+            )}
+            src={src}
+            alt={alt}
+            onLoad={handleLoad}
+            onError={handleError}
+          />
         </Tooltip>
       )}
     </span>

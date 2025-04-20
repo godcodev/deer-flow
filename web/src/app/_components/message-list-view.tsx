@@ -18,11 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import type { Message, Option } from "~/core/messages";
 import {
   openResearch,
@@ -38,6 +33,7 @@ import { Markdown } from "./markdown";
 import { RainbowText } from "./rainbow-text";
 import { RollingText } from "./rolling-text";
 import { ScrollContainer } from "./scroll-container";
+import { Tooltip } from "./tooltip";
 
 export function MessageListView({
   className,
@@ -398,18 +394,15 @@ function PodcastCard({
           </div>
           {!isGenerating && (
             <div className="flex">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" asChild>
-                    <a
-                      href={audioUrl}
-                      download={`${(title ?? "podcast").replaceAll(" ", "-")}.mp3`}
-                    >
-                      <DownloadOutlined />
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Download podcast</TooltipContent>
+              <Tooltip title="Download podcast">
+                <Button variant="ghost" size="icon" asChild>
+                  <a
+                    href={audioUrl}
+                    download={`${(title ?? "podcast").replaceAll(" ", "-")}.mp3`}
+                  >
+                    <DownloadOutlined />
+                  </a>
+                </Button>
               </Tooltip>
             </div>
           )}

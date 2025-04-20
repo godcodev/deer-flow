@@ -12,13 +12,10 @@ import {
 } from "react";
 
 import { Button } from "~/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import type { Option } from "~/core/messages";
 import { cn } from "~/lib/utils";
+
+import { Tooltip } from "./tooltip";
 
 export function InputBox({
   className,
@@ -139,26 +136,21 @@ export function InputBox({
       <div className="flex items-center px-4 py-2">
         <div className="flex grow"></div>
         <div className="flex shrink-0 items-center gap-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className={cn("h-10 w-10 rounded-full")}
-                onClick={handleSendMessage}
-              >
-                {responding ? (
-                  <div className="flex h-10 w-10 items-center justify-center">
-                    <div className="bg-foreground h-4 w-4 rounded-sm opacity-70" />
-                  </div>
-                ) : (
-                  <ArrowUpOutlined />
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{responding ? "Stop" : "Send"}</p>
-            </TooltipContent>
+          <Tooltip title={responding ? "Stop" : "Send"}>
+            <Button
+              variant="outline"
+              size="icon"
+              className={cn("h-10 w-10 rounded-full")}
+              onClick={handleSendMessage}
+            >
+              {responding ? (
+                <div className="flex h-10 w-10 items-center justify-center">
+                  <div className="bg-foreground h-4 w-4 rounded-sm opacity-70" />
+                </div>
+              ) : (
+                <ArrowUpOutlined />
+              )}
+            </Button>
           </Tooltip>
         </div>
       </div>

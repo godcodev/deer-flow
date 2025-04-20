@@ -5,16 +5,12 @@ import { SoundOutlined } from "@ant-design/icons";
 import { useCallback, useRef, useState } from "react";
 
 import { Button } from "~/components/ui/button";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "~/components/ui/tooltip";
 import { listenToPodcast, useMessage } from "~/core/store";
 import { cn } from "~/lib/utils";
 
 import { LoadingAnimation } from "./loading-animation";
 import { Markdown } from "./markdown";
+import { Tooltip } from "./tooltip";
 
 export function ResearchReportBlock({
   className,
@@ -42,24 +38,21 @@ export function ResearchReportBlock({
     >
       <div className="absolute top-2 right-6">
         {message?.content && !message.isStreaming && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                disabled={isGenerated}
-                onClick={() => {
-                  void handleListenToReport();
-                }}
-              >
-                <SoundOutlined />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>
-                {isGenerated ? "The podcast is generated" : "Generate podcast"}
-              </p>
-            </TooltipContent>
+          <Tooltip
+            title={
+              isGenerated ? "The podcast is generated" : "Generate podcast"
+            }
+          >
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={isGenerated}
+              onClick={() => {
+                void handleListenToReport();
+              }}
+            >
+              <SoundOutlined />
+            </Button>
           </Tooltip>
         )}
       </div>
