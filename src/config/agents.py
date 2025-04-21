@@ -14,4 +14,5 @@ AGENT_LLM_MAP: dict[str, LLMType] = {
     "coder": "basic",
     "reporter": "basic",
     "podcast_script_writer": "basic",
+    "ppt_composer": "basic",
 }

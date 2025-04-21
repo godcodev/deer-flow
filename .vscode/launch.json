@@ -45,5 +45,16 @@
                 "PYTHONPATH": "${workspaceFolder}"
             }
         },
+        {
+            "name": "Python: graph.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/ppt/graph/builder.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
     ]
 }

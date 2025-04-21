@@ -29,6 +29,10 @@ cp .env.example .env
 # Gemini: https://ai.google.dev/gemini-api/docs/openai
 cp conf.yaml.example conf.yaml
 
+# Install marp for ppt generation
+# https://github.com/marp-team/marp-cli?tab=readme-ov-file#use-package-manager
+brew install marp-cli
+
 # Run the project
 uv run main.py
 ```

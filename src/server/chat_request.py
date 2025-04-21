@@ -64,3 +64,7 @@ class TTSRequest(BaseModel):
 
 class GeneratePodcastRequest(BaseModel):
     content: str = Field(..., description="The content of the podcast")
+
+
+class GeneratePPTRequest(BaseModel):
+    content: str = Field(..., description="The content of the ppt")
