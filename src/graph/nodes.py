@@ -1,22 +1,23 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
-import logging
 import json
-from typing import Literal, Annotated
+import logging
+from typing import Annotated, Literal
 
-from langchain_core.messages import HumanMessage, AIMessage
-from langchain_core.tools import tool
+from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.runnables import RunnableConfig
+from langchain_core.tools import tool
 from langgraph.types import Command, interrupt
 
-from src.llms.llm import get_llm_by_type
+from src.agents.agents import coder_agent, research_agent
 from src.config.agents import AGENT_LLM_MAP
 from src.config.configuration import Configuration
-from src.prompts.template import apply_prompt_template
+from src.llms.llm import get_llm_by_type
 from src.prompts.planner_model import Plan, StepType
+from src.prompts.template import apply_prompt_template
 from src.utils.json_utils import repair_json_output
-from src.agents.agents import research_agent, coder_agent
+
 from .types import State
 
 logger = logging.getLogger(__name__)
@@ -117,6 +118,7 @@ def human_feedback_node(
         update={
             "current_plan": Plan.model_validate(new_plan),
             "plan_iterations": plan_iterations,
+            "locale": new_plan["locale"],
         },
         goto=goto,
     )
@@ -209,7 +211,7 @@ def _execute_agent_step(
     agent_input = {
         "messages": [
             HumanMessage(
-                content=f"#Task\n\n##title\n\n{step.title}\n\n##description\n\n{step.description}"
+                content=f"#Task\n\n##title\n\n{step.title}\n\n##description\n\n{step.description}\n\n##locale\n\n{state.get('locale', 'en-US')}"
             )
         ]
     }

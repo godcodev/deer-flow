@@ -1,9 +1,10 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
 
 
 class StepType(str, Enum):
@@ -24,6 +25,9 @@ class Step(BaseModel):
 
 
 class Plan(BaseModel):
+    locale: str = Field(
+        ..., description="e.g. 'en-US' or 'zh-CN', based on the user's language"
+    )
     has_enough_context: bool
     thought: str
     title: str

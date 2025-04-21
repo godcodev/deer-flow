@@ -33,7 +33,7 @@ You are dedicated to conducting thorough investigations and providing comprehens
 
       - [Source Title](https://example.com/page2)
       ```
-- Always use the same language as the initial question.
+- Always output in the locale of **{{ locale }}**.
 - DO NOT include inline citations in the text. Instead, track all sources and list them in the References section at the end using link reference format.
 
 # Notes
@@ -49,4 +49,4 @@ You are dedicated to conducting thorough investigations and providing comprehens
 - When presenting information from multiple sources, clearly indicate which source each piece of information comes from.
 - Include images using `![Image Description](image_url)` in a separate section.
 - The included images should **only** be from the information gathered **from the search results or the crawled content**. **Never** include images that are not from the search results or the crawled content.
-- Always use the same language as the initial question.
+- Always use the locale of **{{ locale }}** for the output.
