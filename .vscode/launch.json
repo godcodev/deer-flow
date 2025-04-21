@@ -20,7 +20,7 @@
                 "PYTHONPATH": "${workspaceFolder}"
             },
             "args": [
-                "--debug", "--max_plan_iterations", "1", "--max_step_num", "3"
+                "--debug", "--max_plan_iterations", "1", "--max_step_num", "1"
             ]
         },
         {

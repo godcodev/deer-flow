@@ -199,6 +199,7 @@ def _execute_agent_step(
 ) -> Command[Literal["research_team"]]:
     """Helper function to execute a step using the specified agent."""
     current_plan = state.get("current_plan")
+    observations = state.get("observations", [])
 
     # Find the first unexecuted step
     for step in current_plan.steps:
@@ -244,7 +245,7 @@ def _execute_agent_step(
                     name=agent_name,
                 )
             ],
-            "observations": [response_content],
+            "observations": observations + [response_content],
         },
         goto="research_team",
     )

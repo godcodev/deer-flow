@@ -72,7 +72,14 @@ async def _astream_workflow_generator(
     auto_accepted_plan: bool,
     interrupt_feedback: str,
 ):
-    input_ = {"messages": messages, "auto_accepted_plan": auto_accepted_plan}
+    input_ = {
+        "messages": messages,
+        "plan_iterations": 0,
+        "final_report": "",
+        "current_plan": None,
+        "observations": [],
+        "auto_accepted_plan": auto_accepted_plan,
+    }
     if not auto_accepted_plan and interrupt_feedback:
         resume_msg = f"[{interrupt_feedback}]"
         # add the last message to the resume message

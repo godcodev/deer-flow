@@ -14,7 +14,7 @@ class State(MessagesState):
 
     # Runtime Variables
     locale: str = "en-US"
-    observations: Annotated[list[str], operator.add] = []
+    observations: list[str] = []
     plan_iterations: int = 0
     current_plan: Plan | str = None
     final_report: str = ""
