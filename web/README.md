@@ -30,10 +30,7 @@ pnpm dev
 
 By default, the web UI will be available at `http://localhost:3000`.
 
-This project uses a inverted proxy to access the API service.
-By default, the post request to `http://localhost:3000/api/chat/stream` will be proxied to `http://localhost:8000/api/chat/stream`.
-
-You can set the `NEXT_PUBLIC_API_URL` environment variable to change the default API service URL.
+You can set the `NEXT_PUBLIC_API_URL` environment variable if you're using a different host or location.
 
 ```ini
 # .env
