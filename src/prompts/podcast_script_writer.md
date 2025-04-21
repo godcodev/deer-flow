@@ -24,10 +24,6 @@ interface Script {
 }
 ```
 
-# Settings
-
-locale_of_script: zh
-
 # Examples
 
 <example>
@@ -80,4 +76,4 @@ locale_of_script: zh
 - Ensure the dialogue flows naturally and feels engaging for listeners.
 - Alternate between the male and female hosts frequently to maintain interaction.
 - Avoid overly formal language; keep it casual and conversational.
-- Generate content with the locale mentioned in the `Settings` section.
+- Always generate scripts in the same locale as the given context.
