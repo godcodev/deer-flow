@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 import { LoadingOutlined } from "@ant-design/icons";
-import { parse } from "best-effort-json-parser";
 import { motion } from "framer-motion";
 import { Download, Headphones } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
@@ -23,6 +22,7 @@ import {
   useResearchTitle,
   useStore,
 } from "~/core/store";
+import { parseJSON } from "~/core/utils";
 import { cn } from "~/lib/utils";
 
 import { LoadingAnimation } from "./loading-animation";
@@ -281,7 +281,7 @@ function PlanCard({
     thought?: string;
     steps?: { title?: string; description?: string }[];
   }>(() => {
-    return parse(message.content ?? "");
+    return parseJSON(message.content ?? "", {});
   }, [message.content]);
   const handleAccept = useCallback(async () => {
     await sendMessage(
@@ -326,7 +326,7 @@ function PlanCard({
       <CardFooter className="flex justify-end">
         {!message.isStreaming && interruptMessage?.options?.length && (
           <motion.div
-            className="flex gap-4"
+            className="flex gap-2"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
@@ -364,7 +364,7 @@ function PodcastCard({
   message: Message;
 }) {
   const data = useMemo(() => {
-    return parse(message.content ?? "");
+    return JSON.parse(message.content ?? "");
   }, [message.content]);
   const title = useMemo<string | undefined>(() => data?.title, [data]);
   const audioUrl = useMemo<string | undefined>(() => data?.audioUrl, [data]);

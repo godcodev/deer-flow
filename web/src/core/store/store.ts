@@ -1,7 +1,6 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { parse } from "best-effort-json-parser";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 
@@ -9,6 +8,7 @@ import { chatStream } from "../api";
 import { generatePodcast } from "../api/podcast";
 import type { Message } from "../messages";
 import { mergeMessage } from "../messages";
+import { parseJSON } from "../utils";
 
 const THREAD_ID = nanoid();
 
@@ -230,7 +230,7 @@ export async function listenToPodcast(researchId: string) {
   const reportMessageId = useStore.getState().researchReportIds.get(researchId);
   if (planMessageId && reportMessageId) {
     const planMessage = getMessage(planMessageId)!;
-    const title = (JSON.parse(planMessage.content) as { title: string }).title;
+    const title = parseJSON(planMessage.content, { title: "Untitled" }).title;
     const reportMessage = getMessage(reportMessageId);
     if (reportMessage?.content) {
       appendMessage({
@@ -269,7 +269,9 @@ export function useResearchTitle(researchId: string) {
   const planMessage = useMessage(
     useStore.getState().researchPlanIds.get(researchId),
   );
-  return planMessage ? parse(planMessage.content).title : undefined;
+  return planMessage
+    ? parseJSON(planMessage.content, { title: "" }).title
+    : undefined;
 }
 
 export function useMessage(messageId: string | null | undefined) {

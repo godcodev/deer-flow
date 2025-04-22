@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 import { PythonOutlined } from "@ant-design/icons";
-import { parse } from "best-effort-json-parser";
 import { motion } from "framer-motion";
 import { LRUCache } from "lru-cache";
 import { BookOpenText, Search } from "lucide-react";
@@ -13,6 +12,7 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { Skeleton } from "~/components/ui/skeleton";
 import type { ToolCallRuntime } from "~/core/messages";
 import { useMessage, useStore } from "~/core/store";
+import { parseJSON } from "~/core/utils";
 import { cn } from "~/lib/utils";
 
 import { FavIcon } from "./fav-icon";
@@ -112,7 +112,7 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   const searchResults = useMemo<SearchResult[]>(() => {
     let results: SearchResult[] | undefined = undefined;
     try {
-      results = toolCall.result ? parse(toolCall.result) : undefined;
+      results = toolCall.result ? parseJSON(toolCall.result, []) : undefined;
     } catch {
       results = undefined;
     }
