@@ -3,10 +3,10 @@
 
 from langgraph.graph import END, START, StateGraph
 
-from .audio_mixer_node import audio_mixer_node
-from .script_writer_node import script_writer_node
-from .state import PodcastState
-from .tts_node import tts_node
+from src.podcast.graph.audio_mixer_node import audio_mixer_node
+from src.podcast.graph.script_writer_node import script_writer_node
+from src.podcast.graph.state import PodcastState
+from src.podcast.graph.tts_node import tts_node
 
 
 def build_graph():
@@ -23,13 +23,14 @@ def build_graph():
     return builder.compile()
 
 
+workflow = build_graph()
+
 if __name__ == "__main__":
     from dotenv import load_dotenv
 
     load_dotenv()
 
     report_content = open("examples/nanjing_tangbao.md").read()
-    workflow = build_graph()
     final_state = workflow.invoke({"input": report_content})
     for line in final_state["script"].lines:
         print("<M>" if line.speaker == "male" else "<F>", line.text)

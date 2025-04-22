@@ -19,4 +19,5 @@ static/browser_history/*.gif
 conf.yaml
 
 .idea/
+.langgraph_api/
 

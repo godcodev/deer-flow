@@ -97,6 +97,58 @@ make lint
 make format
 ```
 
+### Debugging with LangGraph Studio
+
+DeerFlow uses LangGraph for its workflow architecture. You can use LangGraph Studio to debug and visualize the workflow in real-time.
+
+#### Running LangGraph Studio Locally
+
+DeerFlow includes a `langgraph.json` configuration file that defines the graph structure and dependencies for the LangGraph Studio. This file points to the workflow graphs defined in the project and automatically loads environment variables from the `.env` file.
+
+##### Mac
+
+```bash
+# Install uv package manager if you don't have it
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies and start the LangGraph server
+uvx --refresh --from "langgraph-cli[inmem]" --with-editable . --python 3.12 langgraph dev
+```
+
+##### Windows / Linux
+
+```bash
+# Install dependencies
+pip install -e .
+pip install -U "langgraph-cli[inmem]"
+
+# Start the LangGraph server
+langgraph dev
+```
+
+After starting the LangGraph server, you'll see several URLs in the terminal:
+- API: http://127.0.0.1:2024
+- Studio UI: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
+- API Docs: http://127.0.0.1:2024/docs
+
+Open the Studio UI link in your browser to access the debugging interface.
+
+#### Using LangGraph Studio
+
+In the Studio UI, you can:
+
+1. Visualize the workflow graph and see how components connect
+2. Trace execution in real-time to see how data flows through the system
+3. Inspect the state at each step of the workflow
+4. Debug issues by examining inputs and outputs of each component
+5. Provide feedback during the planning phase to refine research plans
+
+When you submit a research topic in the Studio UI, you'll be able to see the entire workflow execution, including:
+- The planning phase where the research plan is created
+- The feedback loop where you can modify the plan
+- The research and writing phases for each section
+- The final report generation
+
 ## Architecture
 
 DeerFlow implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.

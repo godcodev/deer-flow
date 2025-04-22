@@ -14,7 +14,7 @@ from fastapi.responses import Response, StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage
 from langgraph.types import Command
 
-from src.graph.builder import build_graph
+from src.graph.builder import build_graph_with_memory
 from src.podcast.graph.builder import build_graph as build_podcast_graph
 from src.ppt.graph.builder import build_graph as build_ppt_graph
 from src.server.chat_request import (
@@ -43,7 +43,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-graph = build_graph()
+graph = build_graph_with_memory()
 
 
 @app.post("/api/chat/stream")

@@ -20,11 +20,12 @@ def build_graph():
     return builder.compile()
 
 
+workflow = build_graph()
+
 if __name__ == "__main__":
     from dotenv import load_dotenv
 
     load_dotenv()
 
     report_content = open("examples/nanjing_tangbao.md").read()
-    workflow = build_graph()
     final_state = workflow.invoke({"input": report_content})
