@@ -228,6 +228,10 @@ textarea {
     @apply py-0.5;
     @apply border;
   }
+
+  blockquote {
+    @apply border-muted-foreground text-muted-foreground border-l-2 pl-2;
+  }
 }
 
 @layer base {
