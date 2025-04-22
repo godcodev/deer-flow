@@ -16,7 +16,7 @@ def tts_node(state: PodcastState):
     tts_client = _create_tts_client()
     for line in state["script"].lines:
         tts_client.voice_type = (
-            "BV002_streaming" if line.speaker == "male" else "BV001_streaming"
+            "BV033_streaming" if line.speaker == "male" else "BV034_streaming"
         )
         result = tts_client.text_to_speech(line.text, speed_ratio=1.05)
         if result["success"]:
