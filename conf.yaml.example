@@ -1,15 +1,15 @@
 # LLM Config
 REASONING_MODEL:
-  model: "gemini-2.0-flash"
+  model: "doubao-1-5-thinking-pro-250415"
   api_key: xxxx
-  base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+  base_url: https://ark.cn-beijing.volces.com/api/v3
 
 BASIC_MODEL:
-  model: "gemini-2.0-flash"
+  model: "doubao-1-5-pro-32k-250115"
   api_key: xxxx
-  base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+  base_url: https://ark.cn-beijing.volces.com/api/v3
 
 VISION_MODEL:
-  model: "gemini-2.0-flash"
+  model: "doubao-1.5-vision-pro-250328"
   api_key: xxxx
-  base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+  base_url: https://ark.cn-beijing.volces.com/api/v3

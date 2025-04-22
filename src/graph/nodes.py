@@ -42,7 +42,8 @@ def planner_node(
     messages = apply_prompt_template("planner", state, configurable)
     if AGENT_LLM_MAP["planner"] == "basic":
         llm = get_llm_by_type(AGENT_LLM_MAP["planner"]).with_structured_output(
-            Plan, method="json_mode"
+            Plan,
+            method="json_mode",
         )
     else:
         llm = get_llm_by_type(AGENT_LLM_MAP["planner"])
@@ -147,9 +148,17 @@ def coordinator_node(state: State) -> Command[Literal["planner", "__end__"]]:
 def reporter_node(state: State):
     """Reporter node that write a final report."""
     logger.info("Reporter write final report")
-    messages = apply_prompt_template("reporter", state)
+    current_plan = state.get("current_plan")
+    input_ = {
+        "messages": [
+            HumanMessage(
+                f"# Research Requirements\n\n## Task\n\n{current_plan.title}\n\n## Description\n\n{current_plan.thought}"
+            )
+        ],
+        "locale": state.get("locale", "en-US"),
+    }
+    invoke_messages = apply_prompt_template("reporter", input_)
     observations = state.get("observations", [])
-    invoke_messages = messages[:2]
 
     # Add a reminder about the new report format, citation style, and table usage
     invoke_messages.append(
