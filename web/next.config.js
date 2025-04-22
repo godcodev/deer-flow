@@ -15,6 +15,16 @@ const config = {
       destination: "http://localhost:8000/api/podcast/:path*",
     },
   ],
+  experimental: {
+    turbo: {
+      rules: {
+        "*.md": {
+          loaders: ["raw-loader"],
+          as: "*.js",
+        },
+      },
+    },
+  },
 };
 
 export default config;
