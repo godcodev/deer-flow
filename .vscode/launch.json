@@ -40,7 +40,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/server.py",
             "console": "integratedTerminal",
-            "justMyCode": true,
+            "justMyCode": false,
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
             }
