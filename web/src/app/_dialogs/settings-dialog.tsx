@@ -90,8 +90,10 @@ export function SettingsDialog() {
           </div>
         </Tabs>
         <DialogFooter>
-          <Button type="submit">Save Settings</Button>
           <Button variant="outline">Cancel</Button>
+          <Button className="w-24" type="submit">
+            Save
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

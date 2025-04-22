@@ -26,6 +26,6 @@ For the web project, we want to express our deep appreciation for:
 - [Zustand](https://zustand.docs.pmnd.rs/) for their stunning state management
 - [Framer Motion](https://www.framer.com/motion/) for their amazing animation library
 - [React Markdown](https://www.npmjs.com/package/react-markdown) for their exceptional markdown rendering and customizability
-- Last but not least, special thanks to [SToneX](https://github.com/stonexer) for his great contribution for **[token-by-token visual effect](./src/core/rehype/rehype-split-words-into-spans.ts)**
+- Last but not least, special thanks to [SToneX](https://github.com/stonexer) for his great contribution for token-by-token visual effect.
 
 These amazing projects form the foundation of DeerFlow and demonstrate the power of open source collaboration.
