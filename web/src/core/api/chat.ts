@@ -22,7 +22,7 @@ export function chatStream(
     return chatStreamMock(userMessage, params, options);
   }
   return fetchStream<ChatEvent>(
-    (env.NEXT_PUBLIC_API_URL ?? "/api") + "/chat/stream",
+    (env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api") + "/chat/stream",
     {
       body: JSON.stringify({
         messages: [{ role: "user", content: userMessage }],
@@ -56,7 +56,7 @@ async function* chatStreamMock(
   const res = await fetch(mockFile, {
     signal: options.abortSignal,
   });
-  await sleep(800);
+  await sleep(500);
   const text = await res.text();
   const chunks = text.split("\n\n");
   for (const chunk of chunks) {
@@ -66,7 +66,7 @@ async function* chatStreamMock(
     if (event === "message_chunk") {
       await sleep(100);
     } else if (event === "tool_call_result") {
-      await sleep(4000);
+      await sleep(2000);
     }
     try {
       yield {

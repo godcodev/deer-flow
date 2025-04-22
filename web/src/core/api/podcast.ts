@@ -1,14 +1,20 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
+import { env } from "~/env";
+
 export async function generatePodcast(content: string) {
-  const response = await fetch("/api/podcast/generate", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    (env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api") +
+      "/podcast/generate",
+    {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content }),
     },
-    body: JSON.stringify({ content }),
-  });
+  );
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
