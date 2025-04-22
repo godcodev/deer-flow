@@ -13,7 +13,7 @@ export function ScrollContainer({
   scrollShadowColor = "var(--background)",
 }: {
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   scrollShadow?: boolean;
   scrollShadowColor?: string;
 }) {
