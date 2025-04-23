@@ -112,7 +112,7 @@ DeerFlow includes a `langgraph.json` configuration file that defines the graph s
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Install dependencies and start the LangGraph server
-uvx --refresh --from "langgraph-cli[inmem]" --with-editable . --python 3.12 langgraph dev
+uvx --refresh --from "langgraph-cli[inmem]" --with-editable . --python 3.12 langgraph dev --allow-blocking
 ```
 
 ##### Windows / Linux

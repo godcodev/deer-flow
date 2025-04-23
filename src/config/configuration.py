@@ -12,9 +12,9 @@ from langchain_core.runnables import RunnableConfig
 class Configuration:
     """The configurable fields."""
 
-    max_plan_iterations: int = 2  # Maximum number of plan iterations
-    max_step_num: int = 5  # Maximum number of steps in a plan
-    mcp_settings: dict = None  # MCP settings
+    max_plan_iterations: int = 1  # Maximum number of plan iterations
+    max_step_num: int = 3  # Maximum number of steps in a plan
+    mcp_settings: dict = None  # MCP settings, including dynamic loaded tools
 
     @classmethod
     def from_runnable_config(
