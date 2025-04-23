@@ -1,6 +1,7 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
+import asyncio
 import logging
 from src.graph import build_graph
 
@@ -22,13 +23,13 @@ logger = logging.getLogger(__name__)
 graph = build_graph()
 
 
-def run_agent_workflow(
+async def run_agent_workflow_async(
     user_input: str,
     debug: bool = False,
     max_plan_iterations: int = 1,
     max_step_num: int = 3,
 ):
-    """Run the agent workflow with the given user input.
+    """Run the agent workflow asynchronously with the given user input.
 
     Args:
         user_input: The user's query or request
@@ -45,7 +46,7 @@ def run_agent_workflow(
     if debug:
         enable_debug_logging()
 
-    logger.info(f"Starting workflow with user input: {user_input}")
+    logger.info(f"Starting async workflow with user input: {user_input}")
     initial_state = {
         # Runtime Variables
         "messages": [{"role": "user", "content": user_input}],
@@ -56,11 +57,24 @@ def run_agent_workflow(
             "thread_id": "default",
             "max_plan_iterations": max_plan_iterations,
             "max_step_num": max_step_num,
+            "mcp_settings": {
+                "servers": {
+                    "mcp-github-trending": {
+                        "transport": "stdio",
+                        "command": "uvx",
+                        "args": ["mcp-github-trending"],
+                        "enabled_tools": ["get_github_trending_repositories"],
+                        "add_to_agents": ["researcher"],
+                    }
+                }
+            },
         },
         "recursion_limit": 100,
     }
     last_message_cnt = 0
-    for s in graph.stream(input=initial_state, config=config, stream_mode="values"):
+    async for s in graph.astream(
+        input=initial_state, config=config, stream_mode="values"
+    ):
         try:
             if isinstance(s, dict) and "messages" in s:
                 if len(s["messages"]) <= last_message_cnt:
@@ -78,7 +92,7 @@ def run_agent_workflow(
             logger.error(f"Error processing stream output: {e}")
             print(f"Error processing output: {str(e)}")
 
-    logger.info("Workflow completed successfully")
+    logger.info("Async workflow completed successfully")
 
 
 if __name__ == "__main__":

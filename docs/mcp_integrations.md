@@ -9,7 +9,7 @@
 For stdio type:
 ```json
 {
-  "type": "stdio",
+  "transport": "stdio",
   "command": "npx",
   "args": ["-y", "tavily-mcp@0.1.3"],
   "env": {"TAVILY_API_KEY":  "tvly-dev-xxx"}
@@ -19,7 +19,7 @@ For stdio type:
 For SSE type:
 ```json
 {
-  "type": "sse",
+  "transport": "sse",
   "url": "http://localhost:3000/sse",
   "env": {
     "API_KEY": "value"
@@ -37,6 +37,7 @@ For SSE type:
   "mcp_settings": {
     "servers": {
       "mcp-github-trending": {
+        "transport": "stdio",
         "command": "uvx",
         "args": ["mcp-github-trending"],
         "env": {

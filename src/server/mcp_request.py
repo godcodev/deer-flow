@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 class MCPServerMetadataRequest(BaseModel):
     """Request model for MCP server metadata."""
 
-    type: str = Field(
+    transport: str = Field(
         ..., description="The type of MCP server connection (stdio or sse)"
     )
     command: Optional[str] = Field(
@@ -27,7 +27,7 @@ class MCPServerMetadataRequest(BaseModel):
 class MCPServerMetadataResponse(BaseModel):
     """Response model for MCP server metadata."""
 
-    type: str = Field(
+    transport: str = Field(
         ..., description="The type of MCP server connection (stdio or sse)"
     )
     command: Optional[str] = Field(

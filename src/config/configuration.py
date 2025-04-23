@@ -14,6 +14,7 @@ class Configuration:
 
     max_plan_iterations: int = 2  # Maximum number of plan iterations
     max_step_num: int = 5  # Maximum number of steps in a plan
+    mcp_settings: dict = None  # MCP settings
 
     @classmethod
     def from_runnable_config(

@@ -62,6 +62,7 @@ async def chat_stream(request: ChatRequest):
             request.max_step_num,
             request.auto_accepted_plan,
             request.interrupt_feedback,
+            request.mcp_settings,
         ),
         media_type="text/event-stream",
     )
@@ -74,6 +75,7 @@ async def _astream_workflow_generator(
     max_step_num: int,
     auto_accepted_plan: bool,
     interrupt_feedback: str,
+    mcp_settings: dict,
 ):
     input_ = {
         "messages": messages,
@@ -95,6 +97,7 @@ async def _astream_workflow_generator(
             "thread_id": thread_id,
             "max_plan_iterations": max_plan_iterations,
             "max_step_num": max_step_num,
+            "mcp_settings": mcp_settings,
         },
         stream_mode=["messages", "updates"],
         subgraphs=True,
@@ -255,7 +258,7 @@ async def mcp_server_metadata(request: MCPServerMetadataRequest):
     try:
         # Load tools from the MCP server using the utility function
         tools = await load_mcp_tools(
-            server_type=request.type,
+            server_type=request.transport,
             command=request.command,
             args=request.args,
             url=request.url,
@@ -264,7 +267,7 @@ async def mcp_server_metadata(request: MCPServerMetadataRequest):
 
         # Create the response with tools
         response = MCPServerMetadataResponse(
-            type=request.type,
+            transport=request.transport,
             command=request.command,
             args=request.args,
             url=request.url,

@@ -44,6 +44,9 @@ class ChatRequest(BaseModel):
     interrupt_feedback: Optional[str] = Field(
         None, description="Interrupt feedback from the user on the plan"
     )
+    mcp_settings: Optional[dict] = Field(
+        None, description="MCP settings for the chat request"
+    )
 
 
 class TTSRequest(BaseModel):

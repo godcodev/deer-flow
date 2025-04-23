@@ -6,9 +6,10 @@ Entry point script for the Deer project.
 """
 
 import argparse
+import asyncio
 from InquirerPy import inquirer
 
-from src.workflow import run_agent_workflow
+from src.workflow import run_agent_workflow_async
 from src.config.questions import BUILT_IN_QUESTIONS, BUILT_IN_QUESTIONS_ZH_CN
 
 
@@ -21,11 +22,13 @@ def ask(question, debug=False, max_plan_iterations=1, max_step_num=3):
         max_plan_iterations: Maximum number of plan iterations
         max_step_num: Maximum number of steps in a plan
     """
-    run_agent_workflow(
-        user_input=question,
-        debug=debug,
-        max_plan_iterations=max_plan_iterations,
-        max_step_num=max_step_num,
+    asyncio.run(
+        run_agent_workflow_async(
+            user_input=question,
+            debug=debug,
+            max_plan_iterations=max_plan_iterations,
+            max_step_num=max_step_num,
+        )
     )
 
 
