@@ -294,7 +294,7 @@ async def _setup_and_execute_agent_step(
     """
     configurable = Configuration.from_runnable_config(config)
     mcp_servers = {}
-    enabled_tools = set()
+    enabled_tools = {}
 
     # Extract MCP server configuration for this agent type
     if configurable.mcp_settings:
@@ -308,14 +308,19 @@ async def _setup_and_execute_agent_step(
                     for k, v in server_config.items()
                     if k in ("transport", "command", "args", "url", "env")
                 }
-                enabled_tools.update(server_config["enabled_tools"])
+                for tool_name in server_config["enabled_tools"]:
+                    enabled_tools[tool_name] = server_name
 
     # Create and execute agent with MCP tools if available
     if mcp_servers:
         async with MultiServerMCPClient(mcp_servers) as client:
-            loaded_tools = [
-                tool for tool in client.get_tools() if tool.name in enabled_tools
-            ] + default_tools
+            loaded_tools = default_tools[:]
+            for tool in client.get_tools():
+                if tool.name in enabled_tools:
+                    tool.description = (
+                        f"Powered by '{enabled_tools[tool.name]}'.\n{tool.description}"
+                    )
+                    loaded_tools.append(tool)
             agent = create_agent(agent_type, agent_type, loaded_tools, agent_type)
             return await _execute_agent_step(state, agent, agent_type)
     else:
