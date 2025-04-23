@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage
 from langgraph.types import Command
+from mcp import ClientSession
 
 from src.graph.builder import build_graph_with_memory
 from src.podcast.graph.builder import build_graph as build_podcast_graph
@@ -24,6 +25,8 @@ from src.server.chat_request import (
     GeneratePPTRequest,
     TTSRequest,
 )
+from src.server.mcp_request import MCPServerMetadataRequest, MCPServerMetadataResponse
+from src.server.mcp_utils import load_mcp_tools
 from src.tools import VolcengineTTS
 
 logger = logging.getLogger(__name__)
@@ -244,3 +247,34 @@ async def generate_ppt(request: GeneratePPTRequest):
     except Exception as e:
         logger.exception(f"Error occurred during ppt generation: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/mcp/server/metadata", response_model=MCPServerMetadataResponse)
+async def mcp_server_metadata(request: MCPServerMetadataRequest):
+    """Get information about an MCP server."""
+    try:
+        # Load tools from the MCP server using the utility function
+        tools = await load_mcp_tools(
+            server_type=request.type,
+            command=request.command,
+            args=request.args,
+            url=request.url,
+            env=request.env,
+        )
+
+        # Create the response with tools
+        response = MCPServerMetadataResponse(
+            type=request.type,
+            command=request.command,
+            args=request.args,
+            url=request.url,
+            env=request.env,
+            tools=tools,
+        )
+
+        return response
+    except Exception as e:
+        if not isinstance(e, HTTPException):
+            logger.exception(f"Error in MCP server metadata endpoint: {str(e)}")
+            raise HTTPException(status_code=500, detail=str(e))
+        raise

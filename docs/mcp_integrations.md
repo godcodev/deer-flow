@@ -11,10 +11,8 @@ For stdio type:
 {
   "type": "stdio",
   "command": "npx",
-  "args": ["@agentdeskai/browser-tools-mcp@1.2.0"]
-  "env": {
-    "MCP_SERVER_ID": "mcp-github-trending"
-  }
+  "args": ["-y", "tavily-mcp@0.1.3"],
+  "env": {"TAVILY_API_KEY":  "tvly-dev-xxx"}
 }
 ```
 

@@ -10,7 +10,7 @@ lint:
 	uv run black --check .
 
 serve:
-	uv run server.py
+	uv run server.py --reload
 
 test:
 	uv run pytest tests/
