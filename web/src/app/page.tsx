@@ -39,8 +39,8 @@ export default function HomePage() {
               </Link>
             </Button>
           </Tooltip>
-          <SettingsDialog />
           <ThemeToggle />
+          <SettingsDialog />
         </div>
       </header>
       <div
