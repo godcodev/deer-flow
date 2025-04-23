@@ -5,8 +5,8 @@
 Server script for running the Deer API.
 """
 
+import argparse
 import logging
-import sys
 
 import uvicorn
 
@@ -19,14 +19,47 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description="Run the Deer API server")
+    parser.add_argument(
+        "--reload",
+        action="store_true",
+        help="Enable auto-reload (default: True except on Windows)",
+    )
+    parser.add_argument(
+        "--host",
+        type=str,
+        default="localhost",
+        help="Host to bind the server to (default: localhost)",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Port to bind the server to (default: 8000)",
+    )
+    parser.add_argument(
+        "--log-level",
+        type=str,
+        default="info",
+        choices=["debug", "info", "warning", "error", "critical"],
+        help="Log level (default: info)",
+    )
+
+    args = parser.parse_args()
+
+    # Determine reload setting
+    reload = False
+
+    # Command line arguments override defaults
+    if args.reload:
+        reload = True
+
     logger.info("Starting Deer API server")
-    reload = True
-    if sys.platform.startswith("win"):
-        reload = False
     uvicorn.run(
         "src.server:app",
-        host="0.0.0.0",
-        port=8000,
+        host=args.host,
+        port=args.port,
         reload=reload,
-        log_level="info",
+        log_level=args.log_level,
     )
