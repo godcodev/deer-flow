@@ -10,6 +10,8 @@ import type { Message } from "../messages";
 import { mergeMessage } from "../messages";
 import { parseJSON } from "../utils";
 
+import { useSettingsStore } from "./settings-store";
+
 const THREAD_ID = nanoid();
 
 export const useStore = create<{
@@ -39,12 +41,8 @@ export const useStore = create<{
 export async function sendMessage(
   content: string,
   {
-    maxPlanIterations = 1,
-    maxStepNum = 3,
     interruptFeedback,
   }: {
-    maxPlanIterations?: number;
-    maxStepNum?: number;
     interruptFeedback?: string;
   } = {},
   options: { abortSignal?: AbortSignal } = {},
@@ -59,12 +57,13 @@ export async function sendMessage(
 
   setResponding(true);
   try {
+    const generalSettings = useSettingsStore.getState().general;
     const stream = chatStream(
       content,
       {
         thread_id: THREAD_ID,
-        max_plan_iterations: maxPlanIterations,
-        max_step_num: maxStepNum,
+        max_plan_iterations: generalSettings.maxPlanIterations,
+        max_step_num: generalSettings.maxStepNum,
         interrupt_feedback: interruptFeedback,
       },
       options,
