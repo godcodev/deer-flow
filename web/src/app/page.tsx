@@ -47,7 +47,7 @@ export default function HomePage() {
             </Button>
           </Tooltip>
           <ThemeToggle />
-          <SettingsDialog />
+          {!isReplay && <SettingsDialog />}
         </div>
       </header>
       <div
