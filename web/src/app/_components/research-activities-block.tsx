@@ -4,12 +4,19 @@
 import { PythonOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { LRUCache } from "lru-cache";
-import { BookOpenText, Search } from "lucide-react";
+import { BookOpenText, PencilRuler, Search } from "lucide-react";
 import { useMemo } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
 import { Skeleton } from "~/components/ui/skeleton";
+import { findMCPTool } from "~/core/mcp";
 import type { ToolCallRuntime } from "~/core/messages";
 import { useMessage, useStore } from "~/core/store";
 import { parseJSON } from "~/core/utils";
@@ -20,6 +27,7 @@ import Image from "./image";
 import { LoadingAnimation } from "./loading-animation";
 import { Markdown } from "./markdown";
 import { RainbowText } from "./rainbow-text";
+import { Tooltip } from "./tooltip";
 
 export function ResearchActivitiesBlock({
   className,
@@ -85,6 +93,8 @@ function ActivityListItem({ messageId }: { messageId: string }) {
           return <CrawlToolCall key={toolCall.id} toolCall={toolCall} />;
         } else if (toolCall.name === "python_repl_tool") {
           return <PythonToolCall key={toolCall.id} toolCall={toolCall} />;
+        } else {
+          return <MCPToolCall key={toolCall.id} toolCall={toolCall} />;
         }
       }
     }
@@ -142,7 +152,7 @@ function WebSearchToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
           className="flex items-center"
           animated={searchResults === undefined}
         >
-          <Search className={"mr-2"} />
+          <Search size={16} className={"mr-2"} />
           <span>Searching for&nbsp;</span>
           <span className="max-w-[500px] overflow-hidden text-ellipsis whitespace-nowrap">
             {(toolCall.args as { query: string }).query}
@@ -229,12 +239,12 @@ function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   const title = useMemo(() => __pageCache.get(url), [url]);
   return (
     <section className="mt-4 pl-4">
-      <div className="font-medium italic">
+      <div>
         <RainbowText
-          className="flex items-center"
+          className="flex items-center text-base font-medium italic"
           animated={toolCall.result === undefined}
         >
-          <BookOpenText className={"mr-2"} />
+          <BookOpenText size={16} className={"mr-2"} />
           <span>Reading</span>
         </RainbowText>
       </div>
@@ -264,18 +274,65 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   }, [toolCall.args]);
   return (
     <section className="mt-4 pl-4">
-      <div className="font-medium italic">
+      <div className="flex items-center">
         <PythonOutlined className={"mr-2"} />
-        <RainbowText animated={toolCall.result === undefined}>
+        <RainbowText
+          className="text-base font-medium italic"
+          animated={toolCall.result === undefined}
+        >
           Running Python code
         </RainbowText>
       </div>
       <div className="px-5">
-        <div className="bg-accent mt-2 rounded-md p-2 text-sm">
-          <SyntaxHighlighter language="python" style={docco}>
+        <div className="bg-accent mt-2 max-h-[400px] w-[800px] overflow-y-auto rounded-md p-2 text-sm">
+          <SyntaxHighlighter
+            customStyle={{ background: "transparent" }}
+            language="python"
+            style={docco}
+          >
             {code}
           </SyntaxHighlighter>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function MCPToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
+  const tool = useMemo(() => findMCPTool(toolCall.name), [toolCall.name]);
+  return (
+    <section className="mt-4 pl-4">
+      <div className="w-fit overflow-y-auto rounded-md py-0">
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>
+              <Tooltip title={tool?.description}>
+                <div className="flex items-center font-medium italic">
+                  <PencilRuler size={16} className={"mr-2"} />
+                  <RainbowText
+                    className="pr-0.5 text-base font-medium italic"
+                    animated={toolCall.result === undefined}
+                  >
+                    Running {toolCall.name ? toolCall.name + "()" : "MCP tool"}
+                  </RainbowText>
+                </div>
+              </Tooltip>
+            </AccordionTrigger>
+            <AccordionContent>
+              {toolCall.result && (
+                <div className="bg-accent max-h-[400px] w-[800px] overflow-y-auto rounded-md text-sm">
+                  <SyntaxHighlighter
+                    customStyle={{ background: "transparent" }}
+                    language="json"
+                    style={docco}
+                  >
+                    {toolCall.result}
+                  </SyntaxHighlighter>
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </section>
   );

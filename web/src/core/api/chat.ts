@@ -1,11 +1,11 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { env } from "~/env";
-
+import type { MCPServerMetadata } from "../mcp";
 import { fetchStream } from "../sse";
 import { sleep } from "../utils";
 
+import { resolveServiceURL } from "./resolve-service-url";
 import type { ChatEvent } from "./types";
 
 export function chatStream(
@@ -15,23 +15,29 @@ export function chatStream(
     max_plan_iterations: number;
     max_step_num: number;
     interrupt_feedback?: string;
+    mcp_settings?: {
+      servers: Record<
+        string,
+        MCPServerMetadata & {
+          enabled_tools: string[];
+          add_to_agents: string[];
+        }
+      >;
+    };
   },
   options: { abortSignal?: AbortSignal } = {},
 ) {
   if (location.search.includes("mock")) {
     return chatStreamMock(userMessage, params, options);
   }
-  return fetchStream<ChatEvent>(
-    (env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api") + "/chat/stream",
-    {
-      body: JSON.stringify({
-        messages: [{ role: "user", content: userMessage }],
-        auto_accepted_plan: false,
-        ...params,
-      }),
-      signal: options.abortSignal,
-    },
-  );
+  return fetchStream<ChatEvent>(resolveServiceURL("chat/stream"), {
+    body: JSON.stringify({
+      messages: [{ role: "user", content: userMessage }],
+      auto_accepted_plan: false,
+      ...params,
+    }),
+    signal: options.abortSignal,
+  });
 }
 
 async function* chatStreamMock(

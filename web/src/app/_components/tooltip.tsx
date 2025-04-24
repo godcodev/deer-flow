@@ -17,7 +17,7 @@ export function Tooltip({
   title?: React.ReactNode;
 }) {
   return (
-    <ShadcnTooltip>
+    <ShadcnTooltip delayDuration={750}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent className={className}>{title}</TooltipContent>
     </ShadcnTooltip>

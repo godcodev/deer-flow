@@ -4,13 +4,13 @@
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 
-import { chatStream } from "../api";
-import { generatePodcast } from "../api/podcast";
+import { chatStream, generatePodcast } from "../api";
 import type { Message } from "../messages";
 import { mergeMessage } from "../messages";
 import { parseJSON } from "../utils";
 
 import { useSettingsStore } from "./settings-store";
+import type { MCPServerMetadata, SimpleMCPServerMetadata } from "../mcp";
 
 const THREAD_ID = nanoid();
 
@@ -57,7 +57,52 @@ export async function sendMessage(
 
   setResponding(true);
   try {
-    const generalSettings = useSettingsStore.getState().general;
+    const settings = useSettingsStore.getState();
+    const generalSettings = settings.general;
+    const mcpServers = settings.mcp.servers.filter((server) => server.enabled);
+    let mcpSettings:
+      | {
+          servers: Record<
+            string,
+            MCPServerMetadata & {
+              enabled_tools: string[];
+              add_to_agents: string[];
+            }
+          >;
+        }
+      | undefined = undefined;
+    if (mcpServers.length > 0) {
+      mcpSettings = {
+        servers: mcpServers.reduce((acc, cur) => {
+          const { transport, env } = cur;
+          let server: SimpleMCPServerMetadata;
+          if (transport === "stdio") {
+            server = {
+              name: cur.name,
+              transport,
+              env,
+              command: cur.command,
+              args: cur.args,
+            };
+          } else {
+            server = {
+              name: cur.name,
+              transport,
+              env,
+              url: cur.url,
+            };
+          }
+          return {
+            ...acc,
+            [cur.name]: {
+              ...server,
+              enabled_tools: cur.tools.map((tool) => tool.name),
+              add_to_agents: ["researcher"],
+            },
+          };
+        }, {}),
+      };
+    }
     const stream = chatStream(
       content,
       {
@@ -65,6 +110,7 @@ export async function sendMessage(
         max_plan_iterations: generalSettings.maxPlanIterations,
         max_step_num: generalSettings.maxStepNum,
         interrupt_feedback: interruptFeedback,
+        mcp_settings: mcpSettings,
       },
       options,
     );

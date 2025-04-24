@@ -17,7 +17,6 @@ import {
 import type { Message, Option } from "~/core/messages";
 import {
   openResearch,
-  sendMessage,
   useMessage,
   useResearchTitle,
   useStore,
@@ -35,9 +34,14 @@ import { Tooltip } from "./tooltip";
 export function MessageListView({
   className,
   onFeedback,
+  onSendMessage,
 }: {
   className?: string;
   onFeedback?: (feedback: { option: Option }) => void;
+  onSendMessage?: (
+    message: string,
+    options?: { interruptFeedback?: string },
+  ) => void;
 }) {
   const messageIds = useStore((state) => state.messageIds);
   const interruptMessage = useStore((state) => {
@@ -81,6 +85,7 @@ export function MessageListView({
             waitForFeedback={waitingForFeedbackMessageId === messageId}
             interruptMessage={interruptMessage}
             onFeedback={onFeedback}
+            onSendMessage={onSendMessage}
           />
         ))}
         <div className="flex h-8 w-full shrink-0"></div>
@@ -96,14 +101,19 @@ function MessageListItem({
   className,
   messageId,
   waitForFeedback,
-  onFeedback,
   interruptMessage,
+  onFeedback,
+  onSendMessage,
 }: {
   className?: string;
   messageId: string;
   waitForFeedback?: boolean;
   onFeedback?: (feedback: { option: Option }) => void;
   interruptMessage?: Message | null;
+  onSendMessage?: (
+    message: string,
+    options?: { interruptFeedback?: string },
+  ) => void;
 }) {
   const message = useMessage(messageId);
   const startOfResearch = useStore((state) =>
@@ -126,6 +136,7 @@ function MessageListItem({
               waitForFeedback={waitForFeedback}
               interruptMessage={interruptMessage}
               onFeedback={onFeedback}
+              onSendMessage={onSendMessage}
             />
           </div>
         );
@@ -269,11 +280,16 @@ function PlanCard({
   interruptMessage,
   onFeedback,
   waitForFeedback,
+  onSendMessage,
 }: {
   className?: string;
   message: Message;
   interruptMessage?: Message | null;
   onFeedback?: (feedback: { option: Option }) => void;
+  onSendMessage?: (
+    message: string,
+    options?: { interruptFeedback?: string },
+  ) => void;
   waitForFeedback?: boolean;
 }) {
   const plan = useMemo<{
@@ -284,13 +300,15 @@ function PlanCard({
     return parseJSON(message.content ?? "", {});
   }, [message.content]);
   const handleAccept = useCallback(async () => {
-    await sendMessage(
-      `${GREETINGS[Math.floor(Math.random() * GREETINGS.length)]}! ${Math.random() > 0.5 ? "Let's get started." : "Let's start."}`,
-      {
-        interruptFeedback: "accepted",
-      },
-    );
-  }, []);
+    if (onSendMessage) {
+      onSendMessage(
+        `${GREETINGS[Math.floor(Math.random() * GREETINGS.length)]}! ${Math.random() > 0.5 ? "Let's get started." : "Let's start."}`,
+        {
+          interruptFeedback: "accepted",
+        },
+      );
+    }
+  }, [onSendMessage]);
   return (
     <Card className={cn("w-full", className)}>
       <CardHeader>

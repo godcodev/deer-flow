@@ -16,7 +16,7 @@ import { MessagesBlock } from "./_components/messages-block";
 import { ResearchBlock } from "./_components/research-block";
 import { ThemeToggle } from "./_components/theme-toggle";
 import { Tooltip } from "./_components/tooltip";
-import { SettingsDialog } from "./_dialogs/settings-dialog";
+import { SettingsDialog } from "./_settings/dialogs/settings-dialog";
 
 export default function HomePage() {
   const openResearchId = useStore((state) => state.openResearchId);

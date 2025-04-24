@@ -17,16 +17,15 @@ export function MessagesBlock({ className }: { className?: string }) {
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
   const handleSend = useCallback(
-    async (message: string) => {
+    async (message: string, options?: { interruptFeedback?: string }) => {
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
       try {
         await sendMessage(
           message,
           {
-            maxPlanIterations: 1,
-            maxStepNum: 3,
-            interruptFeedback: feedback?.option.value,
+            interruptFeedback:
+              options?.interruptFeedback ?? feedback?.option.value,
           },
           {
             abortSignal: abortController.signal,
@@ -37,6 +36,7 @@ export function MessagesBlock({ className }: { className?: string }) {
     [feedback],
   );
   const handleCancel = useCallback(() => {
+    console.info("cancel");
     abortControllerRef.current?.abort();
     abortControllerRef.current = null;
   }, []);
@@ -51,7 +51,11 @@ export function MessagesBlock({ className }: { className?: string }) {
   }, [setFeedback]);
   return (
     <div className={cn("flex h-full flex-col", className)}>
-      <MessageListView className="flex flex-grow" onFeedback={handleFeedback} />
+      <MessageListView
+        className="flex flex-grow"
+        onFeedback={handleFeedback}
+        onSendMessage={handleSend}
+      />
       <div className="relative flex h-42 shrink-0 pb-4">
         {!responding && messageCount === 0 && (
           <ConversationStarter

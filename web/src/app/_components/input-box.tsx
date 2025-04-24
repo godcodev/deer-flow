@@ -30,7 +30,7 @@ export function InputBox({
   size?: "large" | "normal";
   responding?: boolean;
   feedback?: { option: Option } | null;
-  onSend?: (message: string, feedback: { option: Option } | null) => void;
+  onSend?: (message: string, options?: { interruptFeedback?: string }) => void;
   onCancel?: () => void;
   onRemoveFeedback?: () => void;
 }) {
@@ -63,7 +63,9 @@ export function InputBox({
         return;
       }
       if (onSend) {
-        onSend(message, feedback ?? null);
+        onSend(message, {
+          interruptFeedback: feedback?.option.value,
+        });
         setMessage("");
         onRemoveFeedback?.();
       }
