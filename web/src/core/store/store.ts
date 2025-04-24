@@ -39,7 +39,7 @@ export const useStore = create<{
 }));
 
 export async function sendMessage(
-  content: string,
+  content?: string,
   {
     interruptFeedback,
   }: {
@@ -47,13 +47,15 @@ export async function sendMessage(
   } = {},
   options: { abortSignal?: AbortSignal } = {},
 ) {
-  appendMessage({
-    id: nanoid(),
-    threadId: THREAD_ID,
-    role: "user",
-    content: content,
-    contentChunks: [content],
-  });
+  if (content !== undefined) {
+    appendMessage({
+      id: nanoid(),
+      threadId: THREAD_ID,
+      role: "user",
+      content: content,
+      contentChunks: [content],
+    });
+  }
 
   setResponding(true);
   try {
@@ -104,7 +106,7 @@ export async function sendMessage(
       };
     }
     const stream = chatStream(
-      content,
+      content ?? "[REPLAY]",
       {
         thread_id: THREAD_ID,
         auto_accepted_plan: generalSettings.autoAcceptedPlan,

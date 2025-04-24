@@ -5,10 +5,11 @@
 
 import { GithubOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { Button } from "~/components/ui/button";
-import { useStore } from "~/core/store";
+import { useReplay } from "~/core/replay";
+import { sendMessage, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
 import { Logo } from "./_components/logo";
@@ -19,11 +20,17 @@ import { Tooltip } from "./_components/tooltip";
 import { SettingsDialog } from "./_settings/dialogs/settings-dialog";
 
 export default function HomePage() {
+  const { isReplay } = useReplay();
   const openResearchId = useStore((state) => state.openResearchId);
   const doubleColumnMode = useMemo(
     () => openResearchId !== null,
     [openResearchId],
   );
+  useEffect(() => {
+    if (isReplay) {
+      void sendMessage();
+    }
+  }, [isReplay]);
   return (
     <div className="flex h-full w-full justify-center">
       <header className="fixed top-0 left-0 flex h-12 w-full w-screen items-center justify-between px-4">

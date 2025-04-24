@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import type { MCPServerMetadata } from "../mcp";
+import { extractReplayIdFromURL } from "../replay/get-replay-id";
 import { fetchStream } from "../sse";
 import { sleep } from "../utils";
 
@@ -28,8 +29,8 @@ export function chatStream(
   },
   options: { abortSignal?: AbortSignal } = {},
 ) {
-  if (location.search.includes("mock")) {
-    return chatStreamMock(userMessage, params, options);
+  if (location.search.includes("mock") || location.search.includes("replay=")) {
+    return chatReplayStream(userMessage, params, options);
   }
   return fetchStream<ChatEvent>(resolveServiceURL("chat/stream"), {
     body: JSON.stringify({
@@ -40,7 +41,7 @@ export function chatStream(
   });
 }
 
-async function* chatStreamMock(
+async function* chatReplayStream(
   userMessage: string,
   params: {
     thread_id: string;
@@ -57,30 +58,51 @@ async function* chatStreamMock(
   },
   options: { abortSignal?: AbortSignal } = {},
 ): AsyncIterable<ChatEvent> {
-  const mockFile =
-    params.interrupt_feedback === "accepted"
-      ? "/mock-before-interrupt.txt"
-      : "/mock-after-interrupt.txt";
-  const res = await fetch(mockFile, {
+  const urlParams = new URLSearchParams(window.location.search);
+  let replayFilePath = "";
+  if (urlParams.has("mock")) {
+    replayFilePath =
+      params.interrupt_feedback === "accepted"
+        ? "/mock/before-interrupt.txt"
+        : "/mock/after-interrupt.txt";
+  } else {
+    const replayId = extractReplayIdFromURL();
+    if (replayId) {
+      replayFilePath = `/replay/${replayId}.txt`;
+    } else {
+      replayFilePath = "/mock/before-interrupt.txt";
+    }
+  }
+  const res = await fetch(replayFilePath, {
     signal: options.abortSignal,
   });
-  await sleep(500);
   const text = await res.text();
   const chunks = text.split("\n\n");
   for (const chunk of chunks) {
     const [eventRaw, dataRaw] = chunk.split("\n") as [string, string];
     const [, event] = eventRaw.split("event: ", 2) as [string, string];
     const [, data] = dataRaw.split("data: ", 2) as [string, string];
-    if (event === "message_chunk") {
-      await sleep(100);
-    } else if (event === "tool_call_result") {
-      await sleep(2000);
-    }
+
     try {
-      yield {
+      const chatEvent = {
         type: event,
         data: JSON.parse(data),
       } as ChatEvent;
+      if (chatEvent.type === "message_chunk") {
+        if (!chatEvent.data.finish_reason) {
+          await sleep(250 + Math.random() * 250);
+        }
+      } else if (chatEvent.type === "tool_call_result") {
+        await sleep(1500);
+      }
+      yield chatEvent;
+      if (chatEvent.type === "tool_call_result") {
+        await sleep(800);
+      } else if (chatEvent.type === "message_chunk") {
+        if (chatEvent.data.role === "user") {
+          await sleep(1000);
+        }
+      }
     } catch (e) {
       console.error(e);
     }
