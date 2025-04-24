@@ -109,8 +109,8 @@ export const GeneralTab: Tab = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    Set to 1 for single-step planning. Set to 2 to enable
-                    re-planning.
+                    Set to 1 for single-step planning. Set to 2 or more to
+                    enable re-planning.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
