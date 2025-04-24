@@ -133,7 +133,7 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
                   <div
                     className={cn(
                       "mb-2 flex items-center gap-2",
-                      !server.enabled && "opacity-60",
+                      !server.enabled && "opacity-70",
                     )}
                   >
                     <div className="text-lg font-medium">{server.name}</div>
@@ -154,7 +154,7 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
                   <ul
                     className={cn(
                       "flex flex-wrap items-center gap-2",
-                      !server.enabled && "opacity-60",
+                      !server.enabled && "opacity-70",
                     )}
                   >
                     <PencilRuler size={16} />
