@@ -94,10 +94,9 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
               server.createdAt > Date.now() - 1000 * 60 * 60 * 1;
             return (
               <motion.li
-                className={cn(
-                  "!bg-card group relative overflow-hidden rounded-lg border pb-2 shadow transition-opacity duration-300",
-                  !server.enabled && "opacity-60",
-                )}
+                className={
+                  "!bg-card group relative overflow-hidden rounded-lg border pb-2 shadow duration-300"
+                }
                 key={server.name}
                 {...(isNew && newlyAdded && animationProps)}
               >
@@ -125,8 +124,18 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
                     </Button>
                   </Tooltip>
                 </div>
-                <div className="flex flex-col items-start px-4 py-2">
-                  <div className="mb-2 flex items-center gap-2">
+                <div
+                  className={cn(
+                    "flex flex-col items-start px-4 py-2",
+                    !server.enabled && "text-muted-foreground",
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "mb-2 flex items-center gap-2",
+                      !server.enabled && "opacity-60",
+                    )}
+                  >
                     <div className="text-lg font-medium">{server.name}</div>
                     {!server.enabled && (
                       <div className="bg-primary text-primary-foreground h-fit rounded px-1.5 py-0.5 text-xs">
@@ -142,7 +151,12 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
                       </div>
                     )}
                   </div>
-                  <ul className="flex flex-wrap items-center gap-2">
+                  <ul
+                    className={cn(
+                      "flex flex-wrap items-center gap-2",
+                      !server.enabled && "opacity-60",
+                    )}
+                  >
                     <PencilRuler size={16} />
                     {server.tools.map((tool) => (
                       <li
