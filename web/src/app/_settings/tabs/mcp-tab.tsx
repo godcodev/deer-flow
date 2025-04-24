@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 
 import { Tooltip } from "~/app/_components/tooltip";
 import { Button } from "~/components/ui/button";
+import { Switch } from "~/components/ui/switch";
 import type { MCPServerMetadata } from "~/core/mcp";
 
 import { AddMCPServerDialog } from "../dialogs/add-mcp-server-dialog";
@@ -40,6 +41,16 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
     (name: string) => {
       const merged = settings.mcp.servers.filter(
         (server) => server.name !== name,
+      );
+      setServers(merged);
+      onChange({ ...settings, mcp: { ...settings.mcp, servers: merged } });
+    },
+    [onChange, settings],
+  );
+  const handleToggleServer = useCallback(
+    (name: string, enabled: boolean) => {
+      const merged = settings.mcp.servers.map((server) =>
+        server.name === name ? { ...server, enabled } : server,
       );
       setServers(merged);
       onChange({ ...settings, mcp: { ...settings.mcp, servers: merged } });
@@ -86,7 +97,20 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
                 key={server.name}
                 {...(isNew && newlyAdded && animationProps)}
               >
-                <div className="absolute top-1 right-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="absolute top-3 right-2">
+                  <Tooltip title="Enable/disable server">
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        id="airplane-mode"
+                        checked={server.enabled}
+                        onCheckedChange={(checked) => {
+                          handleToggleServer(server.name, checked);
+                        }}
+                      />
+                    </div>
+                  </Tooltip>
+                </div>
+                <div className="absolute top-1 right-12 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <Tooltip title="Delete server">
                     <Button
                       variant="ghost"
