@@ -84,7 +84,7 @@ export const GeneralTab: Tab = ({
                         onCheckedChange={field.onChange}
                       />
                       <Label className="text-sm" htmlFor="autoAcceptedPlan">
-                        Auto accept plan
+                        Allow automatic acceptance of plans
                       </Label>
                     </div>
                   </FormControl>
