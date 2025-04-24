@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import type { MCPServerMetadata } from "../mcp";
-import { extractReplayIdFromURL } from "../replay/get-replay-id";
+import { extractReplayIdFromSearchParams } from "../replay/get-replay-id";
 import { fetchStream } from "../sse";
 import { sleep } from "../utils";
 
@@ -66,7 +66,7 @@ async function* chatReplayStream(
         ? "/mock/before-interrupt.txt"
         : "/mock/after-interrupt.txt";
   } else {
-    const replayId = extractReplayIdFromURL();
+    const replayId = extractReplayIdFromSearchParams(window.location.search);
     if (replayId) {
       replayFilePath = `/replay/${replayId}.txt`;
     } else {
@@ -90,21 +90,34 @@ async function* chatReplayStream(
       } as ChatEvent;
       if (chatEvent.type === "message_chunk") {
         if (!chatEvent.data.finish_reason) {
-          await sleep(250 + Math.random() * 250);
+          await sleepInReplay(250 + Math.random() * 250);
         }
       } else if (chatEvent.type === "tool_call_result") {
-        await sleep(1500);
+        await sleepInReplay(1500);
       }
       yield chatEvent;
       if (chatEvent.type === "tool_call_result") {
-        await sleep(800);
+        await sleepInReplay(800);
       } else if (chatEvent.type === "message_chunk") {
         if (chatEvent.data.role === "user") {
-          await sleep(1000);
+          await sleepInReplay(1000);
         }
       }
     } catch (e) {
       console.error(e);
     }
   }
+}
+
+export async function sleepInReplay(ms: number) {
+  if (fastForwardReplaying) {
+    await sleep(0);
+  } else {
+    await sleep(ms);
+  }
+}
+
+let fastForwardReplaying = false;
+export function fastForwardReplay(value: boolean) {
+  fastForwardReplaying = value;
 }

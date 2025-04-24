@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { useReplay } from "~/core/replay";
 import { listenToPodcast, openResearch, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
@@ -32,6 +33,7 @@ export function ResearchBlock({
   const reportStreaming = useStore((state) =>
     reportId ? (state.messages.get(reportId)?.isStreaming ?? false) : false,
   );
+  const { isReplay } = useReplay();
   useEffect(() => {
     if (hasReport) {
       setActiveTab("report");
@@ -72,6 +74,7 @@ export function ResearchBlock({
                   className="text-gray-400"
                   size="icon"
                   variant="ghost"
+                  disabled={isReplay}
                   onClick={handleGeneratePodcast}
                 >
                   <Headphones />

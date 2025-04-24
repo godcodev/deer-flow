@@ -1,16 +1,19 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { useSearchParams } from "next/navigation";
+import { FastForward } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { fastForwardReplay } from "~/core/api";
 import type { Option } from "~/core/messages";
+import { useReplay } from "~/core/replay";
 import { sendMessage, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
@@ -22,7 +25,7 @@ import { RainbowText } from "./rainbow-text";
 export function MessagesBlock({ className }: { className?: string }) {
   const messageCount = useStore((state) => state.messageIds.length);
   const responding = useStore((state) => state.responding);
-  const replaying = useSearchParams().get("replay") !== null;
+  const { isReplay } = useReplay();
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
   const handleSend = useCallback(
@@ -58,6 +61,11 @@ export function MessagesBlock({ className }: { className?: string }) {
   const handleRemoveFeedback = useCallback(() => {
     setFeedback(null);
   }, [setFeedback]);
+  const [fastForwarding, setFastForwarding] = useState(false);
+  const handleFastForwardReplay = useCallback(() => {
+    setFastForwarding(!fastForwarding);
+    fastForwardReplay(!fastForwarding);
+  }, [fastForwarding]);
   return (
     <div className={cn("flex h-full flex-col", className)}>
       <MessageListView
@@ -65,7 +73,7 @@ export function MessagesBlock({ className }: { className?: string }) {
         onFeedback={handleFeedback}
         onSendMessage={handleSend}
       />
-      {!replaying ? (
+      {!isReplay ? (
         <div className="relative flex h-42 shrink-0 pb-4">
           {!responding && messageCount === 0 && (
             <ConversationStarter
@@ -85,16 +93,32 @@ export function MessagesBlock({ className }: { className?: string }) {
       ) : (
         <div className="flex h-42 w-full items-center justify-center">
           <Card className="w-full">
-            <CardHeader>
-              <CardTitle>
-                <RainbowText animated={responding}>Replay Mode</RainbowText>
-              </CardTitle>
-              <CardDescription>
-                <RainbowText animated={responding}>
-                  DeerFlow is now replaying the conversation...
-                </RainbowText>
-              </CardDescription>
-            </CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex-grow">
+                <CardHeader>
+                  <CardTitle>
+                    <RainbowText animated={responding}>Replay Mode</RainbowText>
+                  </CardTitle>
+                  <CardDescription>
+                    <RainbowText animated={responding}>
+                      DeerFlow is now replaying the conversation...
+                    </RainbowText>
+                  </CardDescription>
+                </CardHeader>
+              </div>
+              <div className="pr-4">
+                {responding && (
+                  <Button
+                    className={cn(fastForwarding && "animate-pulse")}
+                    variant={fastForwarding ? "default" : "outline"}
+                    onClick={handleFastForwardReplay}
+                  >
+                    Fast Forward
+                    <FastForward size={16} />
+                  </Button>
+                )}
+              </div>
+            </div>
           </Card>
         </div>
       )}

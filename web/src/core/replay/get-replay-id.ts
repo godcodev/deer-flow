@@ -1,11 +1,8 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-export function extractReplayIdFromURL() {
-  if (typeof window === "undefined") {
-    return null;
-  }
-  const urlParams = new URLSearchParams(window.location.search);
+export function extractReplayIdFromSearchParams(params: string) {
+  const urlParams = new URLSearchParams(params);
   if (urlParams.has("replay")) {
     return urlParams.get("replay");
   }
