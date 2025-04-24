@@ -12,6 +12,7 @@ export function chatStream(
   userMessage: string,
   params: {
     thread_id: string;
+    auto_accepted_plan: boolean;
     max_plan_iterations: number;
     max_step_num: number;
     interrupt_feedback?: string;
@@ -33,7 +34,6 @@ export function chatStream(
   return fetchStream<ChatEvent>(resolveServiceURL("chat/stream"), {
     body: JSON.stringify({
       messages: [{ role: "user", content: userMessage }],
-      auto_accepted_plan: false,
       ...params,
     }),
     signal: options.abortSignal,
@@ -44,11 +44,13 @@ async function* chatStreamMock(
   userMessage: string,
   params: {
     thread_id: string;
+    auto_accepted_plan: boolean;
     max_plan_iterations: number;
     max_step_num: number;
     interrupt_feedback?: string;
   } = {
     thread_id: "__mock__",
+    auto_accepted_plan: false,
     max_plan_iterations: 3,
     max_step_num: 1,
     interrupt_feedback: undefined,

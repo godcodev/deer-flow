@@ -107,6 +107,7 @@ export async function sendMessage(
       content,
       {
         thread_id: THREAD_ID,
+        auto_accepted_plan: generalSettings.autoAcceptedPlan,
         max_plan_iterations: generalSettings.maxPlanIterations,
         max_step_num: generalSettings.maxStepNum,
         interrupt_feedback: interruptFeedback,

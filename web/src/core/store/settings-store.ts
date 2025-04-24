@@ -9,6 +9,7 @@ const SETTINGS_KEY = "deerflow.settings";
 
 const DEFAULT_SETTINGS: SettingsState = {
   general: {
+    autoAcceptedPlan: false,
     maxPlanIterations: 1,
     maxStepNum: 3,
   },
@@ -44,6 +45,7 @@ const DEFAULT_SETTINGS: SettingsState = {
 
 export type SettingsState = {
   general: {
+    autoAcceptedPlan: boolean;
     maxPlanIterations: number;
     maxStepNum: number;
   };
