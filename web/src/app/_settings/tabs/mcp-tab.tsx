@@ -9,6 +9,7 @@ import { Tooltip } from "~/app/_components/tooltip";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
 import type { MCPServerMetadata } from "~/core/mcp";
+import { cn } from "~/lib/utils";
 
 import { AddMCPServerDialog } from "../dialogs/add-mcp-server-dialog";
 
@@ -93,7 +94,10 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
               server.createdAt > Date.now() - 1000 * 60 * 60 * 1;
             return (
               <motion.li
-                className="!bg-card group relative overflow-hidden rounded-lg border shadow"
+                className={cn(
+                  "!bg-card group relative overflow-hidden rounded-lg border pb-2 shadow transition-opacity duration-300",
+                  !server.enabled && "opacity-60",
+                )}
                 key={server.name}
                 {...(isNew && newlyAdded && animationProps)}
               >
@@ -124,6 +128,11 @@ export const MCPTab: Tab = ({ settings, onChange }) => {
                 <div className="flex flex-col items-start px-4 py-2">
                   <div className="mb-2 flex items-center gap-2">
                     <div className="text-lg font-medium">{server.name}</div>
+                    {!server.enabled && (
+                      <div className="bg-primary text-primary-foreground h-fit rounded px-1.5 py-0.5 text-xs">
+                        Disabled
+                      </div>
+                    )}
                     <div className="bg-primary text-primary-foreground h-fit rounded px-1.5 py-0.5 text-xs">
                       {server.transport}
                     </div>

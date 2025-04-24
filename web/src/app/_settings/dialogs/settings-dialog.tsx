@@ -93,7 +93,7 @@ export function SettingsDialog() {
           </Button>
         </DialogTrigger>
       </Tooltip>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[850px]">
         <DialogHeader>
           <DialogTitle>DeerFlow Settings</DialogTitle>
           <DialogDescription>
@@ -101,8 +101,8 @@ export function SettingsDialog() {
           </DialogDescription>
         </DialogHeader>
         <Tabs value={activeTabId}>
-          <div className="flex h-100 w-full overflow-auto border-y">
-            <ul className="flex w-60 shrink-0 border-r p-1">
+          <div className="flex h-120 w-full overflow-auto border-y">
+            <ul className="flex w-50 shrink-0 border-r p-1">
               <div className="size-full">
                 {SETTINGS_TABS.map((tab) => (
                   <li
