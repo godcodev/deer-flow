@@ -5,9 +5,11 @@ import { PythonOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { LRUCache } from "lru-cache";
 import { BookOpenText, PencilRuler, Search } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useMemo } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import {
   Accordion,
@@ -272,6 +274,7 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   const code = useMemo<string>(() => {
     return (toolCall.args as { code: string }).code;
   }, [toolCall.args]);
+  const { resolvedTheme } = useTheme();
   return (
     <section className="mt-4 pl-4">
       <div className="flex items-center">
@@ -286,9 +289,11 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
       <div className="px-5">
         <div className="bg-accent mt-2 max-h-[400px] w-[800px] overflow-y-auto rounded-md p-2 text-sm">
           <SyntaxHighlighter
-            customStyle={{ background: "transparent" }}
+            customStyle={{
+              background: "transparent",
+            }}
             language="python"
-            style={docco}
+            style={resolvedTheme === "dark" ? dark : docco}
           >
             {code}
           </SyntaxHighlighter>
@@ -300,6 +305,7 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
 
 function MCPToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
   const tool = useMemo(() => findMCPTool(toolCall.name), [toolCall.name]);
+  const { resolvedTheme } = useTheme();
   return (
     <section className="mt-4 pl-4">
       <div className="w-fit overflow-y-auto rounded-md py-0">
@@ -322,9 +328,13 @@ function MCPToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
               {toolCall.result && (
                 <div className="bg-accent max-h-[400px] w-[800px] overflow-y-auto rounded-md text-sm">
                   <SyntaxHighlighter
-                    customStyle={{ background: "transparent" }}
+                    customStyle={{
+                      background: "transparent",
+                      border: "none",
+                      boxShadow: "none",
+                    }}
                     language="json"
-                    style={docco}
+                    style={resolvedTheme === "dark" ? dark : docco}
                   >
                     {toolCall.result}
                   </SyntaxHighlighter>
