@@ -11,11 +11,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { cn } from "~/lib/utils";
 
 import { Tooltip } from "./tooltip";
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { theme = "system", setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -30,15 +31,33 @@ export function ThemeToggle() {
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
           <Sun className="mr-2 h-4 w-4" />
-          Light
+          <span
+            className={cn(
+              theme === "light" ? "font-bold" : "text-muted-foreground",
+            )}
+          >
+            Light
+          </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           <Moon className="mr-2 h-4 w-4" />
-          Dark
+          <span
+            className={cn(
+              theme === "dark" ? "font-bold" : "text-muted-foreground",
+            )}
+          >
+            Dark
+          </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           <Monitor className="mr-2 h-4 w-4" />
-          System
+          <span
+            className={cn(
+              theme === "system" ? "font-bold" : "text-muted-foreground",
+            )}
+          >
+            System
+          </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
