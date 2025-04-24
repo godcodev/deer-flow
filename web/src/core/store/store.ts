@@ -5,12 +5,12 @@ import { nanoid } from "nanoid";
 import { create } from "zustand";
 
 import { chatStream, generatePodcast } from "../api";
+import type { MCPServerMetadata, SimpleMCPServerMetadata } from "../mcp";
 import type { Message } from "../messages";
 import { mergeMessage } from "../messages";
 import { parseJSON } from "../utils";
 
 import { useSettingsStore } from "./settings-store";
-import type { MCPServerMetadata, SimpleMCPServerMetadata } from "../mcp";
 
 const THREAD_ID = nanoid();
 
