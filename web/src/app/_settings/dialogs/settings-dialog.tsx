@@ -120,7 +120,7 @@ export function SettingsDialog() {
                       <Badge
                         variant="outline"
                         className={cn(
-                          "border-muted-foreground text-muted-foreground ml-auto text-xs",
+                          "border-muted-foreground text-muted-foreground ml-auto px-1 py-0 text-xs",
                           activeTabId === tab.id &&
                             "border-primary-foreground text-primary-foreground",
                         )}
