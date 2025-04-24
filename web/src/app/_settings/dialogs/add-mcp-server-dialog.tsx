@@ -124,17 +124,16 @@ export function AddMCPServerDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">Add New Server</Button>
+        <Button size="sm">Add Servers</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[560px]">
         <DialogHeader>
-          <DialogTitle>Add New MCP Server</DialogTitle>
+          <DialogTitle>Add New MCP Servers</DialogTitle>
         </DialogHeader>
         <DialogDescription>
           DeerFlow uses the standard JSON MCP config to create a new server.
           <br />
-          Paste your config below and click &quot;Add&quot; to create a new
-          server.
+          Paste your config below and click &quot;Add&quot; to add new servers.
         </DialogDescription>
 
         <main>
