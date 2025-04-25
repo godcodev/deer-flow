@@ -289,13 +289,15 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
       <div className="px-5">
         <div className="bg-accent mt-2 max-h-[400px] w-[800px] overflow-y-auto rounded-md p-2 text-sm">
           <SyntaxHighlighter
-            customStyle={{
-              background: "transparent",
-            }}
             language="python"
             style={resolvedTheme === "dark" ? dark : docco}
+            customStyle={{
+              background: "transparent",
+              border: "none",
+              boxShadow: "none",
+            }}
           >
-            {code}
+            {code.trim()}
           </SyntaxHighlighter>
         </div>
       </div>
@@ -328,15 +330,15 @@ function MCPToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
               {toolCall.result && (
                 <div className="bg-accent max-h-[400px] w-[800px] overflow-y-auto rounded-md text-sm">
                   <SyntaxHighlighter
+                    language="json"
+                    style={resolvedTheme === "dark" ? dark : docco}
                     customStyle={{
                       background: "transparent",
                       border: "none",
                       boxShadow: "none",
                     }}
-                    language="json"
-                    style={resolvedTheme === "dark" ? dark : docco}
                   >
-                    {toolCall.result}
+                    {toolCall.result.trim()}
                   </SyntaxHighlighter>
                 </div>
               )}
