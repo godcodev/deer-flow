@@ -3,7 +3,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> Come from Open Source, Back to Open Source
+> Originated from Open Source, give back to Open Source.
 
 **DeerFlow** (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is a community-driven Deep Research framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
@@ -84,7 +84,7 @@ uv run main.py
 ### Web UI
 
 This project also includes a Web UI, offering a more dynamic and engaging interactive experience.
-> Note: You need to install the dependencies of web UIfirst.
+> Note: You need to install the dependencies of web UI first.
 
 ```bash
 # Run both the backend and frontend servers

@@ -2,15 +2,14 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> Come from Open Source, Back to Open Source
+> Originated from Open Source, give back to Open Source.
 
 This is the web UI for [`DeerFlow`](https://github.com/bytedance/deer-flow).
 
-[`DeerFlow`](https://github.com/bytedance/deer-flow) is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
-
 ## How to Install
 
-DeerFlow Web UI uses `pnpm` as package manager.
+DeerFlow Web UI uses `pnpm` as its package manager.
+To install the dependencies, run:
 
 ```bash
 cd web
@@ -19,7 +18,7 @@ pnpm install
 
 ## How to Run in Development Mode
 
-**Note**: You need to start the Python API service before running the web UI.
+**Note**: Ensure the Python API service is running before starting the web UI.
 
 Start the web UI development server:
 
@@ -44,7 +43,8 @@ This project is open source and available under the [MIT License](../LICENSE).
 
 ## Acknowledgments
 
-Special thanks to all the open source projects and contributors that make `DeerFlow` possible. We stand on the shoulders of giants.
+We extend our heartfelt gratitude to the open source community for their invaluable contributions.
+DeerFlow is built upon the foundation of these outstanding projects:
 
 In particular, we want to express our deep appreciation for:
 * [Next.js](https://nextjs.org/) for their exceptional framework
