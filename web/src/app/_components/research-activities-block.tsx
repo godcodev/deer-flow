@@ -286,8 +286,8 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
           Running Python code
         </RainbowText>
       </div>
-      <div className="px-5">
-        <div className="bg-accent mt-2 max-h-[400px] w-[800px] overflow-y-auto rounded-md p-2 text-sm">
+      <div>
+        <div className="bg-accent mt-2 max-h-[400px] max-w-[calc(100%-120px)] overflow-y-auto rounded-md p-2 text-sm">
           <SyntaxHighlighter
             language="python"
             style={resolvedTheme === "dark" ? dark : docco}
@@ -328,7 +328,7 @@ function MCPToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
             </AccordionTrigger>
             <AccordionContent>
               {toolCall.result && (
-                <div className="bg-accent max-h-[400px] w-[800px] overflow-y-auto rounded-md text-sm">
+                <div className="bg-accent max-h-[400px] max-w-[560px] overflow-y-auto rounded-md text-sm">
                   <SyntaxHighlighter
                     language="json"
                     style={resolvedTheme === "dark" ? dark : docco}
