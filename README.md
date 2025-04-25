@@ -88,8 +88,8 @@ This project also includes a Web UI, offering a more dynamic and engaging intera
 > You need to install the dependencies of web UI first.
 
 ```bash
-# Run both the backend and frontend servers
-./bootstrap.sh
+# Run both the backend and frontend servers in development mode
+./bootstrap.sh -d
 ```
 
 Open your browser and visit [`http://localhost:3000`](http://localhost:3000) to explore the web UI.
