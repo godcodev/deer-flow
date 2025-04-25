@@ -90,7 +90,7 @@ async function* chatReplayStream(
       } as ChatEvent;
       if (chatEvent.type === "message_chunk") {
         if (!chatEvent.data.finish_reason) {
-          await sleepInReplay(250 + Math.random() * 250);
+          await sleepInReplay(100 + Math.random() * 250);
         }
       } else if (chatEvent.type === "tool_call_result") {
         await sleepInReplay(1500);
