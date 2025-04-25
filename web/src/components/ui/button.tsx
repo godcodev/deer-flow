@@ -1,6 +1,3 @@
-// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-// SPDX-License-Identifier: MIT
-
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
