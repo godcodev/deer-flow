@@ -18,7 +18,8 @@ pnpm install
 
 ## How to Run in Development Mode
 
-[!NOTE] Ensure the Python API service is running before starting the web UI.
+> [!NOTE]
+> Ensure the Python API service is running before starting the web UI.
 
 Start the web UI development server:
 
