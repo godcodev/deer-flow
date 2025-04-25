@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -128,6 +129,16 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --brand: #007aff;
+
+  --novel-highlight-default: #ffffff;
+  --novel-highlight-purple: #f6f3f8;
+  --novel-highlight-red: #fdebeb;
+  --novel-highlight-yellow: #fbf4a2;
+  --novel-highlight-blue: #c1ecf9;
+  --novel-highlight-green: #acf79f;
+  --novel-highlight-orange: #faebdd;
+  --novel-highlight-pink: #faf1f5;
+  --novel-highlight-gray: #f1f1ef;
 }
 
 .dark {
@@ -164,6 +175,16 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
   --brand: #4087f4;
+
+  --novel-highlight-default: #000000;
+  --novel-highlight-purple: #3f2c4b;
+  --novel-highlight-red: #5c1a1a;
+  --novel-highlight-yellow: #5c4b1a;
+  --novel-highlight-blue: #1a3d5c;
+  --novel-highlight-green: #1a5c20;
+  --novel-highlight-orange: #5c3a1a;
+  --novel-highlight-pink: #5c1a3a;
+  --novel-highlight-gray: #3a3a3a;
 }
 
 @layer base {
