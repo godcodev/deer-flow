@@ -133,7 +133,7 @@ export function MessagesBlock({ className }: { className?: string }) {
                           ? "DeerFlow is now replaying the conversation..."
                           : replayStarted
                             ? "The replay has been stopped."
-                            : `You're now in DeerFlow's replay mode. Click the start button on the right to replay.`}
+                            : `You're now in DeerFlow's replay mode. Click the "Start" button on the right to replay.`}
                       </RainbowText>
                     </CardDescription>
                   </CardHeader>
