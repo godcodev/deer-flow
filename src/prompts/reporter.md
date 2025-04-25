@@ -70,6 +70,7 @@ Structure your report in the following format:
    - **Including images from the previous steps in the report is very helpful.**
    - Use tables whenever presenting comparative data, statistics, features, or options.
    - Structure tables with clear headers and aligned columns.
+   - Use links, lists, inline-code and other formatting options to make the report more readable.
    - Add emphasis for important points.
    - DO NOT include inline citations in the text.
    - Use horizontal rules (---) to separate major sections.
