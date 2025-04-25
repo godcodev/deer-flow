@@ -4,7 +4,7 @@
 
 > Come from Open Source, Back to Open Source
 
-This is the web UI project for [`DeerFlow`](https://github.com/bytedance/deer-flow).
+This is the web UI for [`DeerFlow`](https://github.com/bytedance/deer-flow).
 
 [`DeerFlow`](https://github.com/bytedance/deer-flow) is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
@@ -40,7 +40,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the [MIT License](../LICENSE).
 
 ## Acknowledgments
 
@@ -54,4 +54,4 @@ In particular, we want to express our deep appreciation for:
 * [React Markdown](https://www.npmjs.com/package/react-markdown) for their exceptional markdown rendering and customizability
 * Last but not least, special thanks to [SToneX](https://github.com/stonexer) for his great contribution for [token-by-token visual effect](./src/core/rehype/rehype-split-words-into-spans.ts)
 
-These amazing projects form the foundation of `DeerFlow` and demonstrate the power of open source collaboration.
+These outstanding projects form the backbone of DeerFlow and exemplify the transformative power of open source collaboration.

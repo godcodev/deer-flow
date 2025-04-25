@@ -5,10 +5,41 @@
 
 > Come from Open Source, Back to Open Source
 
-**DeerFlow** (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
+**DeerFlow** (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is a community-driven Deep Research framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
+
+## 🎬 Demo
+> [!NOTE]
+> The demo video is not uploaded yet.
+
+## 📑 Table of Contents
+- [🚀 Quick Start](#quick-start)
+- [🛠️ Development](#development)
+- [🏗️ Architecture](#architecture)
+- [🗣️ Text-to-Speech Integration](#text-to-speech-integration)
+- [📚 Examples](#examples)
+- [💖 Acknowledgments](#acknowledgments)
+
 
 ## Quick Start
 
+DeerFlow is developed in Python, and comes with a web UI written in Node.js. To ensure a smooth setup process, we recommend using the following tools:
+
+### Recommended Tools
+- **[`uv`](https://docs.astral.sh/uv/getting-started/installation/):**
+  Simplify Python environment and dependency management. `uv` automatically creates a virtual environment in the root directory and installs all required packages for you—no need to manually install Python environments.
+
+- **[`nvm`](https://github.com/nvm-sh/nvm):**
+  Manage multiple versions of the Node.js runtime effortlessly.
+
+- **[`pnpm`](https://pnpm.io/installation):**
+  Install and manage dependencies of Node.js project.
+
+### Environment Requirements
+Make sure your system meets the following minimum requirements:
+- **[Python](https://www.python.org/downloads/):** Version `3.12+`
+- **[Node.js](https://nodejs.org/en/download/):** Version `22+`
+
+### Installation
 ```bash
 # Clone the repository
 git clone https://github.com/bytedance/deer-flow.git
@@ -32,16 +63,37 @@ cp conf.yaml.example conf.yaml
 # Install marp for ppt generation
 # https://github.com/marp-team/marp-cli?tab=readme-ov-file#use-package-manager
 brew install marp-cli
+```
 
-# Run the project
+Optionally, install web UI dependencies via [pnpm](https://pnpm.io/installation):
+
+```bash
+cd web
+pnpm install
+```
+
+### Console UI
+
+The quickest way to run the project is to use the console UI.
+
+```bash
+# Run the project in a bash-like shell
 uv run main.py
 ```
 
-## Web UI
+### Web UI
 
-This project also includes a web UI that allows you to interact with the deep researcher.
+This project also includes a Web UI, offering a more dynamic and engaging interactive experience.
+> Note: You need to install the dependencies of web UIfirst.
 
-Please visit the [deer-flow-web](./web/) directory for more details.
+```bash
+# Run both the backend and frontend servers
+./bootstrap.sh
+```
+
+Open your browser and visit [`http://localhost:3000`](http://localhost:3000) to explore the web UI.
+
+Please visit the [`web`](./web/) directory for more details.
 
 
 ## Supported Search Engines
@@ -322,10 +374,19 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-Special thanks to all the open source projects and contributors that make DeerFlow possible. We stand on the shoulders of giants.
+DeerFlow is built upon the incredible work of the open-source community. We are deeply grateful to all the projects and contributors whose efforts have made DeerFlow possible. Truly, we stand on the shoulders of giants.
 
-In particular, we want to express our deep appreciation for:
-- [LangChain](https://github.com/langchain-ai/langchain) for their exceptional framework that powers our LLM interactions and chains
-- [LangGraph](https://github.com/langchain-ai/langgraph) for enabling our sophisticated multi-agent orchestration
+We would like to extend our sincere appreciation to the following projects for their invaluable contributions:
 
-These amazing projects form the foundation of DeerFlow and demonstrate the power of open source collaboration.
+- **[LangChain](https://github.com/langchain-ai/langchain)**: Their exceptional framework powers our LLM interactions and chains, enabling seamless integration and functionality.
+- **[LangGraph](https://github.com/langchain-ai/langgraph)**: Their innovative approach to multi-agent orchestration has been instrumental in enabling DeerFlow's sophisticated workflows.
+
+These projects exemplify the transformative power of open-source collaboration, and we are proud to build upon their foundations.
+
+### Key Contributors
+A heartfelt thank you goes out to the core authors of `DeerFlow`, whose vision, passion, and dedication have brought this project to life:
+
+- **[Daniel Walnut](https://github.com/hetaoBackend/)**
+- **[Henry Li](https://github.com/magiccube/)**
+
+Your unwavering commitment and expertise have been the driving force behind DeerFlow's success. We are honored to have you at the helm of this journey.

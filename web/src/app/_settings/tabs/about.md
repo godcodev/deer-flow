@@ -32,8 +32,14 @@ We extend our heartfelt gratitude to the open source projects and contributors w
 - **[Zustand](https://zustand.docs.pmnd.rs/)**: A stunning state management library.
 - **[Framer Motion](https://www.framer.com/motion/)**: An amazing animation library.
 - **[React Markdown](https://www.npmjs.com/package/react-markdown)**: Exceptional markdown rendering with customizability.
-
-### Special Thanks
 - **[SToneX](https://github.com/stonexer)**: For his invaluable contribution to token-by-token visual effects.
 
 These outstanding projects form the backbone of DeerFlow and exemplify the transformative power of open source collaboration.
+
+### Special Thanks
+Finally, we want to express our heartfelt gratitude to the core authors of `DeerFlow`:
+
+- **[DanielWalnut](https://github.com/hetaoBackend/)**
+- **[Henry Li](https://github.com/magiccube/)**
+
+Without their vision, passion and dedication, `DeerFlow` would not be what it is today.
