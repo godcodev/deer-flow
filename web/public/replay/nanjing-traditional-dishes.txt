@@ -1,5 +1,5 @@
 event: message_chunk
-data: {"thread_id": "PDgExJb-Qsq2fNtO4B_sZ", "id": "run-e17aa6cd-dc71-4748-853a-1ae14dde2d56", "role": "user", "content": "Write an article about Nanjing's traditional dishes."}
+data: {"thread_id": "PDgExJb-Qsq2fNtO4B_sZ", "id": "run-e17aa6cd-dc71-4748-853a-1ae14dde2d55", "role": "user", "content": "Write an article about Nanjing's traditional dishes.", "finish_reason": "stop"}
 
 event: tool_calls
 data: {"thread_id": "PDgExJb-Qsq2fNtO4B_sZ", "agent": "coordinator", "id": "run-e17aa6cd-dc71-4748-853a-1ae14dde2d56", "role": "assistant", "finish_reason": "tool_calls", "tool_calls": [{"name": "handoff_to_planner", "args": {"task_title": "Explore Nanjing's culinary scene, documenting traditional dishes"}, "id": "", "type": "tool_call"}], "tool_call_chunks": [{"name": "handoff_to_planner", "args": "{\"task_title\":\"Explore Nanjing's culinary scene, documenting traditional dishes\"}", "id": "", "index": null, "type": "tool_call_chunk"}]}
