@@ -108,10 +108,10 @@ export function MessagesBlock({ className }: { className?: string }) {
             <Welcome />
           </div>
           <motion.div
-            className="h-42 w-full items-center justify-center transition-all duration-300"
-            initial={{ opacity: 0, y: 200 }}
+            className="h-42 w-full items-center justify-center"
+            initial={{ opacity: 0, y: "20vh" }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.5 }}
           >
             <Card
               className={cn(
@@ -124,7 +124,7 @@ export function MessagesBlock({ className }: { className?: string }) {
                   <CardHeader>
                     <CardTitle>
                       <RainbowText animated={responding}>
-                        Replay Mode
+                        {responding ? "Replaying" : "Replay Mode"}
                       </RainbowText>
                     </CardTitle>
                     <CardDescription>
