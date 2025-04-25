@@ -261,8 +261,12 @@ function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
           }}
         >
           <FavIcon className="mt-1" url={url} title={title} />
-          <a href={url} target="_blank">
-            {title}
+          <a
+            className="h-full flex-grow overflow-hidden text-ellipsis whitespace-nowrap"
+            href={url}
+            target="_blank"
+          >
+            {title ?? url}
           </a>
         </motion.li>
       </ul>
