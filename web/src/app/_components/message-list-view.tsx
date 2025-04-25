@@ -263,7 +263,10 @@ function MessageListItem({
             <RollingText className="text-muted-foreground flex-grow text-sm">
               {state}
             </RollingText>
-            <Button onClick={handleOpen}>
+            <Button
+              variant={!openResearchId ? "default" : "outline"}
+              onClick={handleOpen}
+            >
               {!openResearchId ? "Open" : "Close"}
             </Button>
           </div>
