@@ -84,7 +84,8 @@ uv run main.py
 ### Web UI
 
 This project also includes a Web UI, offering a more dynamic and engaging interactive experience.
-> Note: You need to install the dependencies of web UI first.
+> [!NOTE]
+> You need to install the dependencies of web UI first.
 
 ```bash
 # Run both the backend and frontend servers
