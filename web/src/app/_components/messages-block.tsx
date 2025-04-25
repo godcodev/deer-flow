@@ -108,7 +108,7 @@ export function MessagesBlock({ className }: { className?: string }) {
             <Welcome />
           </div>
           <motion.div
-            className="h-42 w-full items-center justify-center"
+            className="mb-4 h-fit w-full items-center justify-center"
             initial={{ opacity: 0, y: "20vh" }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
