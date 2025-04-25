@@ -1,0 +1,73 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
+"use client";
+
+import { GithubOutlined } from "@ant-design/icons";
+import Link from "next/link";
+import { useMemo } from "react";
+
+import { Button } from "~/components/ui/button";
+import { useReplay } from "~/core/replay";
+import { useStore } from "~/core/store";
+import { cn } from "~/lib/utils";
+
+import { Logo } from "./_components/logo";
+import { MessagesBlock } from "./_components/messages-block";
+import { ResearchBlock } from "./_components/research-block";
+import { ThemeToggle } from "./_components/theme-toggle";
+import { Tooltip } from "./_components/tooltip";
+import { SettingsDialog } from "./_settings/dialogs/settings-dialog";
+
+export default function App() {
+  const { isReplay } = useReplay();
+  const openResearchId = useStore((state) => state.openResearchId);
+  const doubleColumnMode = useMemo(
+    () => openResearchId !== null,
+    [openResearchId],
+  );
+  return (
+    <div className="flex h-full w-full justify-center">
+      <header className="fixed top-0 left-0 flex h-12 w-full w-screen items-center justify-between px-4">
+        <Logo />
+        <div className="flex items-center">
+          <Tooltip title="Visit DeerFlow on GitHub">
+            <Button variant="ghost" size="icon" asChild>
+              <Link
+                href="https://github.com/bytedance/deer-flow"
+                target="_blank"
+              >
+                <GithubOutlined />
+              </Link>
+            </Button>
+          </Tooltip>
+          <ThemeToggle />
+          {!isReplay && <SettingsDialog />}
+        </div>
+      </header>
+      <div
+        className={cn(
+          "flex h-full w-full justify-center px-4 pt-12 pb-4",
+          doubleColumnMode && "gap-8",
+        )}
+      >
+        <MessagesBlock
+          className={cn(
+            "shrink-0 transition-all duration-300 ease-out",
+            !doubleColumnMode &&
+              `w-[768px] translate-x-[min(calc((100vw-538px)*0.75/2),960px/2)]`,
+            doubleColumnMode && `w-[538px]`,
+          )}
+        />
+        <ResearchBlock
+          className={cn(
+            "w-[min(calc((100vw-538px)*0.75),960px)] pb-4 transition-all duration-300 ease-out",
+            !doubleColumnMode && "scale-0",
+            doubleColumnMode && "",
+          )}
+          researchId={openResearchId}
+        />
+      </div>
+    </div>
+  );
+}

@@ -1,7 +1,8 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { FastForward } from "lucide-react";
+import { motion } from "framer-motion";
+import { FastForward, Play } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
 import { Button } from "~/components/ui/button";
@@ -21,11 +22,13 @@ import { ConversationStarter } from "./conversation-starter";
 import { InputBox } from "./input-box";
 import { MessageListView } from "./message-list-view";
 import { RainbowText } from "./rainbow-text";
+import { Welcome } from "./welcome";
 
 export function MessagesBlock({ className }: { className?: string }) {
   const messageCount = useStore((state) => state.messageIds.length);
   const responding = useStore((state) => state.responding);
   const { isReplay } = useReplay();
+  const [replayStarted, setReplayStarted] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
   const handleSend = useCallback(
@@ -61,6 +64,10 @@ export function MessagesBlock({ className }: { className?: string }) {
   const handleRemoveFeedback = useCallback(() => {
     setFeedback(null);
   }, [setFeedback]);
+  const handleStartReplay = useCallback(() => {
+    setReplayStarted(true);
+    void sendMessage();
+  }, [setReplayStarted]);
   const [fastForwarding, setFastForwarding] = useState(false);
   const handleFastForwardReplay = useCallback(() => {
     setFastForwarding(!fastForwarding);
@@ -91,36 +98,68 @@ export function MessagesBlock({ className }: { className?: string }) {
           />
         </div>
       ) : (
-        <div className="flex h-42 w-full items-center justify-center">
-          <Card className="w-full">
-            <div className="flex items-center justify-between">
-              <div className="flex-grow">
-                <CardHeader>
-                  <CardTitle>
-                    <RainbowText animated={responding}>Replay Mode</RainbowText>
-                  </CardTitle>
-                  <CardDescription>
-                    <RainbowText animated={responding}>
-                      DeerFlow is now replaying the conversation...
-                    </RainbowText>
-                  </CardDescription>
-                </CardHeader>
+        <>
+          <div
+            className={cn(
+              "fixed bottom-[calc(50vh+80px)] left-0 transition-all duration-500 ease-out",
+              replayStarted && "pointer-events-none scale-150 opacity-0",
+            )}
+          >
+            <Welcome />
+          </div>
+          <motion.div
+            className="h-42 w-full items-center justify-center transition-all duration-300"
+            initial={{ opacity: 0, y: 200 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card
+              className={cn(
+                "w-full transition-all duration-300",
+                !replayStarted && "translate-y-[-40vh]",
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-grow">
+                  <CardHeader>
+                    <CardTitle>
+                      <RainbowText animated={responding}>
+                        Replay Mode
+                      </RainbowText>
+                    </CardTitle>
+                    <CardDescription>
+                      <RainbowText animated={responding}>
+                        {responding
+                          ? "DeerFlow is now replaying the conversation..."
+                          : replayStarted
+                            ? "The replay has been stopped."
+                            : `You're now in DeerFlow's replay mode. Click the start button on the right to replay.`}
+                      </RainbowText>
+                    </CardDescription>
+                  </CardHeader>
+                </div>
+                <div className="pr-4">
+                  {responding && (
+                    <Button
+                      className={cn(fastForwarding && "animate-pulse")}
+                      variant={fastForwarding ? "default" : "outline"}
+                      onClick={handleFastForwardReplay}
+                    >
+                      <FastForward size={16} />
+                      Fast Forward
+                    </Button>
+                  )}
+                  {!replayStarted && (
+                    <Button onClick={handleStartReplay}>
+                      <Play size={16} />
+                      Start
+                    </Button>
+                  )}
+                </div>
               </div>
-              <div className="pr-4">
-                {responding && (
-                  <Button
-                    className={cn(fastForwarding && "animate-pulse")}
-                    variant={fastForwarding ? "default" : "outline"}
-                    onClick={handleFastForwardReplay}
-                  >
-                    Fast Forward
-                    <FastForward size={16} />
-                  </Button>
-                )}
-              </div>
-            </div>
-          </Card>
-        </div>
+            </Card>
+          </motion.div>
+        </>
       )}
     </div>
   );
