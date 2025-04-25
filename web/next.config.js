@@ -8,22 +8,31 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
+
+// DeerFlow leverages **Turbopack** during development for faster builds and a smoother developer experience.
+// However, in production, **Webpack** is used instead.
+//
+// This decision is based on the current recommendation to avoid using Turbopack for critical projects, as it
+// is still evolving and may not yet be fully stable for production environments.
+
 const config = {
-  rewrites: async () => [
-    {
-      source: "/api/podcast/:path*",
-      destination: "http://localhost:8000/api/podcast/:path*",
-    },
-  ],
-  experimental: {
-    turbo: {
-      rules: {
-        "*.md": {
-          loaders: ["raw-loader"],
-          as: "*.js",
-        },
+  // For development mode
+  turbopack: {
+    rules: {
+      "*.md": {
+        loaders: ["raw-loader"],
+        as: "*.js",
       },
     },
+  },
+
+  // For production mode
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.md$/,
+      use: "raw-loader",
+    });
+    return config;
   },
 };
 
