@@ -33,7 +33,8 @@ logger = logging.getLogger(__name__)
 
 @tool
 def handoff_to_planner(
-    task_title: Annotated[str, "The title of the task to be handoffed."],
+    task_title: Annotated[str, "The title of the task to be handed off."],
+    locale: Annotated[str, "The user's detected language locale (e.g., en-US, zh-CN)."],
 ):
     """Handoff to planner agent to do plan."""
     # This tool is not returning anything: we're just using it
@@ -145,10 +146,23 @@ def coordinator_node(state: State) -> Command[Literal["planner", "__end__"]]:
     logger.debug(f"Current state messages: {state['messages']}")
 
     goto = "__end__"
+    locale = state.get("locale", "en-US")  # Default locale if not specified
+
     if len(response.tool_calls) > 0:
         goto = "planner"
-
+        try:
+            for tool_call in response.tool_calls:
+                if tool_call.get("name", "") != "handoff_to_planner":
+                    continue
+                if tool_locale := tool_call.get("args", {}).get("locale"):
+                    locale = tool_locale
+                    break
+        except Exception as e:
+            logger.error(f"Error processing tool calls: {e}")
     return Command(
+        update={
+            "locale": locale
+        },
         goto=goto,
     )
 

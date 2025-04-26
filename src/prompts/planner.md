@@ -183,4 +183,4 @@ interface Plan {
     - Research steps (`need_web_search: true`) for gathering information
     - Processing steps (`need_web_search: false`) for calculations and data processing
 - Default to gathering more information unless the strictest sufficient context criteria are met
-- Always use the same language as the user
+- Always use the language specified by the locale = **{{ locale }}**.
