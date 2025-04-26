@@ -9,7 +9,7 @@ import { sleep } from "../utils";
 import { resolveServiceURL } from "./resolve-service-url";
 import type { ChatEvent } from "./types";
 
-export function chatStream(
+export async function* chatStream(
   userMessage: string,
   params: {
     thread_id: string;
@@ -32,13 +32,19 @@ export function chatStream(
   if (location.search.includes("mock") || location.search.includes("replay=")) {
     return chatReplayStream(userMessage, params, options);
   }
-  return fetchStream<ChatEvent>(resolveServiceURL("chat/stream"), {
+  const stream = fetchStream(resolveServiceURL("chat/stream"), {
     body: JSON.stringify({
       messages: [{ role: "user", content: userMessage }],
       ...params,
     }),
     signal: options.abortSignal,
   });
+  for await (const event of stream) {
+    yield {
+      type: event.event,
+      data: JSON.parse(event.data),
+    } as ChatEvent;
+  }
 }
 
 async function* chatReplayStream(

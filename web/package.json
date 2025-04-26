@@ -17,7 +17,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ai-sdk/react": "^1.2.9",
     "@ant-design/icons": "^6.0.0",
     "@hookform/resolvers": "^5.0.1",
     "@nanostores/react": "github:ai/react",

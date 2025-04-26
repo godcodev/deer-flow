@@ -2,11 +2,10 @@
 
 import { Command, CommandInput } from "../../ui/command";
 
-import { useCompletion } from "@ai-sdk/react";
 import { ArrowUp } from "lucide-react";
 import { useEditor } from "novel";
 import { addAIHighlight } from "novel";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Markdown from "react-markdown";
 import { toast } from "sonner";
 import { Button } from "../../ui/button";
@@ -15,6 +14,8 @@ import { ScrollArea } from "../../ui/scroll-area";
 import AICompletionCommands from "./ai-completion-command";
 import AISelectorCommands from "./ai-selector-commands";
 import { LoadingOutlined } from "@ant-design/icons";
+import { resolveServiceURL } from "~/core/api/resolve-service-url";
+import { fetchStream } from "~/core/sse";
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
@@ -22,23 +23,72 @@ interface AISelectorProps {
   onOpenChange: (open: boolean) => void;
 }
 
+function useProseCompletion() {
+  const [completion, setCompletion] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const complete = useCallback(
+    async (prompt: string, options?: { body?: Record<string, any> }) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetchStream(
+          resolveServiceURL("/api/prose/generate"),
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt,
+              ...options?.body,
+            }),
+          },
+        );
+
+        let fullText = "";
+
+        // Process the streaming response
+        for await (const chunk of response) {
+          fullText += chunk.data;
+          setCompletion(fullText);
+        }
+
+        setIsLoading(false);
+        return fullText;
+      } catch (e) {
+        const error = e instanceof Error ? e : new Error("An error occurred");
+        setError(error);
+        toast.error(error.message);
+        setIsLoading(false);
+        throw error;
+      }
+    },
+    [],
+  );
+
+  const reset = useCallback(() => {
+    setCompletion("");
+    setError(null);
+    setIsLoading(false);
+  }, []);
+
+  return {
+    completion,
+    complete,
+    isLoading,
+    error,
+    reset,
+  };
+}
+
 export function AISelector({ onOpenChange }: AISelectorProps) {
   const { editor } = useEditor();
   const [inputValue, setInputValue] = useState("");
 
-  const { completion, complete, isLoading } = useCompletion({
-    // id: "novel",
-    api: "/api/generate",
-    onResponse: (response) => {
-      if (response.status === 429) {
-        toast.error("You have reached your request limit for the day.");
-        return;
-      }
-    },
-    onError: (e) => {
-      toast.error(e.message);
-    },
-  });
+  const { completion, complete, isLoading } = useProseCompletion();
 
   if (!editor) return null;
 
@@ -57,7 +107,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
       )}
 
       {isLoading && (
-        <div className="text-muted-foreground flex h-12 w-full items-center px-4 text-sm font-medium text-purple-500">
+        <div className="flex h-12 w-full items-center px-4 text-sm font-medium text-purple-500">
           <Magic className="mr-2 h-4 w-4 shrink-0" />
           AI is thinking
           <div className="mt-1 ml-2">

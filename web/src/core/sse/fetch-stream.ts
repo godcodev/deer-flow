@@ -3,10 +3,10 @@
 
 import { type StreamEvent } from "./StreamEvent";
 
-export async function* fetchStream<T extends StreamEvent>(
+export async function* fetchStream(
   url: string,
   init: RequestInit,
-): AsyncIterable<T> {
+): AsyncIterable<StreamEvent> {
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -39,7 +39,7 @@ export async function* fetchStream<T extends StreamEvent>(
       }
       const chunk = buffer.slice(0, index);
       buffer = buffer.slice(index + 2);
-      const event = parseEvent<T>(chunk);
+      const event = parseEvent(chunk);
       if (event) {
         yield event;
       }
@@ -47,9 +47,9 @@ export async function* fetchStream<T extends StreamEvent>(
   }
 }
 
-function parseEvent<T extends StreamEvent>(chunk: string) {
-  let resultType = "message";
-  let resultData: object | null = null;
+function parseEvent(chunk: string) {
+  let resultEvent = "message";
+  let resultData: string | null = null;
   for (const line of chunk.split("\n")) {
     const pos = line.indexOf(": ");
     if (pos === -1) {
@@ -58,16 +58,16 @@ function parseEvent<T extends StreamEvent>(chunk: string) {
     const key = line.slice(0, pos);
     const value = line.slice(pos + 2);
     if (key === "event") {
-      resultType = value;
+      resultEvent = value;
     } else if (key === "data") {
-      resultData = JSON.parse(value);
+      resultData = value;
     }
   }
-  if (resultType === "message" && resultData === null) {
+  if (resultEvent === "message" && resultData === null) {
     return undefined;
   }
   return {
-    type: resultType,
+    event: resultEvent,
     data: resultData,
-  } as T;
+  } as StreamEvent;
 }
