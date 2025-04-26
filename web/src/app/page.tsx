@@ -3,15 +3,8 @@
 
 "use client";
 
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-
-const App = dynamic(() => import("./app"), { ssr: false });
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  return (
-    <Suspense fallback={<div>Loading DeerFlow...</div>}>
-      <App />
-    </Suspense>
-  );
+  redirect("/chat");
 }
