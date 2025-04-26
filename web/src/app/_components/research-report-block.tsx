@@ -3,6 +3,7 @@
 
 import { useRef } from "react";
 
+import ReportEditor from "~/components/editor";
 import { useMessage } from "~/core/store";
 import { cn } from "~/lib/utils";
 
@@ -19,13 +20,20 @@ export function ResearchReportBlock({
 }) {
   const message = useMessage(messageId);
   const contentRef = useRef<HTMLDivElement>(null);
+  const isCompleted = message?.isStreaming === false && message?.content !== "";
   return (
     <div
       ref={contentRef}
       className={cn("relative flex flex-col pb-8", className)}
     >
-      <Markdown animate>{message?.content}</Markdown>
-      {message?.isStreaming && <LoadingAnimation className="my-12" />}
+      {isCompleted ? (
+        <ReportEditor content={message?.content} />
+      ) : (
+        <>
+          <Markdown animate>{message?.content}</Markdown>
+          {message?.isStreaming && <LoadingAnimation className="my-12" />}
+        </>
+      )}
     </div>
   );
 }

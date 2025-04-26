@@ -14,6 +14,7 @@ import {
   handleImageDrop,
   handleImagePaste,
 } from "novel";
+import type { Content } from "@tiptap/react";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { defaultExtensions } from "./extensions";
@@ -27,7 +28,7 @@ import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
-import { defaultEditorContent } from "./content";
+// import { defaultEditorContent } from "./content";
 
 import "~/styles/prosemirror.css";
 
@@ -35,10 +36,12 @@ const hljs = require("highlight.js");
 
 const extensions = [...defaultExtensions, slashCommand];
 
-const ReportEditor = () => {
-  const [initialContent, setInitialContent] = useState<null | JSONContent>(
-    null,
-  );
+export interface ReportEditorProps {
+  content: Content;
+}
+
+const ReportEditor = ({ content }: ReportEditorProps) => {
+  const [initialContent, setInitialContent] = useState<Content>(() => content);
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [charsCount, setCharsCount] = useState();
 
@@ -76,11 +79,11 @@ const ReportEditor = () => {
     500,
   );
 
-  useEffect(() => {
-    const content = window.localStorage.getItem("novel-content");
-    if (content) setInitialContent(JSON.parse(content));
-    else setInitialContent(defaultEditorContent);
-  }, []);
+  // useEffect(() => {
+  //   const content = window.localStorage.getItem("novel-content");
+  //   if (content) setInitialContent(JSON.parse(content));
+  //   else setInitialContent(defaultEditorContent);
+  // }, []);
 
   if (!initialContent) return null;
 
@@ -103,7 +106,7 @@ const ReportEditor = () => {
       <EditorRoot>
         <EditorContent
           immediatelyRender={false}
-          initialContent={initialContent}
+          initialContent={initialContent as JSONContent}
           extensions={extensions}
           className="border-muted bg-background relative h-full w-full overflow-auto sm:mb-[calc(20vh)] sm:border sm:shadow-lg"
           editorProps={{
