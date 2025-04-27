@@ -14,11 +14,11 @@ const options = [
     label: "Improve writing",
     icon: RefreshCcwDot,
   },
-  {
-    value: "fix",
-    label: "Fix grammar",
-    icon: CheckCheck,
-  },
+  // {
+  //   value: "fix",
+  //   label: "Fix grammar",
+  //   icon: CheckCheck,
+  // },
   {
     value: "shorter",
     label: "Make shorter",
