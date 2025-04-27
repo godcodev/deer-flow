@@ -38,12 +38,12 @@ const extensions = [...defaultExtensions, slashCommand];
 
 export interface ReportEditorProps {
   content: Content;
+  onMarkdownChange?: (markdown: string) => void;
 }
 
-const ReportEditor = ({ content }: ReportEditorProps) => {
+const ReportEditor = ({ content, onMarkdownChange }: ReportEditorProps) => {
   const [initialContent, setInitialContent] = useState<Content>(() => content);
   const [saveStatus, setSaveStatus] = useState("Saved");
-  const [charsCount, setCharsCount] = useState();
 
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
@@ -63,17 +63,21 @@ const ReportEditor = ({ content }: ReportEditorProps) => {
 
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
-      const json = editor.getJSON();
-      setCharsCount(editor.storage.characterCount.words());
-      window.localStorage.setItem(
-        "html-content",
-        highlightCodeblocks(editor.getHTML()),
-      );
-      window.localStorage.setItem("novel-content", JSON.stringify(json));
-      window.localStorage.setItem(
-        "markdown",
-        editor.storage.markdown.getMarkdown(),
-      );
+      // const json = editor.getJSON();
+      // // setCharsCount(editor.storage.characterCount.words());
+      // window.localStorage.setItem(
+      //   "html-content",
+      //   highlightCodeblocks(editor.getHTML()),
+      // );
+      // window.localStorage.setItem("novel-content", JSON.stringify(json));
+      // window.localStorage.setItem(
+      //   "markdown",
+      //   editor.storage.markdown.getMarkdown(),
+      // );
+      if (onMarkdownChange) {
+        const markdown = editor.storage.markdown.getMarkdown();
+        onMarkdownChange(markdown);
+      }
       setSaveStatus("Saved");
     },
     500,
@@ -89,26 +93,12 @@ const ReportEditor = ({ content }: ReportEditorProps) => {
 
   return (
     <div className="relative w-full">
-      <div className="absolute top-5 right-5 z-10 mb-5 flex gap-2">
-        <div className="bg-accent text-muted-foreground rounded-lg px-2 py-1 text-sm">
-          {saveStatus}
-        </div>
-        <div
-          className={
-            charsCount
-              ? "bg-accent text-muted-foreground rounded-lg px-2 py-1 text-sm"
-              : "hidden"
-          }
-        >
-          {charsCount} Words
-        </div>
-      </div>
       <EditorRoot>
         <EditorContent
           immediatelyRender={false}
           initialContent={initialContent as JSONContent}
           extensions={extensions}
-          className="border-muted bg-background relative h-full w-full overflow-auto sm:mb-[calc(20vh)] sm:border sm:shadow-lg"
+          className="border-muted relative h-full w-full"
           editorProps={{
             handleDOMEvents: {
               keydown: (_view, event) => handleCommandNavigation(event),

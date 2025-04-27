@@ -39,7 +39,10 @@ export function Markdown({
   }, [animate]);
   return (
     <div
-      className={cn(className, "markdown flex flex-col gap-4")}
+      className={cn(
+        className,
+        "prose dark:prose-invert prose-p:my-0 prose-img:mt-0 flex flex-col gap-4",
+      )}
       style={style}
     >
       <ReactMarkdown

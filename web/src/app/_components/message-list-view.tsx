@@ -316,13 +316,13 @@ function PlanCard({
     <Card className={cn("w-full", className)}>
       <CardHeader>
         <CardTitle>
-          <h1 className="text-xl font-medium">
-            <Markdown animate>
-              {plan.title !== undefined && plan.title !== ""
+          <Markdown animate>
+            {`### ${
+              plan.title !== undefined && plan.title !== ""
                 ? plan.title
-                : "Deep Research"}
-            </Markdown>
-          </h1>
+                : "Deep Research"
+            }`}
+          </Markdown>
         </CardTitle>
       </CardHeader>
       <CardContent>

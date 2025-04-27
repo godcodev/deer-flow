@@ -99,7 +99,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
       {hasCompletion && (
         <div className="flex max-h-[400px]">
           <ScrollArea>
-            <div className="prose prose-sm p-2 px-4">
+            <div className="prose prose-sm dark:prose-invert p-2 px-4">
               <Markdown>{completion}</Markdown>
             </div>
           </ScrollArea>

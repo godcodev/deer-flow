@@ -30,7 +30,7 @@ export async function* chatStream(
   options: { abortSignal?: AbortSignal } = {},
 ) {
   if (location.search.includes("mock") || location.search.includes("replay=")) {
-    return chatReplayStream(userMessage, params, options);
+    return yield* chatReplayStream(userMessage, params, options);
   }
   const stream = fetchStream(resolveServiceURL("chat/stream"), {
     body: JSON.stringify({
