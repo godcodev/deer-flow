@@ -268,7 +268,7 @@ function MessageListItem({
               variant={!openResearchId ? "default" : "outline"}
               onClick={handleOpen}
             >
-              {!openResearchId ? "Open" : "Close"}
+              {researchId !== openResearchId ? "Open" : "Close"}
             </Button>
           </div>
         </CardFooter>
