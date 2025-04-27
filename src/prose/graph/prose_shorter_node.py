@@ -10,6 +10,10 @@ from src.llms.llm import get_llm_by_type
 from src.prose.graph.state import ProseState
 
 logger = logging.getLogger(__name__)
+prompt = """
+You are an AI writing assistant that shortens existing text.
+- Use Markdown formatting when appropriate.
+"""
 
 
 def prose_shorter_node(state: ProseState):
@@ -17,12 +21,7 @@ def prose_shorter_node(state: ProseState):
     model = get_llm_by_type(AGENT_LLM_MAP["prose_writer"])
     prose_content = model.invoke(
         [
-            SystemMessage(
-                content="""
-You are an AI writing assistant that shortens existing text.
-- Use Markdown formatting when appropriate.
-"""
-            ),
+            SystemMessage(content=prompt),
             HumanMessage(content=f"The existing text is: {state['content']}"),
         ],
     )

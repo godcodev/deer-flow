@@ -11,18 +11,18 @@ from src.prose.graph.state import ProseState
 
 logger = logging.getLogger(__name__)
 
+prompt = """
+You are an AI writing assistant that lengthens existing text.
+- Use Markdown formatting when appropriate.
+"""
+
 
 def prose_longer_node(state: ProseState):
     logger.info("Generating prose longer content...")
     model = get_llm_by_type(AGENT_LLM_MAP["prose_writer"])
     prose_content = model.invoke(
         [
-            SystemMessage(
-                content="""
-You are an AI writing assistant that lengthens existing text.
-- Use Markdown formatting when appropriate.
-"""
-            ),
+            SystemMessage(content=prompt),
             HumanMessage(content=f"The existing text is: {state['content']}"),
         ],
     )

@@ -22,6 +22,10 @@ import {
   Youtube,
 } from "novel";
 import { Markdown } from "tiptap-markdown";
+import { Table } from "@tiptap/extension-table";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { TableRow } from "@tiptap/extension-table-row";
+import { TableCell } from "@tiptap/extension-table-cell";
 import { cx } from "class-variance-authority";
 import { common, createLowlight } from "lowlight";
 
@@ -143,6 +147,11 @@ const mathematics = Mathematics.configure({
 
 const characterCount = CharacterCount.configure();
 
+const table = Table.configure();
+const tableRow = TableRow.configure();
+const tableCell = TableCell.configure();
+const tableHeader = TableHeader.configure();
+
 const markdownExtension = Markdown.configure({
   html: true,
   tightLists: true,
@@ -163,6 +172,10 @@ export const defaultExtensions = [
   updatedImage,
   taskList,
   taskItem,
+  table,
+  tableRow,
+  tableCell,
+  tableHeader,
   horizontalRule,
   aiHighlight,
   codeBlockLowlight,

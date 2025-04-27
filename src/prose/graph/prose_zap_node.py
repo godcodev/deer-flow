@@ -10,6 +10,11 @@ from src.llms.llm import get_llm_by_type
 from src.prose.graph.state import ProseState
 
 logger = logging.getLogger(__name__)
+prompt = """
+You area an AI writing assistant that generates text based on a prompt. 
+- You take an input from the user and a command for manipulating the text."
+- Use Markdown formatting when appropriate.
+"""
 
 
 def prose_zap_node(state: ProseState):
@@ -17,13 +22,7 @@ def prose_zap_node(state: ProseState):
     model = get_llm_by_type(AGENT_LLM_MAP["prose_writer"])
     prose_content = model.invoke(
         [
-            SystemMessage(
-                content="""
-You area an AI writing assistant that generates text based on a prompt. 
-- You take an input from the user and a command for manipulating the text."
-- Use Markdown formatting when appropriate.
-"""
-            ),
+            SystemMessage(content=prompt),
             HumanMessage(
                 content=f"For this text: {state['content']}.\nYou have to respect the command: {state['command']}"
             ),
