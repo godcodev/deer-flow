@@ -13,6 +13,7 @@ from .nodes import (
     researcher_node,
     coder_node,
     human_feedback_node,
+    background_investigation_node,
 )
 
 
@@ -21,6 +22,7 @@ def _build_base_graph():
     builder = StateGraph(State)
     builder.add_edge(START, "coordinator")
     builder.add_node("coordinator", coordinator_node)
+    builder.add_node("background_investigator", background_investigation_node)
     builder.add_node("planner", planner_node)
     builder.add_node("reporter", reporter_node)
     builder.add_node("research_team", research_team_node)

@@ -63,6 +63,7 @@ async def chat_stream(request: ChatRequest):
             request.auto_accepted_plan,
             request.interrupt_feedback,
             request.mcp_settings,
+            request.enable_background_investigation,
         ),
         media_type="text/event-stream",
     )
@@ -76,6 +77,7 @@ async def _astream_workflow_generator(
     auto_accepted_plan: bool,
     interrupt_feedback: str,
     mcp_settings: dict,
+    enable_background_investigation,
 ):
     input_ = {
         "messages": messages,
@@ -84,12 +86,13 @@ async def _astream_workflow_generator(
         "current_plan": None,
         "observations": [],
         "auto_accepted_plan": auto_accepted_plan,
+        "enable_background_investigation": enable_background_investigation,
     }
     if not auto_accepted_plan and interrupt_feedback:
         resume_msg = f"[{interrupt_feedback}]"
         # add the last message to the resume message
         if messages:
-            resume_msg += f" {messages[-1]["content"]}"
+            resume_msg += f" {messages[-1]['content']}"
         input_ = Command(resume=resume_msg)
     async for agent, _, event_data in graph.astream(
         input_,

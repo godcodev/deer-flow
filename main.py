@@ -13,7 +13,13 @@ from src.workflow import run_agent_workflow_async
 from src.config.questions import BUILT_IN_QUESTIONS, BUILT_IN_QUESTIONS_ZH_CN
 
 
-def ask(question, debug=False, max_plan_iterations=1, max_step_num=3):
+def ask(
+    question,
+    debug=False,
+    max_plan_iterations=1,
+    max_step_num=3,
+    enable_background_investigation=True,
+):
     """Run the agent workflow with the given question.
 
     Args:
@@ -21,6 +27,7 @@ def ask(question, debug=False, max_plan_iterations=1, max_step_num=3):
         debug: If True, enables debug level logging
         max_plan_iterations: Maximum number of plan iterations
         max_step_num: Maximum number of steps in a plan
+        enable_background_investigation: If True, performs web search before planning to enhance context
     """
     asyncio.run(
         run_agent_workflow_async(
@@ -28,14 +35,21 @@ def ask(question, debug=False, max_plan_iterations=1, max_step_num=3):
             debug=debug,
             max_plan_iterations=max_plan_iterations,
             max_step_num=max_step_num,
+            enable_background_investigation=enable_background_investigation,
         )
     )
 
 
-def main(debug=False, max_plan_iterations=1, max_step_num=3):
+def main(
+    debug=False,
+    max_plan_iterations=1,
+    max_step_num=3,
+    enable_background_investigation=True,
+):
     """Interactive mode with built-in questions.
 
     Args:
+        enable_background_investigation: If True, performs web search before planning to enhance context
         debug: If True, enables debug level logging
         max_plan_iterations: Maximum number of plan iterations
         max_step_num: Maximum number of steps in a plan
@@ -77,6 +91,7 @@ def main(debug=False, max_plan_iterations=1, max_step_num=3):
         debug=debug,
         max_plan_iterations=max_plan_iterations,
         max_step_num=max_step_num,
+        enable_background_investigation=enable_background_investigation,
     )
 
 
@@ -102,6 +117,12 @@ if __name__ == "__main__":
         help="Maximum number of steps in a plan (default: 3)",
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug logging")
+    parser.add_argument(
+        "--no-background-investigation",
+        action="store_false",
+        dest="enable_background_investigation",
+        help="Disable background investigation before planning",
+    )
 
     args = parser.parse_args()
 
@@ -111,6 +132,7 @@ if __name__ == "__main__":
             debug=args.debug,
             max_plan_iterations=args.max_plan_iterations,
             max_step_num=args.max_step_num,
+            enable_background_investigation=args.enable_background_investigation,
         )
     else:
         # Parse user input from command line arguments or user input
@@ -125,4 +147,5 @@ if __name__ == "__main__":
             debug=args.debug,
             max_plan_iterations=args.max_plan_iterations,
             max_step_num=args.max_step_num,
+            enable_background_investigation=args.enable_background_investigation,
         )

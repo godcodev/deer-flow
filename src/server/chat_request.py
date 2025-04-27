@@ -47,6 +47,9 @@ class ChatRequest(BaseModel):
     mcp_settings: Optional[dict] = Field(
         None, description="MCP settings for the chat request"
     )
+    enable_background_investigation: Optional[bool] = Field(
+        True, description="Whether to get background investigation before plan"
+    )
 
 
 class TTSRequest(BaseModel):
