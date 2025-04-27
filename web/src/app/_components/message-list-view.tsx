@@ -76,6 +76,7 @@ export function MessageListView({
     <ScrollContainer
       className={cn("flex h-full w-full flex-col overflow-hidden", className)}
       scrollShadowColor="var(--app-background)"
+      autoScrollToBottom
     >
       <ul className="flex flex-col">
         {messageIds.map((messageId) => (

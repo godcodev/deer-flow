@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
+import { useEffect } from "react";
 import { useStickToBottom } from "use-stick-to-bottom";
 
 import { ScrollArea } from "~/components/ui/scroll-area";
@@ -11,15 +12,25 @@ export function ScrollContainer({
   children,
   scrollShadow = true,
   scrollShadowColor = "var(--background)",
+  autoScrollToBottom = false,
 }: {
   className?: string;
   children?: React.ReactNode;
   scrollShadow?: boolean;
   scrollShadowColor?: string;
+  autoScrollToBottom?: boolean;
 }) {
   const { scrollRef, contentRef } = useStickToBottom({
     initial: "instant",
   });
+
+  useEffect(() => {
+    if (!autoScrollToBottom) {
+      scrollRef.current = null;
+      contentRef.current = null;
+    }
+  }, [autoScrollToBottom, contentRef, scrollRef]);
+
   return (
     <div className={cn("relative", className)}>
       {scrollShadow && (
