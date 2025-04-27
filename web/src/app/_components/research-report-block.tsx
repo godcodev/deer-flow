@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 import ReportEditor from "~/components/editor";
 import { useMessage, useStore } from "~/core/store";
@@ -48,6 +48,7 @@ export function ResearchReportBlock({
   //     }, 500);
   //   }
   // }, [isCompleted]);
+
   return (
     <div
       ref={contentRef}

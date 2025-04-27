@@ -124,7 +124,12 @@ export function ResearchBlock({
               </TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent className="h-full min-h-0 flex-grow px-8" value="report">
+          <TabsContent
+            className="h-full min-h-0 flex-grow px-8"
+            value="report"
+            forceMount
+            hidden={activeTab !== "report"}
+          >
             <ScrollContainer
               className="px-5pb-20 h-full"
               scrollShadowColor="var(--card)"
@@ -141,6 +146,8 @@ export function ResearchBlock({
           <TabsContent
             className="h-full min-h-0 flex-grow px-8"
             value="activities"
+            forceMount
+            hidden={activeTab !== "activities"}
           >
             <ScrollContainer className="h-full" scrollShadowColor="var(--card)">
               {researchId && (

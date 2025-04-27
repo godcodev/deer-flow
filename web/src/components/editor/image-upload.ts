@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { createImageUpload } from "novel";
 import { toast } from "sonner";
 
@@ -26,7 +29,9 @@ const onUpload = (file: File) => {
           // No blob store configured
         } else if (res.status === 401) {
           resolve(file);
-          throw new Error("`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead.");
+          throw new Error(
+            "`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead.",
+          );
           // Unknown error
         } else {
           throw new Error("Error uploading image. Please try again.");

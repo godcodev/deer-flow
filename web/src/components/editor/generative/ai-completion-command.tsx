@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { CommandGroup, CommandItem, CommandSeparator } from "../../ui/command";
 import { useEditor } from "novel";
 import { Check, TextQuote, TrashIcon } from "lucide-react";

@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import { Button } from "../../ui/button";
 import { PopoverContent } from "../../ui/popover";
 import { cn } from "../../../lib/utils";

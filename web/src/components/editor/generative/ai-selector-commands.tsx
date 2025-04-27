@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
+
 import {
   ArrowDownWideNarrow,
   CheckCheck,
@@ -14,6 +17,7 @@ const options = [
     label: "Improve writing",
     icon: RefreshCcwDot,
   },
+  // TODO: add this back in
   // {
   //   value: "fix",
   //   label: "Fix grammar",
