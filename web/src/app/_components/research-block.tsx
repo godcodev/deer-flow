@@ -63,6 +63,11 @@ export function ResearchBlock({
     }, 1000);
   }, [reportId]);
 
+  // When the research id changes, set the active tab to activities
+  useEffect(() => {
+    setActiveTab("activities");
+  }, [researchId]);
+
   return (
     <div className={cn("h-full w-full", className)}>
       <Card className={cn("relative h-full w-full pt-4", className)}>

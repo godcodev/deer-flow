@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useStickToBottom } from "use-stick-to-bottom";
 
 import { ScrollArea } from "~/components/ui/scroll-area";
@@ -23,11 +23,18 @@ export function ScrollContainer({
   const { scrollRef, contentRef } = useStickToBottom({
     initial: "instant",
   });
+  const tempScrollRef = useRef<HTMLElement>(null);
+  const tempContentRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!autoScrollToBottom) {
+      tempScrollRef.current = scrollRef.current;
+      tempContentRef.current = contentRef.current;
       scrollRef.current = null;
       contentRef.current = null;
+    } else if (tempScrollRef.current && tempContentRef.current) {
+      scrollRef.current = tempScrollRef.current;
+      contentRef.current = tempContentRef.current;
     }
   }, [autoScrollToBottom, contentRef, scrollRef]);
 
