@@ -112,7 +112,7 @@ function Jumbotron() {
       />
       <FlickeringGrid
         id="deer-hero"
-        className={`absolute inset-0 z-0 mask-[url(/images/deer-hero.svg)] mask-size-[40%] mask-center mask-no-repeat`}
+        className={`absolute inset-0 z-0 mask-[url(/images/deer-hero.svg)] mask-size-[75%] mask-center mask-no-repeat`}
         squareSize={3}
         gridGap={6}
         color="#60A5FA"
@@ -282,7 +282,7 @@ const features = [
     Icon: Bird,
     name: "Lang Stack",
     description:
-      "Build with confidence using the <a href='https://www.langchain.com/langchain'>LangChain</a> and <a href='https://www.langchain.com/langgraph'>LangGraph</a> frameworks.",
+      "Build with confidence using the LangChain and LangGraph frameworks.",
     href: "/",
     cta: "Learn more",
     background: (
