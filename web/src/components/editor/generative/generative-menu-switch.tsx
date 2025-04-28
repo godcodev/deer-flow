@@ -6,6 +6,9 @@ import { Fragment, type ReactNode, useEffect } from "react";
 import { Button } from "../../ui/button";
 import Magic from "../../ui/icons/magic";
 import { AISelector } from "./ai-selector";
+import { useReplay } from "~/core/replay";
+import { TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { Tooltip } from "~/components/ui/tooltip";
 
 interface GenerativeMenuSwitchProps {
   children: ReactNode;
@@ -18,7 +21,7 @@ const GenerativeMenuSwitch = ({
   onOpenChange,
 }: GenerativeMenuSwitchProps) => {
   const { editor } = useEditor();
-
+  const { isReplay } = useReplay();
   useEffect(() => {
     if (!open && editor) removeAIHighlight(editor);
   }, [open]);
@@ -38,15 +41,32 @@ const GenerativeMenuSwitch = ({
       {open && <AISelector open={open} onOpenChange={onOpenChange} />}
       {!open && (
         <Fragment>
-          <Button
-            className="gap-1 rounded-none text-purple-500"
-            variant="ghost"
-            onClick={() => onOpenChange(true)}
-            size="sm"
-          >
-            <Magic className="h-5 w-5" />
-            Ask AI
-          </Button>
+          {isReplay ? (
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  className="gap-1 rounded-none text-purple-500"
+                  variant="ghost"
+                  size="sm"
+                  disabled
+                >
+                  <Magic className="h-5 w-5" />
+                  Ask AI
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>You can't ask AI in replay mode.</TooltipContent>
+            </Tooltip>
+          ) : (
+            <Button
+              className="gap-1 rounded-none text-purple-500"
+              variant="ghost"
+              onClick={() => onOpenChange(true)}
+              size="sm"
+            >
+              <Magic className="h-5 w-5" />
+              Ask AI
+            </Button>
+          )}
           {children}
         </Fragment>
       )}

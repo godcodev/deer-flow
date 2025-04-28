@@ -1,6 +1,7 @@
 @import "./globals.css";
 
-.ProseMirror {
+.prose {
+  color: inherit;
 }
 
 .ProseMirror .is-editor-empty:first-child::before {
