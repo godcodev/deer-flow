@@ -8,7 +8,7 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useReplay } from "~/core/replay";
-import { listenToPodcast, openResearch, useStore } from "~/core/store";
+import { closeResearch, listenToPodcast, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
 import { ResearchActivitiesBlock } from "./research-activities-block";
@@ -102,9 +102,7 @@ export function ResearchBlock({
               className="text-gray-400"
               size="sm"
               variant="ghost"
-              onClick={() => {
-                openResearch(null);
-              }}
+              onClick={() => { closeResearch(); }}
             >
               <X />
             </Button>

@@ -16,6 +16,7 @@ import {
 } from "~/components/ui/card";
 import type { Message, Option } from "~/core/messages";
 import {
+  closeResearch,
   openResearch,
   useMessage,
   useResearchTitle,
@@ -209,7 +210,7 @@ function MessageListItem({
         className={cn(
           `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow`,
           message.role === "user" &&
-            "text-primary-foreground bg-brand rounded-ee-none",
+          "text-primary-foreground bg-brand rounded-ee-none",
           message.role === "assistant" && "bg-card rounded-es-none",
           className,
         )}
@@ -245,7 +246,7 @@ function MessageListItem({
     const title = useResearchTitle(researchId);
     const handleOpen = useCallback(() => {
       if (openResearchId === researchId) {
-        openResearch(null);
+        closeResearch();
       } else {
         openResearch(researchId);
       }
@@ -318,11 +319,10 @@ function PlanCard({
       <CardHeader>
         <CardTitle>
           <Markdown animate>
-            {`### ${
-              plan.title !== undefined && plan.title !== ""
-                ? plan.title
-                : "Deep Research"
-            }`}
+            {`### ${plan.title !== undefined && plan.title !== ""
+              ? plan.title
+              : "Deep Research"
+              }`}
           </Markdown>
         </CardTitle>
       </CardHeader>

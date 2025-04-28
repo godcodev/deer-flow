@@ -28,7 +28,9 @@ export const useStore = create<{
   appendMessage: (message: Message) => void;
   updateMessage: (message: Message) => void;
   updateMessages: (messages: Message[]) => void;
-  setOngoingResearchId: (value: string | null) => void;
+  openResearch: (researchId: string | null) => void;
+  closeResearch: () => void;
+  setOngoingResearch: (researchId: string | null) => void;
 }>((set) => ({
   responding: false,
   threadId: THREAD_ID,
@@ -57,8 +59,14 @@ export const useStore = create<{
       return { messages: newMessages };
     });
   },
-  setOngoingResearchId(value: string | null) {
-    set({ ongoingResearchId: value });
+  openResearch(researchId: string | null) {
+    set({ openResearchId: researchId });
+  },
+  closeResearch() {
+    set({ openResearchId: null });
+  },
+  setOngoingResearch(researchId: string | null) {
+    set({ ongoingResearchId: researchId });
   }
 }));
 
@@ -133,7 +141,7 @@ export async function sendMessage(
         useStore.getState().updateMessage(message);
       }
     }
-    useStore.getState().setOngoingResearchId(null);
+    useStore.getState().setOngoingResearch(null);
   } finally {
     setResponding(false);
   }
@@ -191,7 +199,7 @@ function updateMessage(message: Message) {
     message.agent === "reporter" &&
     !message.isStreaming
   ) {
-    useStore.getState().setOngoingResearchId(null);
+    useStore.getState().setOngoingResearch(null);
   }
   useStore.getState().updateMessage(message);
 }
@@ -248,9 +256,11 @@ function appendResearchActivity(message: Message) {
 }
 
 export function openResearch(researchId: string | null) {
-  useStore.setState({
-    openResearchId: researchId,
-  });
+  useStore.getState().openResearch(researchId);
+}
+
+export function closeResearch() {
+  useStore.getState().closeResearch();
 }
 
 export async function listenToPodcast(researchId: string) {
