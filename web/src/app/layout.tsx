@@ -6,7 +6,7 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
-import { ThemeProvider } from "~/components/theme-provider";
+import { ThemeProviderWrapper } from "~/app/_components/theme-provider-wrapper";
 import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
@@ -27,13 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
       <body className="bg-app h-screen w-screen overscroll-none">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          disableTransitionOnChange
-        >
+        <ThemeProviderWrapper>
           <TooltipProvider>{children}</TooltipProvider>
-        </ThemeProvider>
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

@@ -27,13 +27,11 @@ import { BentoGrid } from "~/components/magicui/bento-grid";
 import { FlickeringGrid } from "~/components/magicui/flickering-grid";
 import { Button } from "~/components/ui/button";
 
-import { ThemeToggle } from "./_components/theme-toggle";
-
 export default function HomePage() {
   return (
-    <div className="flex w-screen flex-col items-center">
+    <div className="dark flex flex-col items-center overflow-x-hidden">
       <Header />
-      <main className="container flex w-screen flex-col items-center justify-center gap-56">
+      <main className="container flex flex-col items-center justify-center gap-56">
         <Jumbotron />
         <CaseStudySection />
         <CoreFeatureSection />
@@ -46,7 +44,7 @@ export default function HomePage() {
 
 function Header() {
   return (
-    <header className="supports-backdrop-blur:bg-background/80 bg-background/40 sticky top-0 left-0 z-40 flex h-15 w-screen flex-col items-center backdrop-blur-lg">
+    <header className="supports-backdrop-blur:bg-background/80 bg-background/40 sticky top-0 left-0 z-40 flex h-15 w-full flex-col items-center backdrop-blur-lg">
       <div className="container flex h-15 items-center justify-between">
         <div className="text-xl font-medium">
           <span className="mr-1">🦌</span>
@@ -59,7 +57,6 @@ function Header() {
               Star on GitHub
             </Link>
           </Button>
-          <ThemeToggle />
         </div>
       </div>
       <hr className="from-border/0 via-border/70 to-border/0 m-0 h-px w-full border-none bg-gradient-to-r" />
@@ -69,7 +66,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="container mt-32 flex w-screen flex-col items-center justify-center">
+    <footer className="container mt-32 flex flex-col items-center justify-center">
       <hr className="from-border/0 via-border/70 to-border/0 m-0 h-px w-full border-none bg-gradient-to-r" />
       <div className="text-muted-foreground container flex h-20 flex-col items-center justify-center text-sm">
         <p className="font-serif text-xl">
@@ -103,7 +100,7 @@ function SectionHeader({
 
 function Jumbotron() {
   return (
-    <section className="relative flex h-[95vh] w-screen flex-col items-center justify-center pb-15">
+    <section className="relative flex h-[95vh] flex-col items-center justify-center pb-15">
       <FlickeringGrid
         id="deer-hero-bg"
         className={`absolute inset-0 z-0 [mask-image:radial-gradient(800px_circle_at_center,white,transparent)]`}
@@ -123,22 +120,18 @@ function Jumbotron() {
         flickerChance={0.12}
       />
       <div className="relative z-10 flex flex-col items-center justify-center gap-12">
-        <h1 className="text-6xl font-bold">
+        <h1 className="text-center text-6xl font-bold">
           <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
             Deep Research{" "}
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>
-        <p className="text-center text-2xl opacity-75">
+        <p className="max-w-3xl text-center text-2xl opacity-75">
           Discover the revolutionary Multi-Agent Research Assistant that
-          empowers you to dive
-          <br />
-          deeper and wider into any subject. Equipped with the powerful tools
-          like search
-          <br />
-          engines, crawlers, Python, and MCP services, DeerFlow provides instant
-          <br />
-          insights, in-depth reports and even captivating podcasts.
+          empowers you to dive deeper and wider into any subject. Equipped with
+          the powerful tools like search engines, crawlers, Python, and MCP
+          services, DeerFlow provides instant insights, in-depth reports and
+          even captivating podcasts.
         </p>
         <div className="flex gap-6">
           <Button className="w-42 text-lg" size="lg" asChild>
@@ -219,9 +212,12 @@ function CaseStudySection() {
         title="Case Studies"
         description="See DeerFlow in action through replays."
       />
-      <div className="container flex flex-wrap">
+      <div className="flex w-full flex-wrap">
         {caseStudies.map((caseStudy) => (
-          <div key={caseStudy.title} className="w-[25%] p-2">
+          <div
+            key={caseStudy.title}
+            className="w-full p-2 sm:w-1/2 md:w-1/3 lg:w-[25%]"
+          >
             <BentoCard
               {...{
                 Icon: caseStudy.icon,
@@ -322,12 +318,12 @@ const features = [
 
 function CoreFeatureSection() {
   return (
-    <section className="relative container flex flex-col content-around items-center justify-center">
+    <section className="relative flex w-full flex-col content-around items-center justify-center">
       <SectionHeader
         title="Core Features"
         description="Find out what makes DeerFlow effective."
       />
-      <BentoGrid className="h-[75vh] lg:grid-rows-3">
+      <BentoGrid className="h-[75vh] w-full lg:grid-rows-3">
         {features.map((feature) => (
           <BentoCard key={feature.name} {...feature} />
         ))}
@@ -338,7 +334,7 @@ function CoreFeatureSection() {
 
 function JoinCommunitySection() {
   return (
-    <section className="container flex flex-col items-center justify-center pb-12">
+    <section className="flex w-full flex-col items-center justify-center pb-12">
       <SectionHeader
         title={
           <AuroraText colors={["#60A5FA", "#A5FA60", "#A560FA"]}>
