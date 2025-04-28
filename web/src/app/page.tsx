@@ -115,7 +115,7 @@ function Jumbotron() {
       />
       <FlickeringGrid
         id="deer-hero"
-        className={`absolute inset-0 z-0 mask-[url(/images/deer-hero.svg)] mask-size-[38%] mask-center mask-no-repeat`}
+        className={`absolute inset-0 z-0 mask-[url(/images/deer-hero.svg)] mask-size-[42%] mask-center mask-no-repeat`}
         squareSize={3}
         gridGap={6}
         color="#60A5FA"
