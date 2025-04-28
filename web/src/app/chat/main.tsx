@@ -3,24 +3,15 @@
 
 "use client";
 
-import { GithubOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import { useMemo } from "react";
 
-import { Button } from "~/components/ui/button";
-import { useReplay } from "~/core/replay";
 import { useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
-import { Logo } from "../_components/logo";
 import { MessagesBlock } from "../_components/messages-block";
 import { ResearchBlock } from "../_components/research-block";
-import { ThemeToggle } from "../_components/theme-toggle";
-import { Tooltip } from "../_components/tooltip";
-import { SettingsDialog } from "../_settings/dialogs/settings-dialog";
 
 export default function Main() {
-  const { isReplay } = useReplay();
   const openResearchId = useStore((state) => state.openResearchId);
   const doubleColumnMode = useMemo(
     () => openResearchId !== null,

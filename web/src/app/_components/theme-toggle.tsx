@@ -1,6 +1,8 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
+"use client";
+
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 

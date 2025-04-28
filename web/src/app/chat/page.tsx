@@ -25,9 +25,7 @@ export default function HomePage() {
       <header className="fixed top-0 left-0 flex h-12 w-full w-screen items-center justify-between px-4">
         <Logo />
         <div className="flex items-center">
-          <ThemeToggle />
-          {!isReplay && <SettingsDialog />}
-          <Tooltip title="Visit DeerFlow on GitHub">
+          <Tooltip title="Star DeerFlow on GitHub">
             <Button variant="ghost" size="icon" asChild>
               <Link
                 href="https://github.com/bytedance/deer-flow"
@@ -37,6 +35,8 @@ export default function HomePage() {
               </Link>
             </Button>
           </Tooltip>
+          <ThemeToggle />
+          {!isReplay && <SettingsDialog />}
         </div>
       </header>
       <Suspense fallback={<div>Loading DeerFlow...</div>}>

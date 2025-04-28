@@ -13,7 +13,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage
 from langgraph.types import Command
-from mcp import ClientSession
 
 from src.graph.builder import build_graph_with_memory
 from src.podcast.graph.builder import build_graph as build_podcast_graph
