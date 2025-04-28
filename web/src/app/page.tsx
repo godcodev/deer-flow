@@ -110,7 +110,7 @@ function Jumbotron() {
         squareSize={4}
         gridGap={4}
         color="#60A5FA"
-        maxOpacity={0.16}
+        maxOpacity={0.133}
         flickerChance={0.1}
       />
       <FlickeringGrid
@@ -119,7 +119,7 @@ function Jumbotron() {
         squareSize={3}
         gridGap={6}
         color="#60A5FA"
-        maxOpacity={0.5}
+        maxOpacity={0.66}
         flickerChance={0.12}
       />
       <div className="relative z-10 flex flex-col items-center justify-center gap-12">
@@ -129,7 +129,7 @@ function Jumbotron() {
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>
-        <p className="text-muted-foreground text-center text-xl">
+        <p className="text-center text-xl opacity-75">
           Discover the revolutionary Multi-Agent Research Assistant that
           empowers you to dive
           <br />
@@ -154,7 +154,7 @@ function Jumbotron() {
           </Button>
         </div>
       </div>
-      <div className="absolute bottom-8 flex text-sm opacity-40">
+      <div className="absolute bottom-8 flex text-xs opacity-50">
         <p>* DEER stands for Deep Exploration and Efficient Research.</p>
       </div>
     </section>
