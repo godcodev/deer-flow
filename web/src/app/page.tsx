@@ -27,6 +27,8 @@ import { BentoGrid } from "~/components/magicui/bento-grid";
 import { FlickeringGrid } from "~/components/magicui/flickering-grid";
 import { Button } from "~/components/ui/button";
 
+import { Ray } from "./_components/ray";
+
 export default function HomePage() {
   return (
     <div className="flex flex-col items-center">
@@ -38,6 +40,7 @@ export default function HomePage() {
         <JoinCommunitySection />
       </main>
       <Footer />
+      <Ray />
     </div>
   );
 }
