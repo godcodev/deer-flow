@@ -25,7 +25,9 @@ export const useStore = create<{
   researchActivityIds: Map<string, string[]>;
   ongoingResearchId: string | null;
   openResearchId: string | null;
-}>(() => ({
+
+  setOngoingResearchId: (value: string | null) => void;
+}>((set) => ({
   responding: false,
   threadId: THREAD_ID,
   messageIds: [],
@@ -36,6 +38,10 @@ export const useStore = create<{
   researchActivityIds: new Map<string, string[]>(),
   ongoingResearchId: null,
   openResearchId: null,
+
+  setOngoingResearchId(value: string | null) {
+    set({ ongoingResearchId: value });
+  }
 }));
 
 export async function sendMessage(
@@ -64,14 +70,14 @@ export async function sendMessage(
     const mcpServers = settings.mcp.servers.filter((server) => server.enabled);
     let mcpSettings:
       | {
-          servers: Record<
-            string,
-            MCPServerMetadata & {
-              enabled_tools: string[];
-              add_to_agents: string[];
-            }
-          >;
-        }
+        servers: Record<
+          string,
+          MCPServerMetadata & {
+            enabled_tools: string[];
+            add_to_agents: string[];
+          }
+        >;
+      }
       | undefined = undefined;
     if (mcpServers.length > 0) {
       mcpSettings = {
@@ -143,6 +149,8 @@ export async function sendMessage(
         updateMessage(message);
       }
     }
+  } catch {
+    setOngoingResearchId(null);
   } finally {
     setResponding(false);
   }
@@ -215,9 +223,7 @@ function getOngoingResearchId() {
 }
 
 function setOngoingResearchId(value: string | null) {
-  return useStore.setState({
-    ongoingResearchId: value,
-  });
+  useStore.getState().setOngoingResearchId(value);
 }
 
 function appendResearch(researchId: string) {
