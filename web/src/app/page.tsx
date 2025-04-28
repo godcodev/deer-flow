@@ -123,13 +123,13 @@ function Jumbotron() {
         flickerChance={0.12}
       />
       <div className="relative z-10 flex flex-col items-center justify-center gap-12">
-        <h1 className="text-5xl font-bold">
+        <h1 className="text-6xl font-bold">
           <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
             Deep Research{" "}
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>
-        <p className="text-center text-xl opacity-75">
+        <p className="text-center text-2xl opacity-75">
           Discover the revolutionary Multi-Agent Research Assistant that
           empowers you to dive
           <br />
