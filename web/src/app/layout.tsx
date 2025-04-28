@@ -26,7 +26,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
-      <body className="bg-app h-screen w-screen overscroll-none">
+      <body className="bg-app">
         <ThemeProviderWrapper>
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProviderWrapper>

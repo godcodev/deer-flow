@@ -29,7 +29,7 @@ import { Button } from "~/components/ui/button";
 
 export default function HomePage() {
   return (
-    <div className="dark flex flex-col items-center overflow-x-hidden">
+    <div className="flex flex-col items-center">
       <Header />
       <main className="container flex flex-col items-center justify-center gap-56">
         <Jumbotron />
@@ -323,7 +323,7 @@ function CoreFeatureSection() {
         title="Core Features"
         description="Find out what makes DeerFlow effective."
       />
-      <BentoGrid className="h-[75vh] w-full lg:grid-rows-3">
+      <BentoGrid className="w-full lg:grid-rows-3">
         {features.map((feature) => (
           <BentoCard key={feature.name} {...feature} />
         ))}
