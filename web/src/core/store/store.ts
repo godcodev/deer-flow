@@ -53,7 +53,7 @@ export async function sendMessage(
   } = {},
   options: { abortSignal?: AbortSignal } = {},
 ) {
-  if (content !== undefined) {
+  if (content != null) {
     appendMessage({
       id: nanoid(),
       threadId: THREAD_ID,
@@ -63,67 +63,22 @@ export async function sendMessage(
     });
   }
 
+  const settings = getChatStreamSettings();
+  const stream = chatStream(
+    content ?? "[REPLAY]",
+    {
+      thread_id: THREAD_ID,
+      interrupt_feedback: interruptFeedback,
+      auto_accepted_plan: settings.autoAcceptedPlan,
+      max_plan_iterations: settings.maxPlanIterations,
+      max_step_num: settings.maxStepNum,
+      mcp_settings: settings.mcpSettings,
+    },
+    options,
+  );
+
   setResponding(true);
   try {
-    const settings = useSettingsStore.getState();
-    const generalSettings = settings.general;
-    const mcpServers = settings.mcp.servers.filter((server) => server.enabled);
-    let mcpSettings:
-      | {
-        servers: Record<
-          string,
-          MCPServerMetadata & {
-            enabled_tools: string[];
-            add_to_agents: string[];
-          }
-        >;
-      }
-      | undefined = undefined;
-    if (mcpServers.length > 0) {
-      mcpSettings = {
-        servers: mcpServers.reduce((acc, cur) => {
-          const { transport, env } = cur;
-          let server: SimpleMCPServerMetadata;
-          if (transport === "stdio") {
-            server = {
-              name: cur.name,
-              transport,
-              env,
-              command: cur.command,
-              args: cur.args,
-            };
-          } else {
-            server = {
-              name: cur.name,
-              transport,
-              env,
-              url: cur.url,
-            };
-          }
-          return {
-            ...acc,
-            [cur.name]: {
-              ...server,
-              enabled_tools: cur.tools.map((tool) => tool.name),
-              add_to_agents: ["researcher"],
-            },
-          };
-        }, {}),
-      };
-    }
-    const stream = chatStream(
-      content ?? "[REPLAY]",
-      {
-        thread_id: THREAD_ID,
-        auto_accepted_plan: generalSettings.autoAcceptedPlan,
-        max_plan_iterations: generalSettings.maxPlanIterations,
-        max_step_num: generalSettings.maxStepNum,
-        interrupt_feedback: interruptFeedback,
-        mcp_settings: mcpSettings,
-      },
-      options,
-    );
-
     for await (const event of stream) {
       const { type, data } = event;
       const messageId = data.id;
@@ -155,6 +110,59 @@ export async function sendMessage(
     setResponding(false);
   }
 }
+
+function getChatStreamSettings() {
+  let mcpSettings:
+    | {
+      servers: Record<
+        string,
+        MCPServerMetadata & {
+          enabled_tools: string[];
+          add_to_agents: string[];
+        }
+      >;
+    }
+    | undefined = undefined;
+  const settings = useSettingsStore.getState();
+  const mcpServers = settings.mcp.servers.filter((server) => server.enabled);
+  if (mcpServers.length > 0) {
+    mcpSettings = {
+      servers: mcpServers.reduce((acc, cur) => {
+        const { transport, env } = cur;
+        let server: SimpleMCPServerMetadata;
+        if (transport === "stdio") {
+          server = {
+            name: cur.name,
+            transport,
+            env,
+            command: cur.command,
+            args: cur.args,
+          };
+        } else {
+          server = {
+            name: cur.name,
+            transport,
+            env,
+            url: cur.url,
+          };
+        }
+        return {
+          ...acc,
+          [cur.name]: {
+            ...server,
+            enabled_tools: cur.tools.map((tool) => tool.name),
+            add_to_agents: ["researcher"],
+          },
+        };
+      }, {}),
+    };
+  }
+  return {
+    ...settings.general,
+    mcpSettings,
+  };
+}
+
 
 function setResponding(value: boolean) {
   useStore.setState({ responding: value });
