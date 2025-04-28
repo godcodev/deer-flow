@@ -26,6 +26,9 @@ export const useStore = create<{
   ongoingResearchId: string | null;
   openResearchId: string | null;
 
+  appendMessage: (message: Message) => void;
+  updateMessage: (message: Message) => void;
+  updateMessages: (messages: Message[]) => void;
   setOngoingResearchId: (value: string | null) => void;
 }>((set) => ({
   responding: false,
@@ -39,6 +42,22 @@ export const useStore = create<{
   ongoingResearchId: null,
   openResearchId: null,
 
+  appendMessage(message: Message) {
+    set((state) => ({
+      messageIds: [...state.messageIds, message.id],
+      messages: new Map(state.messages).set(message.id, message),
+    }));
+  },
+  updateMessage(message: Message) {
+    set(state => ({ messages: new Map(state.messages).set(message.id, message) }));
+  },
+  updateMessages(messages: Message[]) {
+    set((state) => {
+      const newMessages = new Map(state.messages);
+      messages.forEach((m) => newMessages.set(m.id, m));
+      return { messages: newMessages };
+    });
+  },
   setOngoingResearchId(value: string | null) {
     set({ ongoingResearchId: value });
   }
@@ -78,10 +97,11 @@ export async function sendMessage(
   );
 
   setResponding(true);
+  let messageId: string | undefined;
   try {
     for await (const event of stream) {
       const { type, data } = event;
-      const messageId = data.id;
+      messageId = data.id;
       let message: Message | undefined;
       if (type === "tool_call_result") {
         message = findMessageByToolCallId(data.tool_call_id);
@@ -105,7 +125,16 @@ export async function sendMessage(
       }
     }
   } catch {
-    setOngoingResearchId(null);
+    // Update message status.
+    // TODO: const isAborted = (error as Error).name === "AbortError";
+    if (messageId != null) {
+      const message = getMessage(messageId);
+      if (message?.isStreaming) {
+        message.isStreaming = false;
+        useStore.getState().updateMessage(message);
+      }
+    }
+    useStore.getState().setOngoingResearchId(null);
   } finally {
     setResponding(false);
   }
@@ -195,10 +224,7 @@ function appendMessage(message: Message) {
   ) {
     appendResearchActivity(message);
   }
-  useStore.setState({
-    messageIds: [...useStore.getState().messageIds, message.id],
-    messages: new Map(useStore.getState().messages).set(message.id, message),
-  });
+  useStore.getState().appendMessage(message);
 }
 
 function updateMessage(message: Message) {
@@ -219,19 +245,13 @@ function updateMessage(message: Message) {
     message.agent === "reporter" &&
     !message.isStreaming
   ) {
-    setOngoingResearchId(null);
+    useStore.getState().setOngoingResearchId(null);
   }
-  useStore.setState({
-    messages: new Map(useStore.getState().messages).set(message.id, message),
-  });
+  useStore.getState().updateMessage(message);
 }
 
 function getOngoingResearchId() {
   return useStore.getState().ongoingResearchId;
-}
-
-function setOngoingResearchId(value: string | null) {
-  useStore.getState().setOngoingResearchId(value);
 }
 
 function appendResearch(researchId: string) {
