@@ -72,7 +72,7 @@ function Footer() {
     <footer className="container mt-32 flex flex-col items-center justify-center">
       <hr className="from-border/0 via-border/70 to-border/0 m-0 h-px w-full border-none bg-gradient-to-r" />
       <div className="text-muted-foreground container flex h-20 flex-col items-center justify-center text-sm">
-        <p className="font-serif text-xl">
+        <p className="text-center font-serif text-lg md:text-xl">
           &quot;Originated from Open Source, give back to Open Source.&quot;
         </p>
       </div>
@@ -215,12 +215,9 @@ function CaseStudySection() {
         title="Case Studies"
         description="See DeerFlow in action through replays."
       />
-      <div className="flex w-full flex-wrap">
+      <div className="grid w-3/4 grid-cols-1 gap-2 sm:w-full sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {caseStudies.map((caseStudy) => (
-          <div
-            key={caseStudy.title}
-            className="w-full p-2 sm:w-1/2 md:w-1/3 lg:w-[25%]"
-          >
+          <div key={caseStudy.title} className="w-full p-2">
             <BentoCard
               {...{
                 Icon: caseStudy.icon,
@@ -228,13 +225,7 @@ function CaseStudySection() {
                 description: caseStudy.description,
                 href: "/",
                 cta: "Learn more",
-                className: "w-full h-[320px]",
-                background: (
-                  <img
-                    alt="background"
-                    className="absolute -top-20 -right-20 opacity-60"
-                  />
-                ),
+                className: "w-full h-full",
               }}
             />
           </div>
