@@ -129,7 +129,7 @@ function Jumbotron() {
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>
-        <p className="max-w-4xl text-center text-2xl font-light opacity-75">
+        <p className="hidden max-w-4xl text-center text-2xl font-light opacity-75 md:block">
           Discover the revolutionary Multi-Agent Research Assistant that
           empowers you to dive deeper and wider into any subject. Equipped with
           the powerful tools like search engines, crawlers, Python, and MCP
@@ -290,7 +290,7 @@ const features = [
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
     ),
-    className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
+    className: "lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2",
   },
   {
     Icon: Usb,
@@ -302,7 +302,7 @@ const features = [
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
     ),
-    className: "lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-3",
+    className: "lg:col-start-2 lg:col-end-3 lg:row-start-2 lg:row-end-3",
   },
   {
     Icon: Podcast,
@@ -314,7 +314,7 @@ const features = [
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
     ),
-    className: "lg:col-start-3 lg:col-end-3 lg:row-start-3 lg:row-end-4",
+    className: "lg:col-start-2 lg:col-end-3 lg:row-start-3 lg:row-end-4",
   },
 ];
 
@@ -325,7 +325,7 @@ function CoreFeatureSection() {
         title="Core Features"
         description="Find out what makes DeerFlow effective."
       />
-      <BentoGrid className="w-full lg:grid-rows-3">
+      <BentoGrid className="w-3/4 lg:grid-cols-2 lg:grid-rows-3">
         {features.map((feature) => (
           <BentoCard key={feature.name} {...feature} />
         ))}
