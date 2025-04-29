@@ -264,6 +264,7 @@ export function MultiAgentVisualization() {
       panOnScroll={false}
       zoomOnScroll={false}
       preventScrolling={false}
+      panOnDrag={false}
     >
       <Background
         className="[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]"
