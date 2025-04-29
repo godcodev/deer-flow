@@ -12,7 +12,6 @@ import {
   Home,
   Lightbulb,
   Microscope,
-  Network,
   Paintbrush,
   Podcast,
   ShoppingCart,
@@ -36,6 +35,7 @@ export default function HomePage() {
       <main className="container flex flex-col items-center justify-center gap-56">
         <Jumbotron />
         <CaseStudySection />
+        <MultiAgentSection />
         <CoreFeatureSection />
         <JoinCommunitySection />
       </main>
@@ -93,7 +93,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-12 flex flex-col items-center justify-center gap-2">
-      <h2 className="mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-5xl font-bold text-transparent">
+      <h2 className="mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-center text-5xl font-bold text-transparent">
         {title}
       </h2>
       <p className="text-muted-foreground text-center text-xl">{description}</p>
@@ -129,7 +129,7 @@ function Jumbotron() {
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>
-        <p className="max-w-3xl text-center text-2xl opacity-75">
+        <p className="max-w-4xl text-center text-2xl font-light opacity-75">
           Discover the revolutionary Multi-Agent Research Assistant that
           empowers you to dive deeper and wider into any subject. Equipped with
           the powerful tools like search engines, crawlers, Python, and MCP
@@ -244,12 +244,23 @@ function CaseStudySection() {
   );
 }
 
+function MultiAgentSection() {
+  return (
+    <section className="relative container flex flex-col items-center justify-center">
+      <SectionHeader
+        title="Multi-Agent Architecture"
+        description="Experience the agent teamwork with our Supervisor + Handoffs design pattern."
+      />
+    </section>
+  );
+}
+
 const features = [
   {
     Icon: Microscope,
     name: "Dive Deeper and Reach Wider",
     description:
-      "Unlock deeper insights with advanced tools. Our powerful search and web crawling technology gathers comprehensive data, delivering in-depth reports to enhance your study.",
+      "Unlock deeper insights with advanced tools. Our powerful search + crawling and Python tools gathers comprehensive data, delivering in-depth reports to enhance your study.",
     href: "/",
     cta: "Learn more",
     background: (
@@ -268,18 +279,6 @@ const features = [
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
     ),
     className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
-  },
-  {
-    Icon: Network,
-    name: "Multi-Agent Architecture",
-    description:
-      "Experience agent teamwork with our Supervisor + Handoffs architecture. From initial communication to deep research and polished report generation, each step is seamlessly coordinated for maximum efficiency and accuracy.",
-    href: "/",
-    cta: "Learn more",
-    background: (
-      <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
-    ),
-    className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
   },
   {
     Icon: Bird,
@@ -309,7 +308,7 @@ const features = [
     Icon: Podcast,
     name: "Podcast Generation",
     description:
-      "Listen to insights anytime—perfect for on-the-go learning or sharing findings effortlessly.  ",
+      "Instantly generate podcasts from reports. Perfect for on-the-go learning or sharing findings effortlessly.  ",
     href: "/",
     cta: "Learn more",
     background: (
