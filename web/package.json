@@ -50,6 +50,7 @@
     "framer-motion": "^12.6.5",
     "hast": "^1.0.0",
     "highlight.js": "^11.11.1",
+    "immer": "^10.1.1",
     "katex": "^0.16.21",
     "lowlight": "^3.3.0",
     "lru-cache": "^11.1.0",
