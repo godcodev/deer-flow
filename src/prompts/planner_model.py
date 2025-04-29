@@ -32,7 +32,7 @@ class Plan(BaseModel):
     thought: str
     title: str
     steps: List[Step] = Field(
-        ...,
+        default_factory=list,
         description="Research & Processing steps to get more context",
     )
 

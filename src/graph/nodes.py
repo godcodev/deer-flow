@@ -116,6 +116,24 @@ def planner_node(
     logger.debug(f"Current state messages: {state['messages']}")
     logger.info(f"Planner response: {full_response}")
 
+    try:
+        curr_plan = json.loads(repair_json_output(full_response))
+    except json.JSONDecodeError:
+        logger.warning("Planner response is not a valid JSON")
+        if plan_iterations > 0:
+            return Command(goto="reporter")
+        else:
+            return Command(goto="__end__")
+    if curr_plan.get("has_enough_context"):
+        logger.info("Planner response has enough context.")
+        new_plan = Plan.model_validate(curr_plan)
+        return Command(
+            update={
+                "messages": [AIMessage(content=full_response, name="planner")],
+                "current_plan": new_plan,
+            },
+            goto="reporter",
+        )
     return Command(
         update={
             "messages": [AIMessage(content=full_response, name="planner")],
