@@ -48,9 +48,9 @@ export default function HomePage() {
 function Header() {
   return (
     <header className="supports-backdrop-blur:bg-background/80 bg-background/40 sticky top-0 left-0 z-40 flex h-15 w-full flex-col items-center backdrop-blur-lg">
-      <div className="container flex h-15 items-center justify-between">
+      <div className="container flex h-15 items-center justify-between px-3">
         <div className="text-xl font-medium">
-          <span className="mr-1">🦌</span>
+          <span className="mr-1 text-2xl">🦌</span>
           <span>DeerFlow</span>
         </div>
         <div className="flex items-center gap-2">
