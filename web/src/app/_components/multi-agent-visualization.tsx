@@ -11,8 +11,17 @@ import {
   Handle,
   Position,
 } from "@xyflow/react";
-
 import "@xyflow/react/dist/style.css";
+import {
+  ArrowLeftRight,
+  Brain,
+  UserCheck,
+  UserCog,
+  UserPen,
+  Users,
+  UserSearch,
+  type LucideIcon,
+} from "lucide-react";
 
 const ROW_HEIGHT = 75;
 const ROW_1 = 0;
@@ -26,48 +35,48 @@ const initialNodes = [
     id: "Start",
     type: "circle",
     data: { label: "Start" },
-    position: { x: 80, y: ROW_1 },
+    position: { x: 25, y: ROW_1 },
   },
   {
     id: "Coordinator",
-    data: { label: "Coordinator" },
+    data: { icon: ArrowLeftRight, label: "Coordinator" },
     position: { x: 150, y: ROW_1 },
   },
   {
     id: "Planner",
-    data: { label: "Planner" },
+    data: { icon: Brain, label: "Planner" },
     position: { x: 150, y: ROW_2 },
   },
   {
     id: "Reporter",
-    data: { label: "Reporter" },
-    position: { x: 25, y: ROW_3 },
+    data: { icon: UserPen, label: "Reporter" },
+    position: { x: 275, y: ROW_3 },
   },
   {
-    id: "Human Feedback",
-    data: { label: "Human Feedback" },
-    position: { x: 275, y: ROW_4 },
+    id: "HumanFeedback",
+    data: { icon: UserCheck, label: "Human Feedback" },
+    position: { x: 25, y: ROW_4 },
   },
   {
-    id: "Research Team",
-    data: { label: "Research Team" },
-    position: { x: 275, y: ROW_5 },
+    id: "ResearchTeam",
+    data: { icon: Users, label: "Research Team" },
+    position: { x: 25, y: ROW_5 },
   },
   {
     id: "Researcher",
-    data: { label: "Researcher" },
-    position: { x: 175, y: ROW_6 },
+    data: { icon: UserSearch, label: "Researcher" },
+    position: { x: -75, y: ROW_6 },
   },
   {
     id: "Coder",
-    data: { label: "Coder" },
-    position: { x: 375, y: ROW_6 },
+    data: { icon: UserCog, label: "Coder" },
+    position: { x: 125, y: ROW_6 },
   },
   {
     id: "End",
     type: "circle",
     data: { label: "End" },
-    position: { x: 80, y: ROW_6 },
+    position: { x: 330, y: ROW_6 },
   },
 ];
 
@@ -92,30 +101,30 @@ const initialEdges = [
     id: "Planner->Reporter",
     source: "Planner",
     target: "Reporter",
+    sourceHandle: "right",
+    targetHandle: "top",
+    animated: true,
+  },
+  {
+    id: "Planner->HumanFeedback",
+    source: "Planner",
+    target: "HumanFeedback",
     sourceHandle: "left",
     targetHandle: "top",
     animated: true,
   },
   {
-    id: "Planner->Human Feedback",
-    source: "Planner",
-    target: "Human Feedback",
-    sourceHandle: "bottom",
-    targetHandle: "left",
-    animated: true,
-  },
-  {
-    id: "Human Feedback->Planner",
-    source: "Human Feedback",
+    id: "HumanFeedback->Planner",
+    source: "HumanFeedback",
     target: "Planner",
-    sourceHandle: "top",
-    targetHandle: "right",
+    sourceHandle: "right",
+    targetHandle: "bottom",
     animated: true,
   },
   {
-    id: "Human Feedback->Research Team",
-    source: "Human Feedback",
-    target: "Research Team",
+    id: "HumanFeedback->ResearchTeam",
+    source: "HumanFeedback",
+    target: "ResearchTeam",
     sourceHandle: "bottom",
     targetHandle: "top",
     animated: true,
@@ -129,41 +138,41 @@ const initialEdges = [
     animated: true,
   },
   {
-    id: "Research Team->Researcher",
-    source: "Research Team",
+    id: "ResearchTeam->Researcher",
+    source: "ResearchTeam",
     target: "Researcher",
     sourceHandle: "left",
     targetHandle: "top",
     animated: true,
   },
   {
-    id: "Research Team->Coder",
-    source: "Research Team",
+    id: "ResearchTeam->Coder",
+    source: "ResearchTeam",
     target: "Coder",
     sourceHandle: "bottom",
     targetHandle: "left",
     animated: true,
   },
   {
-    id: "Research Team->Planner",
-    source: "Research Team",
+    id: "ResearchTeam->Planner",
+    source: "ResearchTeam",
     target: "Planner",
-    sourceHandle: "left",
-    targetHandle: "bottom",
-    animated: true,
-  },
-  {
-    id: "Researcher->Research Team",
-    source: "Researcher",
-    target: "Research Team",
     sourceHandle: "right",
     targetHandle: "bottom",
     animated: true,
   },
   {
-    id: "Coder->Research Team",
+    id: "Researcher->ResearchTeam",
+    source: "Researcher",
+    target: "ResearchTeam",
+    sourceHandle: "right",
+    targetHandle: "bottom",
+    animated: true,
+  },
+  {
+    id: "Coder->ResearchTeam",
     source: "Coder",
-    target: "Research Team",
+    target: "ResearchTeam",
     sourceHandle: "top",
     targetHandle: "right",
     animated: true,
@@ -231,10 +240,15 @@ function CircleNode({ data }: { data: { label: string } }) {
   );
 }
 
-function AgentNode({ data }: { data: { label: string } }) {
+function AgentNode({ data }: { data: { icon?: LucideIcon; label: string } }) {
   return (
     <>
-      <div className="text-xs">{data.label}</div>
+      <div className="flex w-full items-center justify-center text-xs">
+        <div className="flex items-center gap-2">
+          {data.icon && <data.icon className="h-[1rem] w-[1rem]" />}
+          <span>{data.label}</span>
+        </div>
+      </div>
       <Handle
         className="invisible"
         type="source"
