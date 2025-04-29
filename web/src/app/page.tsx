@@ -26,6 +26,7 @@ import { BentoGrid } from "~/components/magicui/bento-grid";
 import { FlickeringGrid } from "~/components/magicui/flickering-grid";
 import { Button } from "~/components/ui/button";
 
+import { MultiAgentVisualization } from "./_components/multi-agent-visualization";
 import { Ray } from "./_components/ray";
 
 export default function HomePage() {
@@ -237,11 +238,16 @@ function CaseStudySection() {
 
 function MultiAgentSection() {
   return (
-    <section className="relative container flex flex-col items-center justify-center">
+    <section className="relative flex w-full flex-col items-center justify-center">
       <SectionHeader
         title="Multi-Agent Architecture"
         description="Experience the agent teamwork with our Supervisor + Handoffs design pattern."
       />
+      <div className="flex h-[70vh] w-full flex-col items-center justify-center">
+        <div className="h-full w-full">
+          <MultiAgentVisualization />
+        </div>
+      </div>
     </section>
   );
 }
