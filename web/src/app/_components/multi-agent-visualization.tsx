@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 "use client";
-
 import {
   ReactFlow,
   Background,
@@ -13,15 +12,77 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import {
-  ArrowLeftRight,
   Brain,
+  FilePen,
+  MessageSquareQuote,
+  Microscope,
+  SquareTerminal,
   UserCheck,
-  UserCog,
-  UserPen,
   Users,
-  UserSearch,
   type LucideIcon,
 } from "lucide-react";
+
+import { ShineBorder } from "~/components/magicui/shine-border";
+
+const WORKFLOW_STEPS = [
+  {
+    description:
+      "The Coordinator is responsible for engaging with the user to understand their problem and requirements.",
+    activeNodes: ["Start", "Coordinator"],
+    activeEdges: ["Start->Coordinator"],
+  },
+  {
+    description:
+      "If the user's problem is clearly defined, the Coordinator will hand it over to the Planner.",
+    activeNodes: ["Coordinator", "Planner"],
+    activeEdges: ["Coordinator->Planner"],
+  },
+  {
+    description: "Awaiting human feedback to refine the plan.",
+    activeNodes: ["Planner", "HumanFeedback"],
+    activeEdges: ["Planner->HumanFeedback"],
+  },
+  {
+    description: "Updating the plan based on human feedback.",
+    activeNodes: ["Planner", "HumanFeedback"],
+    activeEdges: ["HumanFeedback->Planner"],
+  },
+  {
+    description:
+      "The Research Team is responsible for conducting the core research tasks.",
+    activeNodes: ["HumanFeedback", "ResearchTeam"],
+    activeEdges: ["HumanFeedback->ResearchTeam", "ResearchTeam->HumanFeedback"],
+  },
+  {
+    description:
+      "The Researcher is responsible for gathering information using search and crawling tools.",
+    activeNodes: ["ResearchTeam", "Researcher"],
+    activeEdges: ["ResearchTeam->Researcher", "Researcher->ResearchTeam"],
+  },
+  {
+    description:
+      "The Coder is responsible for writing and executing Python code to solve problems such as mathematical computations, data analysis, and more.",
+    activeNodes: ["ResearchTeam", "Coder"],
+    activeEdges: ["ResearchTeam->Coder", "Coder->ResearchTeam"],
+  },
+  {
+    description:
+      "Once the research tasks are completed, the Researcher will hand over to the Planner.",
+    activeNodes: ["ResearchTeam", "Planner"],
+    activeEdges: ["ResearchTeam->Planner"],
+  },
+  {
+    description:
+      "If no additional information is required, the Planner will handoff to the Reporter.",
+    activeNodes: ["Planner", "Reporter"],
+    activeEdges: ["Planner->Reporter"],
+  },
+  {
+    description: "The Reporter will prepare a report summarizing the results.",
+    activeNodes: ["Reporter", "End"],
+    activeEdges: ["Reporter->End"],
+  },
+];
 
 const ROW_HEIGHT = 75;
 const ROW_1 = 0;
@@ -39,7 +100,7 @@ const initialNodes = [
   },
   {
     id: "Coordinator",
-    data: { icon: ArrowLeftRight, label: "Coordinator" },
+    data: { icon: MessageSquareQuote, label: "Coordinator" },
     position: { x: 150, y: ROW_1 },
   },
   {
@@ -49,7 +110,7 @@ const initialNodes = [
   },
   {
     id: "Reporter",
-    data: { icon: UserPen, label: "Reporter" },
+    data: { icon: FilePen, label: "Reporter" },
     position: { x: 275, y: ROW_3 },
   },
   {
@@ -64,12 +125,12 @@ const initialNodes = [
   },
   {
     id: "Researcher",
-    data: { icon: UserSearch, label: "Researcher" },
+    data: { icon: Microscope, label: "Researcher" },
     position: { x: -75, y: ROW_6 },
   },
   {
     id: "Coder",
-    data: { icon: UserCog, label: "Coder" },
+    data: { icon: SquareTerminal, label: "Coder" },
     position: { x: 125, y: ROW_6 },
   },
   {
@@ -186,8 +247,8 @@ const nodeTypes = {
 };
 
 export function MultiAgentVisualization() {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes] = useNodesState(initialNodes);
+  const [edges, setEdges] = useEdgesState(initialEdges);
 
   return (
     <ReactFlow
@@ -197,8 +258,6 @@ export function MultiAgentVisualization() {
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
       fitView
       attributionPosition="top-right"
       colorMode="dark"
@@ -214,9 +273,15 @@ export function MultiAgentVisualization() {
   );
 }
 
-function CircleNode({ data }: { data: { label: string } }) {
+function CircleNode({ data }: { data: { label: string; active: boolean } }) {
   return (
     <>
+      {data.active && (
+        <ShineBorder
+          className="rounded-full"
+          shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+        />
+      )}
       <div className="flex h-10 w-10 items-center justify-center rounded-full border bg-[var(--xy-node-background-color-default)]">
         <p className="text-xs">{data.label}</p>
       </div>
@@ -240,10 +305,25 @@ function CircleNode({ data }: { data: { label: string } }) {
   );
 }
 
-function AgentNode({ data }: { data: { icon?: LucideIcon; label: string } }) {
+function AgentNode({
+  data,
+  id,
+}: {
+  data: { icon?: LucideIcon; label: string; active: boolean };
+  id: string;
+}) {
   return (
     <>
-      <div className="flex w-full items-center justify-center text-xs">
+      {data.active && (
+        <ShineBorder
+          shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+          className="rounded-[2px]"
+        />
+      )}
+      <div
+        id={id}
+        className="relative flex w-full items-center justify-center text-xs"
+      >
         <div className="flex items-center gap-2">
           {data.icon && <data.icon className="h-[1rem] w-[1rem]" />}
           <span>{data.label}</span>
