@@ -37,7 +37,7 @@ import { useIntersectionObserver } from "~/hooks/use-intersection-observer";
 
 import { Tooltip } from "./tooltip";
 
-const ROW_HEIGHT = 75;
+const ROW_HEIGHT = 80;
 const ROW_1 = 0;
 const ROW_2 = ROW_HEIGHT;
 const ROW_3 = ROW_HEIGHT * 2;
@@ -56,7 +56,7 @@ const initialNodes: WorkflowNode[] = [
     id: "Start",
     type: "circle",
     data: { label: "Start" },
-    position: { x: 25, y: ROW_1 },
+    position: { x: -75, y: ROW_1 },
   },
   {
     id: "Coordinator",
@@ -218,6 +218,7 @@ const WORKFLOW_STEPS = [
       "If the user's problem is clearly defined, the Coordinator will hand it over to the Planner.",
     activeNodes: ["Coordinator", "Planner"],
     activeEdges: ["Coordinator->Planner"],
+    tooltipPosition: "left",
   },
   {
     description: "Awaiting human feedback to refine the plan.",
@@ -226,37 +227,41 @@ const WORKFLOW_STEPS = [
   },
   {
     description: "Updating the plan based on human feedback.",
-    activeNodes: ["Planner", "HumanFeedback"],
+    activeNodes: ["HumanFeedback", "Planner"],
     activeEdges: ["HumanFeedback->Planner"],
   },
   {
     description:
       "The Research Team is responsible for conducting the core research tasks.",
+    tooltipPosition: "left",
     activeNodes: ["HumanFeedback", "ResearchTeam"],
     activeEdges: ["HumanFeedback->ResearchTeam", "ResearchTeam->HumanFeedback"],
   },
   {
     description:
       "The Researcher is responsible for gathering information using search and crawling tools.",
+    tooltipPosition: "bottom",
     activeNodes: ["ResearchTeam", "Researcher"],
     activeEdges: ["ResearchTeam->Researcher", "Researcher->ResearchTeam"],
   },
   {
     description:
       "The Coder is responsible for writing and executing Python code to solve problems such as mathematical computations, data analysis, and more.",
+    tooltipPosition: "bottom",
     activeNodes: ["ResearchTeam", "Coder"],
     activeEdges: ["ResearchTeam->Coder", "Coder->ResearchTeam"],
   },
   {
     description:
       "Once the research tasks are completed, the Researcher will hand over to the Planner.",
+    tooltipPosition: "bottom",
     activeNodes: ["ResearchTeam", "Planner"],
     activeEdges: ["ResearchTeam->Planner"],
   },
   {
     description:
       "If no additional information is required, the Planner will handoff to the Reporter.",
-    activeNodes: ["Planner", "Reporter"],
+    activeNodes: ["Reporter", "Planner"],
     activeEdges: ["Planner->Reporter"],
   },
   {
@@ -302,6 +307,7 @@ function useWorkflowRun(
               step.activeNodes.indexOf(node.id) === step.activeNodes.length - 1
                 ? step.description
                 : undefined,
+            stepTooltipPosition: step.tooltipPosition,
           },
         }));
       });
@@ -429,6 +435,7 @@ function AgentNode({
     label: string;
     active: boolean;
     stepDescription?: string;
+    stepTooltipPosition?: "left" | "right" | "top" | "bottom";
   };
   id: string;
 }) {
@@ -441,9 +448,10 @@ function AgentNode({
         />
       )}
       <Tooltip
-        className="max-w-50"
+        className="max-w-50 opacity-66"
         open={data.active && !!data.stepDescription}
         title={data.stepDescription}
+        side={data.stepTooltipPosition}
         sideOffset={20}
       >
         <div
