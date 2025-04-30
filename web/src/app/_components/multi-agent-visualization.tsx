@@ -276,7 +276,7 @@ function useWorkflowRun(
     setEdges((edges) => {
       return edges.map((edge) => ({
         ...edge,
-        animated: false,
+        animated: true,
       }));
     });
 
