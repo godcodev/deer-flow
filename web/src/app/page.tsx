@@ -104,7 +104,7 @@ function SectionHeader({
 
 function Jumbotron() {
   return (
-    <section className="relative flex h-[95vh] flex-col items-center justify-center pb-15">
+    <section className="relative flex h-[95vh] w-full flex-col items-center justify-center pb-15">
       <FlickeringGrid
         id="deer-hero-bg"
         className={`absolute inset-0 z-0 [mask-image:radial-gradient(800px_circle_at_center,white,transparent)]`}
@@ -116,7 +116,7 @@ function Jumbotron() {
       />
       <FlickeringGrid
         id="deer-hero"
-        className={`absolute inset-0 z-0 mask-[url(/images/deer-hero.svg)] mask-size-[75%] mask-center mask-no-repeat`}
+        className={`absolute inset-0 z-0 mask-[url(/images/deer-hero.svg)] mask-size-[100vw] mask-center mask-no-repeat md:mask-size-[72vh]`}
         squareSize={3}
         gridGap={6}
         color="#60A5FA"
