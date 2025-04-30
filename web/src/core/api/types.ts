@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 import type { Option } from "../messages";
-import type { StreamEvent } from "../sse";
 
 // Tool Calls
 
@@ -23,7 +22,7 @@ export interface ToolCallChunk {
 
 // Events
 
-interface GenericEvent<T extends string, D extends object> extends StreamEvent {
+interface GenericEvent<T extends string, D extends object> {
   type: T;
   data: {
     id: string;
