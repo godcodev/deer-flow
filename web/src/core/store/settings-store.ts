@@ -10,6 +10,7 @@ const SETTINGS_KEY = "deerflow.settings";
 const DEFAULT_SETTINGS: SettingsState = {
   general: {
     autoAcceptedPlan: false,
+    enableBackgroundInvestigation: false,
     maxPlanIterations: 1,
     maxStepNum: 3,
   },
@@ -21,6 +22,7 @@ const DEFAULT_SETTINGS: SettingsState = {
 export type SettingsState = {
   general: {
     autoAcceptedPlan: boolean;
+    enableBackgroundInvestigation: boolean;
     maxPlanIterations: number;
     maxStepNum: number;
   };
@@ -48,9 +50,10 @@ export const loadSettings = () => {
   const json = localStorage.getItem(SETTINGS_KEY);
   if (json) {
     const settings = JSON.parse(json);
-    for (const key in DEFAULT_SETTINGS) {
-      if (!(key in settings)) {
-        settings[key] = DEFAULT_SETTINGS[key as keyof SettingsState];
+    for (const key in DEFAULT_SETTINGS.general) {
+      if (!(key in settings.general)) {
+        settings.general[key as keyof SettingsState["general"]] =
+          DEFAULT_SETTINGS.general[key as keyof SettingsState["general"]];
       }
     }
 
@@ -71,14 +74,14 @@ export const saveSettings = () => {
 export const getChatStreamSettings = () => {
   let mcpSettings:
     | {
-      servers: Record<
-        string,
-        MCPServerMetadata & {
-          enabled_tools: string[];
-          add_to_agents: string[];
-        }
-      >;
-    }
+        servers: Record<
+          string,
+          MCPServerMetadata & {
+            enabled_tools: string[];
+            add_to_agents: string[];
+          }
+        >;
+      }
     | undefined = undefined;
   const { mcp, general } = useSettingsStore.getState();
   const mcpServers = mcp.servers.filter((server) => server.enabled);
@@ -120,4 +123,13 @@ export const getChatStreamSettings = () => {
   };
 };
 
+export function setEnableBackgroundInvestigation(value: boolean) {
+  useSettingsStore.setState((state) => ({
+    general: {
+      ...state.general,
+      enableBackgroundInvestigation: value,
+    },
+  }));
+  saveSettings();
+}
 loadSettings();

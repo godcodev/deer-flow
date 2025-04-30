@@ -50,7 +50,9 @@ export const useStore = create<{
     }));
   },
   updateMessage(message: Message) {
-    set(state => ({ messages: new Map(state.messages).set(message.id, message) }));
+    set((state) => ({
+      messages: new Map(state.messages).set(message.id, message),
+    }));
   },
   updateMessages(messages: Message[]) {
     set((state) => {
@@ -67,7 +69,7 @@ export const useStore = create<{
   },
   setOngoingResearch(researchId: string | null) {
     set({ ongoingResearchId: researchId });
-  }
+  },
 }));
 
 export async function sendMessage(
@@ -96,6 +98,8 @@ export async function sendMessage(
       thread_id: THREAD_ID,
       interrupt_feedback: interruptFeedback,
       auto_accepted_plan: settings.autoAcceptedPlan,
+      enable_background_investigation:
+        settings.enableBackgroundInvestigation ?? true,
       max_plan_iterations: settings.maxPlanIterations,
       max_step_num: settings.maxStepNum,
       mcp_settings: settings.mcpSettings,

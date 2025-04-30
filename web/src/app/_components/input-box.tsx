@@ -13,7 +13,13 @@ import {
 
 import { Button } from "~/components/ui/button";
 import type { Option } from "~/core/messages";
+import {
+  setEnableBackgroundInvestigation,
+  useSettingsStore,
+} from "~/core/store";
 import { cn } from "~/lib/utils";
+
+import { Detective } from "../_icons/detective";
 
 import { Tooltip } from "./tooltip";
 
@@ -37,6 +43,9 @@ export function InputBox({
   const [message, setMessage] = useState("");
   const [imeStatus, setImeStatus] = useState<"active" | "inactive">("inactive");
   const [indent, setIndent] = useState(0);
+  const backgroundInvestigation = useSettingsStore(
+    (state) => state.general.enableBackgroundInvestigation,
+  );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const feedbackRef = useRef<HTMLDivElement>(null);
 
@@ -137,7 +146,37 @@ export function InputBox({
         />
       </div>
       <div className="flex items-center px-4 py-2">
-        <div className="flex grow"></div>
+        <div className="flex grow">
+          <Tooltip
+            className="max-w-60"
+            title={
+              <div>
+                <h3 className="mb-2 font-bold">
+                  Investigation Mode: {backgroundInvestigation ? "On" : "Off"}
+                </h3>
+                <p>
+                  When enabled, DeerFlow will perform a quick search before
+                  planning. This is useful for researches related to ongoing
+                  events and news.
+                </p>
+              </div>
+            }
+          >
+            <Button
+              className={cn(
+                "rounded-2xl",
+                backgroundInvestigation && "!border-brand !text-brand",
+              )}
+              variant="outline"
+              size="lg"
+              onClick={() =>
+                setEnableBackgroundInvestigation(!backgroundInvestigation)
+              }
+            >
+              <Detective /> Investigation
+            </Button>
+          </Tooltip>
+        </div>
         <div className="flex shrink-0 items-center gap-2">
           <Tooltip title={responding ? "Stop" : "Send"}>
             <Button

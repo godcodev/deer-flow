@@ -124,21 +124,20 @@ function Jumbotron() {
         flickerChance={0.12}
       />
       <div className="relative z-10 flex flex-col items-center justify-center gap-12">
-        <h1 className="text-center text-6xl font-bold">
+        <h1 className="text-center text-4xl font-bold md:text-6xl">
           <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
             Deep Research{" "}
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>
-        <p className="hidden max-w-4xl text-center text-2xl font-light opacity-75 md:block">
-          Discover the revolutionary Multi-Agent Research Assistant that
-          empowers you to dive deeper and wider into any subject. Equipped with
-          the powerful tools like search engines, crawlers, Python, and MCP
-          services, DeerFlow provides instant insights, in-depth reports and
-          even captivating podcasts.
+        <p className="max-w-4xl p-2 text-center text-sm font-light opacity-80 md:text-2xl">
+          Meet <span className="font-medium">DeerFlow</span>, your ultimate Deep
+          Research assistant. With powerful tools like search engines, web
+          crawlers, Python and MCP services, it provides instant insights,
+          comprehensive reports, or even captivating podcasts.
         </p>
         <div className="flex gap-6">
-          <Button className="w-42 text-lg" size="lg" asChild>
+          <Button className="hidden text-lg md:flex md:w-42" size="lg" asChild>
             <Link href="/chat">
               Get Started <ChevronRight />
             </Link>
@@ -211,7 +210,7 @@ const caseStudies = [
 
 function CaseStudySection() {
   return (
-    <section className="relative container flex flex-col items-center justify-center">
+    <section className="relative container hidden flex-col items-center justify-center md:flex">
       <SectionHeader
         title="Case Studies"
         description="See DeerFlow in action through replays."

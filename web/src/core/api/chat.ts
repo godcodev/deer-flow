@@ -17,6 +17,7 @@ export async function* chatStream(
     max_plan_iterations: number;
     max_step_num: number;
     interrupt_feedback?: string;
+    enable_background_investigation: boolean;
     mcp_settings?: {
       servers: Record<
         string,
