@@ -9,7 +9,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { Button } from "~/components/ui/button";
-import { useReplay } from "~/core/replay";
 
 import { Logo } from "../_components/logo";
 import { ThemeToggle } from "../_components/theme-toggle";
@@ -19,7 +18,6 @@ import { SettingsDialog } from "../_settings/dialogs/settings-dialog";
 const Main = dynamic(() => import("./main"), { ssr: false });
 
 export default function HomePage() {
-  const { isReplay } = useReplay();
   return (
     <div className="flex h-screen w-screen justify-center overscroll-none">
       <header className="fixed top-0 left-0 flex h-12 w-full items-center justify-between px-4">
@@ -36,7 +34,9 @@ export default function HomePage() {
             </Button>
           </Tooltip>
           <ThemeToggle />
-          {!isReplay && <SettingsDialog />}
+          <Suspense>
+            <SettingsDialog />
+          </Suspense>
         </div>
       </header>
       <Suspense fallback={<div>Loading DeerFlow...</div>}>
