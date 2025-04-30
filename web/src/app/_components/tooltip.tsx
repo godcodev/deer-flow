@@ -11,15 +11,23 @@ export function Tooltip({
   className,
   children,
   title,
+  open,
+  side,
+  sideOffset,
 }: {
   className?: string;
   children: React.ReactNode;
   title?: React.ReactNode;
+  open?: boolean;
+  side?: "left" | "right" | "top" | "bottom";
+  sideOffset?: number;
 }) {
   return (
-    <ShadcnTooltip delayDuration={750}>
+    <ShadcnTooltip delayDuration={750} open={open}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent className={className}>{title}</TooltipContent>
+      <TooltipContent side={side} sideOffset={sideOffset} className={className}>
+        {title}
+      </TooltipContent>
     </ShadcnTooltip>
   );
 }
