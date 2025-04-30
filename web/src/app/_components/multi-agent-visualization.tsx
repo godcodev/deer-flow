@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 import {
   useCallback,
-  useEffect,
   useState,
   type Dispatch,
   type SetStateAction,
@@ -35,7 +34,8 @@ import "@xyflow/react/dist/style.css";
 import { ShineBorder } from "~/components/magicui/shine-border";
 import { Button } from "~/components/ui/button";
 import { useIntersectionObserver } from "~/hooks/use-intersection-observer";
-import { cn } from "~/lib/utils";
+
+import { Tooltip } from "./tooltip";
 
 const ROW_HEIGHT = 75;
 const ROW_1 = 0;
@@ -261,7 +261,7 @@ const WORKFLOW_STEPS = [
   },
   {
     description: "The Reporter will prepare a report summarizing the results.",
-    activeNodes: ["Reporter", "End"],
+    activeNodes: ["End", "Reporter"],
     activeEdges: ["Reporter->End"],
   },
 ];
@@ -298,6 +298,10 @@ function useWorkflowRun(
           data: {
             ...node.data,
             active: step.activeNodes.includes(node.id),
+            stepDescription:
+              step.activeNodes.indexOf(node.id) === step.activeNodes.length - 1
+                ? step.description
+                : undefined,
           },
         }));
       });
@@ -309,7 +313,7 @@ function useWorkflowRun(
         }));
       });
 
-      await sleep(1000);
+      await sleep(step.description.split(" ").length * 360);
     }
     clearAnimation();
     setIsRunning(false);
@@ -327,14 +331,14 @@ export function MultiAgentVisualization() {
   const [edges, setEdges] = useEdgesState(initialEdges);
 
   const { run, isRunning } = useWorkflowRun(setNodes, setEdges);
-  const [hasAutoRunned, setHasAutoRunned] = useState(false);
+  const [hasAutoRun, setHasAutoRun] = useState(false);
 
   const { ref } = useIntersectionObserver({
     rootMargin: "0%",
     threshold: 0,
     onChange: (isIntersecting) => {
-      if (isIntersecting && !hasAutoRunned) {
-        setHasAutoRunned(true);
+      if (isIntersecting && !hasAutoRun) {
+        setHasAutoRun(true);
         void run();
       }
     },
@@ -360,26 +364,26 @@ export function MultiAgentVisualization() {
         className="[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]"
         bgColor="var(--background)"
       />
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute top-0 left-0 z-10"
-        disabled={isRunning}
-        onClick={() => {
-          void run();
-        }}
-      >
-        <RotateCcw
-          className={cn({
-            "animate-spin": isRunning,
-          })}
-        />
-      </Button>
       <div
         id="auto-run-animation-trigger"
         ref={ref}
         className="absolute bottom-0 left-[50%] h-px w-px"
       />
+      <div className="absolute top-0 right-0 left-0 z-200 flex items-center justify-center">
+        {!isRunning && (
+          <Button
+            className="translate-x-[22vw]"
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              void run();
+            }}
+          >
+            <RotateCcw />
+            Replay
+          </Button>
+        )}
+      </div>
     </ReactFlow>
   );
 }
@@ -420,7 +424,12 @@ function AgentNode({
   data,
   id,
 }: {
-  data: { icon?: LucideIcon; label: string; active: boolean };
+  data: {
+    icon?: LucideIcon;
+    label: string;
+    active: boolean;
+    stepDescription?: string;
+  };
   id: string;
 }) {
   return (
@@ -431,15 +440,22 @@ function AgentNode({
           className="rounded-[2px]"
         />
       )}
-      <div
-        id={id}
-        className="relative flex w-full items-center justify-center text-xs"
+      <Tooltip
+        className="max-w-50"
+        open={data.active && !!data.stepDescription}
+        title={data.stepDescription}
+        sideOffset={20}
       >
-        <div className="flex items-center gap-2">
-          {data.icon && <data.icon className="h-[1rem] w-[1rem]" />}
-          <span>{data.label}</span>
+        <div
+          id={id}
+          className="relative flex w-full items-center justify-center text-xs"
+        >
+          <div className="flex items-center gap-2">
+            {data.icon && <data.icon className="h-[1rem] w-[1rem]" />}
+            <span>{data.label}</span>
+          </div>
         </div>
-      </div>
+      </Tooltip>
       <Handle
         className="invisible"
         type="source"
