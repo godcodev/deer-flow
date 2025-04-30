@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { nanoid } from "nanoid";
+import { toast } from "sonner";
 import { create } from "zustand";
 
 import { chatStream, generatePodcast } from "../api";
@@ -136,6 +137,7 @@ export async function sendMessage(
       }
     }
   } catch {
+    toast("An error occurred while generating the response. Please try again.");
     // Update message status.
     // TODO: const isAborted = (error as Error).name === "AbortError";
     if (messageId != null) {

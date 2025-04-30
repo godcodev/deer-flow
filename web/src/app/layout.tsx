@@ -9,6 +9,8 @@ import { Geist } from "next/font/google";
 import { ThemeProviderWrapper } from "~/app/_components/theme-provider-wrapper";
 import { TooltipProvider } from "~/components/ui/tooltip";
 
+import { Toaster } from "./_components/toaster";
+
 export const metadata: Metadata = {
   title: "🦌 DeerFlow",
   description:
@@ -30,6 +32,7 @@ export default function RootLayout({
         <ThemeProviderWrapper>
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProviderWrapper>
+        <Toaster />
       </body>
     </html>
   );
