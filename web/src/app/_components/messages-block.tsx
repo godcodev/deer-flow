@@ -51,7 +51,6 @@ export function MessagesBlock({ className }: { className?: string }) {
     [feedback],
   );
   const handleCancel = useCallback(() => {
-    console.info("cancel");
     abortControllerRef.current?.abort();
     abortControllerRef.current = null;
   }, []);
