@@ -25,6 +25,7 @@ import type { Tab } from "./types";
 
 const generalFormSchema = z.object({
   autoAcceptedPlan: z.boolean(),
+  enableBackgroundInvestigation: z.boolean(),
   maxPlanIterations: z.number().min(1, {
     message: "Max plan iterations must be at least 1.",
   }),
