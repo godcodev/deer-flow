@@ -37,7 +37,7 @@ import { useIntersectionObserver } from "~/hooks/use-intersection-observer";
 
 import { Tooltip } from "./tooltip";
 
-const ROW_HEIGHT = 80;
+const ROW_HEIGHT = 85;
 const ROW_1 = 0;
 const ROW_2 = ROW_HEIGHT;
 const ROW_3 = ROW_HEIGHT * 2;
@@ -210,23 +210,26 @@ const WORKFLOW_STEPS = [
   {
     description:
       "The Coordinator is responsible for engaging with the user to understand their problem and requirements.",
+    tooltipPosition: "right",
     activeNodes: ["Start", "Coordinator"],
     activeEdges: ["Start->Coordinator"],
   },
   {
     description:
       "If the user's problem is clearly defined, the Coordinator will hand it over to the Planner.",
+    tooltipPosition: "left",
     activeNodes: ["Coordinator", "Planner"],
     activeEdges: ["Coordinator->Planner"],
-    tooltipPosition: "left",
   },
   {
     description: "Awaiting human feedback to refine the plan.",
+    tooltipPosition: "left",
     activeNodes: ["Planner", "HumanFeedback"],
     activeEdges: ["Planner->HumanFeedback"],
   },
   {
     description: "Updating the plan based on human feedback.",
+    tooltipPosition: "left",
     activeNodes: ["HumanFeedback", "Planner"],
     activeEdges: ["HumanFeedback->Planner"],
   },
@@ -240,32 +243,34 @@ const WORKFLOW_STEPS = [
   {
     description:
       "The Researcher is responsible for gathering information using search and crawling tools.",
-    tooltipPosition: "bottom",
+    tooltipPosition: "left",
     activeNodes: ["ResearchTeam", "Researcher"],
     activeEdges: ["ResearchTeam->Researcher", "Researcher->ResearchTeam"],
   },
   {
     description:
-      "The Coder is responsible for writing and executing Python code to solve problems such as mathematical computations, data analysis, and more.",
-    tooltipPosition: "bottom",
+      "The Coder is responsible for writing Python code to solve math problems, data analysis, and more.",
+    tooltipPosition: "right",
     activeNodes: ["ResearchTeam", "Coder"],
     activeEdges: ["ResearchTeam->Coder", "Coder->ResearchTeam"],
   },
   {
     description:
       "Once the research tasks are completed, the Researcher will hand over to the Planner.",
-    tooltipPosition: "bottom",
+    tooltipPosition: "left",
     activeNodes: ["ResearchTeam", "Planner"],
     activeEdges: ["ResearchTeam->Planner"],
   },
   {
     description:
       "If no additional information is required, the Planner will handoff to the Reporter.",
+    tooltipPosition: "right",
     activeNodes: ["Reporter", "Planner"],
     activeEdges: ["Planner->Reporter"],
   },
   {
     description: "The Reporter will prepare a report summarizing the results.",
+    tooltipPosition: "bottom",
     activeNodes: ["End", "Reporter"],
     activeEdges: ["Reporter->End"],
   },
@@ -448,7 +453,11 @@ function AgentNode({
         />
       )}
       <Tooltip
-        className="max-w-50 opacity-66"
+        className="max-w-50 text-[15px] opacity-70"
+        style={{
+          ["--primary" as string]: "#333",
+          ["--primary-foreground" as string]: "white",
+        }}
         open={data.active && !!data.stepDescription}
         title={data.stepDescription}
         side={data.stepTooltipPosition}

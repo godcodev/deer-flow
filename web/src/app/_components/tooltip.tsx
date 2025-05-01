@@ -1,6 +1,8 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
+import type { CSSProperties } from "react";
+
 import {
   Tooltip as ShadcnTooltip,
   TooltipContent,
@@ -10,6 +12,7 @@ import { cn } from "~/lib/utils";
 
 export function Tooltip({
   className,
+  style,
   children,
   title,
   open,
@@ -17,6 +20,7 @@ export function Tooltip({
   sideOffset,
 }: {
   className?: string;
+  style?: CSSProperties;
   children: React.ReactNode;
   title?: React.ReactNode;
   open?: boolean;
@@ -27,9 +31,10 @@ export function Tooltip({
     <ShadcnTooltip delayDuration={750} open={open}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent
+        className={cn(className)}
+        style={style}
         side={side}
         sideOffset={sideOffset}
-        className={cn(className)}
       >
         {title}
       </TooltipContent>
