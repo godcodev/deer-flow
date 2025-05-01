@@ -89,7 +89,11 @@ This project also includes a Web UI, offering a more dynamic and engaging intera
 
 ```bash
 # Run both the backend and frontend servers in development mode
+# On macOS/Linux
 ./bootstrap.sh -d
+
+# On Windows
+bootstrap.bat -d   
 ```
 
 Open your browser and visit [`http://localhost:3000`](http://localhost:3000) to explore the web UI.
