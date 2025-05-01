@@ -4,6 +4,7 @@
 import { useCallback, useRef } from "react";
 
 import ReportEditor from "~/components/editor";
+import { useReplay } from "~/core/replay";
 import { useMessage, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
@@ -19,6 +20,7 @@ export function ResearchReportBlock({
   messageId: string;
 }) {
   const message = useMessage(messageId);
+  const { isReplay } = useReplay();
   const handleMarkdownChange = useCallback(
     (markdown: string) => {
       if (message) {
@@ -54,7 +56,7 @@ export function ResearchReportBlock({
       ref={contentRef}
       className={cn("relative flex flex-col pt-4 pb-8", className)}
     >
-      {isCompleted ? (
+      {!isReplay && isCompleted ? (
         <ReportEditor
           content={message?.content}
           onMarkdownChange={handleMarkdownChange}
