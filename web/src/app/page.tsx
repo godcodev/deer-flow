@@ -3,18 +3,23 @@
 
 import { GithubFilled, GithubOutlined } from "@ant-design/icons";
 import {
+  Bike,
   Bird,
   Book,
+  Bot,
+  Building,
   Camera,
   ChevronRight,
-  Code,
+  Film,
+  Github,
   Globe,
+  Ham,
   Home,
   Lightbulb,
   Microscope,
   Paintbrush,
+  Pizza,
   Podcast,
-  ShoppingCart,
   Usb,
   User,
 } from "lucide-react";
@@ -159,52 +164,60 @@ function Jumbotron() {
 
 const caseStudies = [
   {
+    id: "eiffel-tower-vs-tallest-building",
+    icon: Building,
+    title: "How tall is Eiffel Tower compared to tallest building?",
+    description:
+      "The research compares the heights and global significance of the Eiffel Tower and Burj Khalifa, and uses Python code to calculate the multiples.",
+  },
+  {
+    id: "github-top-trending-repo",
+    icon: Github,
+    title: "What are the top trending repositories on GitHub?",
+    description:
+      "The research utilized MCP services to identify the most popular GitHub repositories and documented them in detail using search engines.",
+  },
+  {
+    id: "nanjing-traditional-food",
+    icon: Ham,
+    title: "Write an article about Nanjing's traditional dishes",
+    description:
+      "The study vividly showcases Nanjing's famous dishes through rich content and imagery, uncovering their hidden histories and cultural significance.",
+  },
+  {
+    id: "rental-apartment-decoration",
     icon: Home,
-    title: "Design a futuristic smart home for a family of 4",
+    title: "How to decorate a small rental apartment?",
     description:
-      "DeepFlow generates innovative concepts and detailed blueprints for a cutting-edge smart home, incorporating AI-driven automation and sustainable energy solutions.",
+      "The study provides readers with practical and straightforward methods for decorating apartments, accompanied by inspiring images.",
   },
   {
-    icon: Book,
-    title: "Write a historical fiction novel set in ancient Rome",
+    id: "review-of-the-professional",
+    icon: Film,
+    title: "Introduce the movie 'Léon: The Professional'",
     description:
-      "DeepFlow assists in crafting compelling characters, intricate plots, and historically accurate settings to bring your ancient Roman story to life.",
+      "The research provides a comprehensive introduction to the movie 'Léon: The Professional', including its plot, characters, and themes.",
   },
   {
-    icon: ShoppingCart,
-    title: "Create a marketing campaign for a new eco-friendly product",
+    id: "china-food-delivery",
+    icon: Bike,
+    title: "How do you view the takeaway war in China? (in Chinese)",
     description:
-      "DeepFlow develops a strategic marketing plan, including social media content, ad designs, and audience targeting strategies to promote your sustainable product effectively.",
+      "The research analyzes the intensifying competition between JD and Meituan, highlighting their strategies, technological innovations, and challenges.",
   },
   {
-    icon: Lightbulb,
-    title: "Invent a groundbreaking renewable energy solution",
+    id: "ultra-processed-foods",
+    icon: Pizza,
+    title: "Are ultra-processed foods linked to health?",
     description:
-      "DeepFlow helps brainstorm innovative ideas and provides technical schematics for a renewable energy solution that addresses global energy challenges.",
+      "The research examines the health risks of rising ultra-processed food consumption, urging more research on long-term effects and individual differences.",
   },
   {
-    icon: Camera,
-    title: "Direct a short film about climate change",
+    id: "ai-twin-insurance",
+    icon: Bot,
+    title: 'Write an article on "Would you insure your AI twin?"',
     description:
-      "DeepFlow assists in developing a compelling script, visual storyboards, and production plans to create an impactful short film on environmental issues.",
-  },
-  {
-    icon: Globe,
-    title: "Plan a sustainable travel itinerary for eco-conscious tourists",
-    description:
-      "DeepFlow designs a detailed travel plan featuring eco-friendly accommodations, activities, and transportation options for environmentally aware travelers.",
-  },
-  {
-    icon: Code,
-    title: "Develop an AI-powered app for mental health support",
-    description:
-      "DeepFlow provides guidance on app design, user experience, and AI integration to create a tool that offers personalized mental health resources and support.",
-  },
-  {
-    icon: Paintbrush,
-    title: "Create an immersive art installation on human connection",
-    description:
-      "DeepFlow assists in conceptualizing and designing an interactive art installation that explores themes of empathy, relationships, and the power of human connection.",
+      "The research explores the concept of insuring AI twins, highlighting their benefits, risks, ethical considerations, and the evolving regulatory.",
   },
 ];
 
@@ -223,8 +236,8 @@ function CaseStudySection() {
                 Icon: caseStudy.icon,
                 name: caseStudy.title,
                 description: caseStudy.description,
-                href: "/",
-                cta: "Learn more",
+                href: `/chat?replay=${caseStudy.id}`,
+                cta: "Watch Replay",
                 className: "w-full h-full",
               }}
             />
