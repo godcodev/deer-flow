@@ -22,6 +22,9 @@ class MCPServerMetadataRequest(BaseModel):
         None, description="The URL of the SSE server (for sse type)"
     )
     env: Optional[Dict[str, str]] = Field(None, description="Environment variables")
+    timeout_seconds: Optional[int] = Field(
+        None, description="Optional custom timeout in seconds for the operation"
+    )
 
 
 class MCPServerMetadataResponse(BaseModel):
