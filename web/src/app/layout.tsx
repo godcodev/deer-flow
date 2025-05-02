@@ -7,7 +7,6 @@ import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
 import { ThemeProviderWrapper } from "~/components/deer-flow/theme-provider-wrapper";
-import { TooltipProvider } from "~/components/ui/tooltip";
 
 import { Toaster } from "../components/deer-flow/toaster";
 
@@ -29,9 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
       <body className="bg-app">
-        <ThemeProviderWrapper>
-          <TooltipProvider>{children}</TooltipProvider>
-        </ThemeProviderWrapper>
+        <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
         <Toaster />
       </body>
     </html>
