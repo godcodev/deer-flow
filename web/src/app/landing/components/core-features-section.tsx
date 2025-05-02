@@ -13,7 +13,7 @@ const features = [
     name: "Dive Deeper and Reach Wider",
     description:
       "Unlock deeper insights with advanced tools. Our powerful search + crawling and Python tools gathers comprehensive data, delivering in-depth reports to enhance your study.",
-    href: "/",
+    href: "https://github.com/bytedance/deer-flow/blob/main/src/tools",
     cta: "Learn more",
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
@@ -25,7 +25,7 @@ const features = [
     name: "Human-in-the-loop",
     description:
       "Refine your research plan, or adjust focus areas all through simple natural language.",
-    href: "/",
+    href: "https://github.com/bytedance/deer-flow/blob/main/src/graph/nodes.py",
     cta: "Learn more",
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
@@ -37,7 +37,7 @@ const features = [
     name: "Lang Stack",
     description:
       "Build with confidence using the LangChain and LangGraph frameworks.",
-    href: "/",
+    href: "https://www.langchain.com/",
     cta: "Learn more",
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
@@ -49,7 +49,7 @@ const features = [
     name: "MCP Integrations",
     description:
       "Supercharge your research workflow and expand your toolkit with seamless MCP integrations.",
-    href: "/",
+    href: "https://github.com/bytedance/deer-flow/blob/main/src/graph/nodes.py",
     cta: "Learn more",
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
@@ -61,7 +61,7 @@ const features = [
     name: "Podcast Generation",
     description:
       "Instantly generate podcasts from reports. Perfect for on-the-go learning or sharing findings effortlessly.  ",
-    href: "/",
+    href: "https://github.com/bytedance/deer-flow/blob/main/src/podcast",
     cta: "Learn more",
     background: (
       <img alt="background" className="absolute -top-20 -right-20 opacity-60" />
