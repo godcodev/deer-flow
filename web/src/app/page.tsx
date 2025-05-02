@@ -5,7 +5,6 @@ import { GithubOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { Ray } from "~/components/deer-flow/ray";
 import { Button } from "~/components/ui/button";
 
 import { CaseStudySection } from "./landing/components/case-study-section";
@@ -13,6 +12,7 @@ import { CoreFeatureSection } from "./landing/components/core-features-section";
 import { JoinCommunitySection } from "./landing/components/join-community-section";
 import { Jumbotron } from "./landing/components/jumbotron";
 import { MultiAgentSection } from "./landing/components/multi-agent-section";
+import { Ray } from "./landing/components/ray";
 
 export default function HomePage() {
   return (
