@@ -13,12 +13,13 @@ from mcp.client.sse import sse_client
 logger = logging.getLogger(__name__)
 
 
-async def _get_tools_from_client_session(client_context_manager: Any) -> List:
+async def _get_tools_from_client_session(client_context_manager: Any, timeout_seconds: int = 10) -> List:
     """
     Helper function to get tools from a client session.
 
     Args:
         client_context_manager: A context manager that returns (read, write) functions
+        timeout_seconds: Timeout in seconds for the read operation
 
     Returns:
         List of available tools from the MCP server
@@ -28,7 +29,7 @@ async def _get_tools_from_client_session(client_context_manager: Any) -> List:
     """
     async with client_context_manager as (read, write):
         async with ClientSession(
-            read, write, read_timeout_seconds=timedelta(seconds=10)
+            read, write, read_timeout_seconds=timedelta(seconds=timeout_seconds)
         ) as session:
             # Initialize the connection
             await session.initialize()
@@ -43,6 +44,7 @@ async def load_mcp_tools(
     args: Optional[List[str]] = None,
     url: Optional[str] = None,
     env: Optional[Dict[str, str]] = None,
+    timeout_seconds: int = 60,  # Longer default timeout for first-time executions
 ) -> List:
     """
     Load tools from an MCP server.
@@ -53,6 +55,7 @@ async def load_mcp_tools(
         args: Command arguments (for stdio type)
         url: The URL of the SSE server (for sse type)
         env: Environment variables
+        timeout_seconds: Timeout in seconds (default: 60 for first-time executions)
 
     Returns:
         List of available tools from the MCP server
@@ -73,7 +76,7 @@ async def load_mcp_tools(
                 env=env,  # Optional environment variables
             )
 
-            return await _get_tools_from_client_session(stdio_client(server_params))
+            return await _get_tools_from_client_session(stdio_client(server_params), timeout_seconds)
 
         elif server_type == "sse":
             if not url:
@@ -81,7 +84,7 @@ async def load_mcp_tools(
                     status_code=400, detail="URL is required for sse type"
                 )
 
-            return await _get_tools_from_client_session(sse_client(url=url))
+            return await _get_tools_from_client_session(sse_client(url=url), timeout_seconds)
 
         else:
             raise HTTPException(
