@@ -32,8 +32,9 @@ export const playbook = {
     {
       description:
         "The Research Team is responsible for conducting the core research tasks.",
-      activeNodes: ["HumanFeedback", "ResearchTeam"],
+      activeNodes: ["Planner", "HumanFeedback", "ResearchTeam"],
       activeEdges: [
+        "Planner->HumanFeedback",
         "HumanFeedback->ResearchTeam",
         "ResearchTeam->HumanFeedback",
       ],
