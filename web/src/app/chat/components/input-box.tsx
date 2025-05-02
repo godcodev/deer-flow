@@ -11,6 +11,8 @@ import {
   useState,
 } from "react";
 
+import { Detective } from "~/components/deer-flow/icons/detective";
+import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
 import type { Option } from "~/core/messages";
 import {
@@ -18,10 +20,6 @@ import {
   useSettingsStore,
 } from "~/core/store";
 import { cn } from "~/lib/utils";
-
-import { Detective } from "../_icons/detective";
-
-import { Tooltip } from "./tooltip";
 
 export function InputBox({
   className,

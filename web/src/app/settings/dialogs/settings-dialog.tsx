@@ -4,6 +4,7 @@
 import { Settings } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -25,7 +26,6 @@ import {
 } from "~/core/store";
 import { cn } from "~/lib/utils";
 
-import { Tooltip } from "../../_components/tooltip";
 import { SETTINGS_TABS } from "../tabs";
 
 export function SettingsDialog() {

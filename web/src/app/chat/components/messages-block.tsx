@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { FastForward, Play } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
+import { RainbowText } from "~/components/deer-flow/rainbow-text";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -21,7 +22,6 @@ import { cn } from "~/lib/utils";
 import { ConversationStarter } from "./conversation-starter";
 import { InputBox } from "./input-box";
 import { MessageListView } from "./message-list-view";
-import { RainbowText } from "./rainbow-text";
 import { Welcome } from "./welcome";
 
 export function MessagesBlock({ className }: { className?: string }) {

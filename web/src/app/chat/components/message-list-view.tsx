@@ -6,6 +6,12 @@ import { motion } from "framer-motion";
 import { Download, Headphones } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 
+import { LoadingAnimation } from "~/components/deer-flow/loading-animation";
+import { Markdown } from "~/components/deer-flow/markdown";
+import { RainbowText } from "~/components/deer-flow/rainbow-text";
+import { RollingText } from "~/components/deer-flow/rolling-text";
+import { ScrollContainer } from "~/components/deer-flow/scroll-container";
+import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -24,13 +30,6 @@ import {
 } from "~/core/store";
 import { parseJSON } from "~/core/utils";
 import { cn } from "~/lib/utils";
-
-import { LoadingAnimation } from "./loading-animation";
-import { Markdown } from "./markdown";
-import { RainbowText } from "./rainbow-text";
-import { RollingText } from "./rolling-text";
-import { ScrollContainer } from "./scroll-container";
-import { Tooltip } from "./tooltip";
 
 export function MessageListView({
   className,

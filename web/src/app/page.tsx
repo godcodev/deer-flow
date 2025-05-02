@@ -5,14 +5,14 @@ import { GithubOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useMemo } from "react";
 
+import { Ray } from "~/components/deer-flow/ray";
 import { Button } from "~/components/ui/button";
 
-import { Ray } from "./_components/ray";
-import { CaseStudySection } from "./landing/_components/case-study-section";
-import { CoreFeatureSection } from "./landing/_components/core-features-section";
-import { JoinCommunitySection } from "./landing/_components/join-community-section";
-import { Jumbotron } from "./landing/_components/jumbotron";
-import { MultiAgentSection } from "./landing/_components/multi-agent-section";
+import { CaseStudySection } from "./landing/components/case-study-section";
+import { CoreFeatureSection } from "./landing/components/core-features-section";
+import { JoinCommunitySection } from "./landing/components/join-community-section";
+import { Jumbotron } from "./landing/components/jumbotron";
+import { MultiAgentSection } from "./landing/components/multi-agent-section";
 
 export default function HomePage() {
   return (

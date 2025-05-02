@@ -10,10 +10,10 @@ import { Suspense } from "react";
 
 import { Button } from "~/components/ui/button";
 
-import { Logo } from "../_components/logo";
-import { ThemeToggle } from "../_components/theme-toggle";
-import { Tooltip } from "../_components/tooltip";
-import { SettingsDialog } from "../_settings/dialogs/settings-dialog";
+import { Logo } from "../../components/deer-flow/logo";
+import { ThemeToggle } from "../../components/deer-flow/theme-toggle";
+import { Tooltip } from "../../components/deer-flow/tooltip";
+import { SettingsDialog } from "../settings/dialogs/settings-dialog";
 
 const Main = dynamic(() => import("./main"), { ssr: false });
 

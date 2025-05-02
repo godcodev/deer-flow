@@ -3,13 +3,12 @@
 
 import { useCallback, useRef } from "react";
 
+import { LoadingAnimation } from "~/components/deer-flow/loading-animation";
+import { Markdown } from "~/components/deer-flow/markdown";
 import ReportEditor from "~/components/editor";
 import { useReplay } from "~/core/replay";
 import { useMessage, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
-
-import { LoadingAnimation } from "./loading-animation";
-import { Markdown } from "./markdown";
 
 export function ResearchReportBlock({
   className,

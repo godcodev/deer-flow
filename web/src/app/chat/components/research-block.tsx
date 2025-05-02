@@ -4,6 +4,8 @@
 import { Check, Copy, Headphones, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
+import { ScrollContainer } from "~/components/deer-flow/scroll-container";
+import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -13,8 +15,6 @@ import { cn } from "~/lib/utils";
 
 import { ResearchActivitiesBlock } from "./research-activities-block";
 import { ResearchReportBlock } from "./research-report-block";
-import { ScrollContainer } from "./scroll-container";
-import { Tooltip } from "./tooltip";
 
 export function ResearchBlock({
   className,
@@ -102,7 +102,9 @@ export function ResearchBlock({
               className="text-gray-400"
               size="sm"
               variant="ghost"
-              onClick={() => { closeResearch(); }}
+              onClick={() => {
+                closeResearch();
+              }}
             >
               <X />
             </Button>

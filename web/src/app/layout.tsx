@@ -6,10 +6,10 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
-import { ThemeProviderWrapper } from "~/app/_components/theme-provider-wrapper";
+import { ThemeProviderWrapper } from "~/components/deer-flow/theme-provider-wrapper";
 import { TooltipProvider } from "~/components/ui/tooltip";
 
-import { Toaster } from "./_components/toaster";
+import { Toaster } from "../components/deer-flow/toaster";
 
 export const metadata: Metadata = {
   title: "🦌 DeerFlow",

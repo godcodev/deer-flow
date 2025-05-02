@@ -8,8 +8,8 @@ import { useMemo } from "react";
 import { useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
 
-import { MessagesBlock } from "../_components/messages-block";
-import { ResearchBlock } from "../_components/research-block";
+import { MessagesBlock } from "./components/messages-block";
+import { ResearchBlock } from "./components/research-block";
 
 export default function Main() {
   const openResearchId = useStore((state) => state.openResearchId);
