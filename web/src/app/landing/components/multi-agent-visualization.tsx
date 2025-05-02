@@ -54,12 +54,14 @@ export function MultiAgentVisualization({ className }: { className?: string }) {
   } = useMAVStore((state) => state);
   const flowRef = useRef<ReactFlowInstance<GraphNode, Edge>>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [hasPlayed, setHasPlayed] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const { ref: anchorRef } = useIntersectionObserver({
     rootMargin: "0%",
     threshold: 0,
     onChange: (isIntersecting) => {
-      if (isIntersecting && !playing) {
+      if (isIntersecting && !playing && !hasPlayed) {
+        setHasPlayed(true);
         void play();
       }
     },
@@ -132,7 +134,13 @@ export function MultiAgentVisualization({ className }: { className?: string }) {
             </Button>
           </Tooltip>
           <Tooltip title="Move to the next step">
-            <Button variant="ghost" onClick={nextStep}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setHasPlayed(true);
+                nextStep();
+              }}
+            >
               <ChevronRight className="size-5" />
             </Button>
           </Tooltip>
@@ -144,13 +152,20 @@ export function MultiAgentVisualization({ className }: { className?: string }) {
               step={1}
               value={[activeStepIndex >= 0 ? activeStepIndex : 0]}
               onValueChange={([value]) => {
-                console.info("jump", value);
+                setHasPlayed(true);
                 activateStep(value!);
               }}
             />
           </div>
           <Tooltip title="Toggle fullscreen">
-            <Button variant="ghost" size="icon" onClick={toggleFullscreen}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                setHasPlayed(true);
+                void toggleFullscreen();
+              }}
+            >
               {fullscreen ? (
                 <Minimize className="size-5" />
               ) : (
