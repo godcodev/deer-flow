@@ -8,10 +8,11 @@ import Link from "next/link";
 import { AuroraText } from "~/components/magicui/aurora-text";
 import { FlickeringGrid } from "~/components/magicui/flickering-grid";
 import { Button } from "~/components/ui/button";
+import { env } from "~/env";
 
 export function Jumbotron() {
   return (
-    <section className="relative flex h-[95vh] w-full flex-col items-center justify-center pb-15">
+    <section className="flex h-[95vh] w-full flex-col items-center justify-center pb-15">
       <FlickeringGrid
         id="deer-hero-bg"
         className={`absolute inset-0 z-0 [mask-image:radial-gradient(800px_circle_at_center,white,transparent)]`}
@@ -45,16 +46,35 @@ export function Jumbotron() {
         </p>
         <div className="flex gap-6">
           <Button className="hidden text-lg md:flex md:w-42" size="lg" asChild>
-            <Link href="/chat">
+            <Link
+              target={
+                env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY ? "_blank" : undefined
+              }
+              href={
+                env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY
+                  ? "https://github.com/bytedance/deer-flow"
+                  : "/chat"
+              }
+            >
               Get Started <ChevronRight />
             </Link>
           </Button>
-          <Button className="w-42 text-lg" size="lg" variant="outline" asChild>
-            <Link href="https://github.com/bytedance/deer-flow" target="_blank">
-              <GithubFilled />
-              Learn More
-            </Link>
-          </Button>
+          {!env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY && (
+            <Button
+              className="w-42 text-lg"
+              size="lg"
+              variant="outline"
+              asChild
+            >
+              <Link
+                href="https://github.com/bytedance/deer-flow"
+                target="_blank"
+              >
+                <GithubFilled />
+                Learn More
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
       <div className="absolute bottom-8 flex text-xs opacity-50">
