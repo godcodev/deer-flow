@@ -1,8 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { MultiAgentVisualization } from "~/app/_components/multi-agent-visualization";
-
+import { MultiAgentVisualization } from "./multi-agent-visualization";
 import { SectionHeader } from "./section-header";
 
 export function MultiAgentSection() {

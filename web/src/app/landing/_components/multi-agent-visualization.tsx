@@ -35,7 +35,7 @@ import { ShineBorder } from "~/components/magicui/shine-border";
 import { Button } from "~/components/ui/button";
 import { useIntersectionObserver } from "~/hooks/use-intersection-observer";
 
-import { Tooltip } from "./tooltip";
+import { Tooltip } from "../../_components/tooltip";
 
 const ROW_HEIGHT = 85;
 const ROW_1 = 0;
