@@ -80,7 +80,7 @@ export async function play() {
     playing: true,
   });
   nextStep();
-  await sleep(4000);
+  await sleep(3000);
   const playing = useMAVStore.getState().playing;
   if (playing) {
     await play();
