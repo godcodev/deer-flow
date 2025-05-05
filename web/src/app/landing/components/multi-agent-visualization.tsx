@@ -117,6 +117,7 @@ export function MultiAgentVisualization({ className }: { className?: string }) {
           className="absolute bottom-0 left-[50%] h-px w-px"
         />
       </ReactFlow>
+      <div className="h-4 shrink-0"></div>
       <div className="flex h-6 w-full shrink-0 items-center justify-center">
         <div className="bg-muted/50 z-[200] flex rounded-3xl px-4 py-2">
           <Tooltip title="Move to the previous step">
@@ -233,7 +234,7 @@ function AgentNode({
         />
       )}
       <Tooltip
-        className="max-w-50 text-[15px] opacity-70"
+        className="max-w-50 text-[15px] font-light opacity-70"
         style={{
           ["--primary" as string]: "#333",
           ["--primary-foreground" as string]: "white",
