@@ -24,7 +24,7 @@ const caseStudies = [
       "The research utilized MCP services to identify the most popular GitHub repositories and documented them in detail using search engines.",
   },
   {
-    id: "nanjing-traditional-food",
+    id: "nanjing-traditional-dishes",
     icon: Ham,
     title: "Write an article about Nanjing's traditional dishes",
     description:
