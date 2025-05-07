@@ -19,7 +19,6 @@
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
     "@hookform/resolvers": "^5.0.1",
-    "@nanostores/react": "github:ai/react",
     "@radix-ui/react-accordion": "^1.2.8",
     "@radix-ui/react-checkbox": "^1.2.3",
     "@radix-ui/react-collapsible": "^1.1.8",
