@@ -44,8 +44,9 @@ export const GeneralTab: Tab = ({
   const generalSettings = useMemo(() => settings.general, [settings]);
   const form = useForm<z.infer<typeof generalFormSchema>>({
     resolver: zodResolver(generalFormSchema, undefined, undefined),
-    values: generalSettings,
+    defaultValues: generalSettings,
     mode: "all",
+    reValidateMode: "onBlur",
   });
 
   const currentSettings = form.watch();
@@ -103,7 +104,7 @@ export const GeneralTab: Tab = ({
                     <Input
                       className="w-60"
                       type="number"
-                      defaultValue={1}
+                      defaultValue={field.value}
                       min={1}
                       onChange={(event) =>
                         field.onChange(parseInt(event.target.value || "0"))
@@ -128,7 +129,7 @@ export const GeneralTab: Tab = ({
                     <Input
                       className="w-60"
                       type="number"
-                      defaultValue={1}
+                      defaultValue={field.value}
                       min={1}
                       onChange={(event) =>
                         field.onChange(parseInt(event.target.value || "0"))
