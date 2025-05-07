@@ -7,7 +7,7 @@
 
 **DeerFlow** (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is a community-driven Deep Research framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
-Please visit [DeerFlow](https://deerflow.tech/) for more details.
+Please visit [our official website](https://deerflow.tech/) for more details.
 
 ## Demo
 
@@ -26,7 +26,7 @@ In this demo, we showcase how to use DeerFlow to:
 - [What are the top trending repositories on GitHub?](https://deerflow.tech/chat?replay=github-top-trending-repo)
 - [Write an article about Nanjing's traditional dishes](https://deerflow.tech/chat?replay=nanjing-traditional-dishes)
 - [How to decorate a rental apartment?](https://deerflow.tech/chat?replay=rental-apartment-decoration)
-- [Visit our official website to watch more replays](https://deerflow.tech/)
+- [Visit our official website to explore more replays.](https://deerflow.tech/)
 
 ---
 
@@ -34,10 +34,13 @@ In this demo, we showcase how to use DeerFlow to:
 ## 📑 Table of Contents
 
 - [🚀 Quick Start](#quick-start)
-- [🛠️ Development](#development)
+- [🌟 Features](#features)
 - [🏗️ Architecture](#architecture)
+- [🛠️ Development](#development)
 - [🗣️ Text-to-Speech Integration](#text-to-speech-integration)
 - [📚 Examples](#examples)
+- [❓ FAQ](#faq)
+- [📜 License](#license)
 - [💖 Acknowledgments](#acknowledgments)
 
 
@@ -78,7 +81,6 @@ cp .env.example .env
 # See the 'Supported Search Engines' and 'Text-to-Speech Integration' sections below for all available options
 
 # Configure conf.yaml for your LLM model and API keys
-# Gemini: https://ai.google.dev/gemini-api/docs/openai
 cp conf.yaml.example conf.yaml
 
 # Install marp for ppt generation
@@ -92,6 +94,13 @@ Optionally, install web UI dependencies via [pnpm](https://pnpm.io/installation)
 cd web
 pnpm install
 ```
+
+### Configurations
+
+Please refer to the [Configuration Guide](docs/configuration_guide.md) for more details.
+
+> [!NOTE]
+> Before you start the project, read the guide carefully, and update the configurations to match your specific settings and requirements.
 
 ### Console UI
 
@@ -147,6 +156,97 @@ To configure your preferred search engine, set the `SEARCH_API` variable in your
 # Choose one: tavily, duckduckgo, brave_search, arxiv
 SEARCH_API=tavily
 ```
+
+## Features
+
+### Core Capabilities
+
+- 🤖 **LLM Integration**
+    - It supports the integration of most models through [litellm](https://docs.litellm.ai/docs/providers).
+    - Support for open source models like Qwen
+    - OpenAI-compatible API interface
+    - Multi-tier LLM system for different task complexities
+
+### Tools and MCP Integrations
+
+- 🔍 **Search and Retrieval**
+    - Web search via Tavily, Brave Search and more
+    - Crawling with Jina
+    - Advanced content extraction
+
+- 🔗 **MCP Seamless Integration**
+    - Expand capabilities for private domain access, knowledge graph, web browsing and more
+    - Facilitates integration of diverse research tools and methodologies
+
+### Human Collaboration
+
+- 🧠 **Human-in-the-loop**
+    - Supports interactive modification of research plans using natural language
+    - Supports auto-acceptance of research plans
+
+- 📝 **Report Post-Editing**
+    - Supports Notion-like block editing
+    - Allows AI refinements, including AI-assisted polishing, sentence shortening, and expansion
+    - Powered by [tiptap](https://tiptap.dev/)
+
+### Content Creation
+
+- 🎙️ **Podcast and Presentation Generation**
+    - AI-powered podcast script generation and audio synthesis
+    - Automated creation of simple PowerPoint presentations
+    - Customizable templates for tailored content
+
+
+## Architecture
+
+DeerFlow implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.
+
+![Architecture Diagram](./assets/architecture.png)
+> See it live at [deerflow.tech](https://deerflow.tech/)
+
+The system employs a streamlined workflow with the following components:
+
+1. **Coordinator**: The entry point that manages the workflow lifecycle
+   - Initiates the research process based on user input
+   - Delegates tasks to the planner when appropriate
+   - Acts as the primary interface between the user and the system
+
+2. **Planner**: Strategic component for task decomposition and planning
+   - Analyzes research objectives and creates structured execution plans
+   - Determines if enough context is available or if more research is needed
+   - Manages the research flow and decides when to generate the final report
+
+3. **Research Team**: A collection of specialized agents that execute the plan:
+   - **Researcher**: Conducts web searches and information gathering using tools like web search engines, crawling and even MCP services.
+   - **Coder**: Handles code analysis, execution, and technical tasks using Python REPL tool.
+   Each agent has access to specific tools optimized for their role and operates within the LangGraph framework
+
+4. **Reporter**: Final stage processor for research outputs
+   - Aggregates findings from the research team
+   - Processes and structures the collected information
+   - Generates comprehensive research reports
+
+## Text-to-Speech Integration
+
+DeerFlow now includes a Text-to-Speech (TTS) feature that allows you to convert research reports to speech. This feature uses the volcengine TTS API to generate high-quality audio from text. Features like speed, volume, and pitch are also customizable.
+
+### Using the TTS API
+
+You can access the TTS functionality through the `/api/tts` endpoint:
+
+```bash
+# Example API call using curl
+curl --location 'http://localhost:8000/api/tts' \
+--header 'Content-Type: application/json' \
+--data '{
+    "text": "This is a test of the text-to-speech functionality.",
+    "speed_ratio": 1.0,
+    "volume_ratio": 1.0,
+    "pitch_ratio": 1.0
+}' \
+--output speech.mp3
+```
+
 
 ## Development
 
@@ -226,62 +326,6 @@ When you submit a research topic in the Studio UI, you'll be able to see the ent
 - The feedback loop where you can modify the plan
 - The research and writing phases for each section
 - The final report generation
-
-## Architecture
-
-DeerFlow implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.
-
-![Architecture Diagram](./assets/architecture.png)
-
-The system employs a streamlined workflow with the following components:
-
-1. **Coordinator**: The entry point that manages the workflow lifecycle
-   - Initiates the research process based on user input
-   - Delegates tasks to the planner when appropriate
-   - Acts as the primary interface between the user and the system
-
-2. **Planner**: Strategic component for task decomposition and planning
-   - Analyzes research objectives and creates structured execution plans
-   - Determines if enough context is available or if more research is needed
-   - Manages the research flow and decides when to generate the final report
-
-3. **Research Team**: A collection of specialized agents that execute the plan:
-   - **Researcher**: Conducts web searches and information gathering using tools like Tavily and web crawling
-   - **Coder**: Handles code analysis, execution, and technical tasks using Python REPL tool
-   Each agent has access to specific tools optimized for their role and operates within the LangGraph framework
-
-4. **Reporter**: Final stage processor for research outputs
-   - Aggregates findings from the research team
-   - Processes and structures the collected information
-   - Generates comprehensive research reports
-
-## Text-to-Speech Integration
-
-DeerFlow now includes a Text-to-Speech (TTS) feature that allows you to convert research reports to speech. This feature uses the volcengine TTS API to generate high-quality audio from text.
-
-### Features
-
-- Convert any text or research report to natural-sounding speech
-- Adjust speech parameters like speed, volume, and pitch
-- Support for multiple voice types
-- Available through both API and web interface
-
-### Using the TTS API
-
-You can access the TTS functionality through the `/api/tts` endpoint:
-
-```bash
-# Example API call using curl
-curl --location 'http://localhost:8000/api/tts' \
---header 'Content-Type: application/json' \
---data '{
-    "text": "This is a test of the text-to-speech functionality.",
-    "speed_ratio": 1.0,
-    "volume_ratio": 1.0,
-    "pitch_ratio": 1.0
-}' \
---output speech.mp3
-```
 
 ## Examples
 
@@ -394,9 +438,13 @@ The application supports several command-line arguments to customize its behavio
 - **--max_step_num**: Maximum number of steps in a research plan (default: 3)
 - **--debug**: Enable detailed debug logging
 
+## FAQ
+
+Please refer to the [FAQ.md](docs/FAQ.md) for more details.
+
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the [MIT License](./LICENSE).
 
 ## Acknowledgments
 
