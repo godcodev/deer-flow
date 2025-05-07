@@ -1,15 +1,8 @@
 # LLM Config
-REASONING_MODEL:
-  model: "doubao-1-5-thinking-pro-250415"
-  api_key: xxxx
-  base_url: https://ark.cn-beijing.volces.com/api/v3
+# - Replace `api_key` with your own credentials
+# - Replace `base_url` and `model` name if you want to use a custom model
 
 BASIC_MODEL:
+  base_url: https://ark.cn-beijing.volces.com/api/v3
   model: "doubao-1-5-pro-32k-250115"
   api_key: xxxx
-  base_url: https://ark.cn-beijing.volces.com/api/v3
-
-VISION_MODEL:
-  model: "doubao-1.5-vision-pro-250328"
-  api_key: xxxx
-  base_url: https://ark.cn-beijing.volces.com/api/v3
