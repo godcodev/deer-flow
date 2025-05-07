@@ -7,17 +7,26 @@
 
 **DeerFlow** (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is a community-driven Deep Research framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
+Please visit [DeerFlow](https://deerflow.tech/) for more details.
+
 ## Demo
 
-### 🎬 Video
+### Video
 
 https://github.com/user-attachments/assets/a0a31f7b-3712-49cd-af94-7948bf1818b7
 
 In this demo, we showcase how to use DeerFlow to:
 - Seamlessly integrate with MCP services
-- Conduct the Deep Research process and produce a comprehensive report
+- Conduct the Deep Research process and produce a comprehensive report with images
 - Create podcast audio based on the generated report
 
+### Replays
+
+- [How tall is Eiffel Tower compared to tallest building?](https://deerflow.tech/chat?replay=eiffel-tower-vs-tallest-building)
+- [What are the top trending repositories on GitHub?](https://deerflow.tech/chat?replay=github-top-trending-repo)
+- [Write an article about Nanjing's traditional dishes](https://deerflow.tech/chat?replay=nanjing-traditional-dishes)
+- [How to decorate a rental apartment?](https://deerflow.tech/chat?replay=rental-apartment-decoration)
+- [Visit our official website to watch more replays](https://deerflow.tech/)
 
 ---
 
@@ -105,7 +114,7 @@ This project also includes a Web UI, offering a more dynamic and engaging intera
 ./bootstrap.sh -d
 
 # On Windows
-bootstrap.bat -d   
+bootstrap.bat -d
 ```
 
 Open your browser and visit [`http://localhost:3000`](http://localhost:3000) to explore the web UI.
