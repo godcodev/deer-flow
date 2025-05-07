@@ -7,11 +7,23 @@
 
 **DeerFlow** (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is a community-driven Deep Research framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
-## 🎬 Demo
-> [!NOTE]
-> The demo video is not uploaded yet.
+## Demo
+
+### 🎬 Video
+
+https://github.com/user-attachments/assets/a0a31f7b-3712-49cd-af94-7948bf1818b7
+
+In this demo, we showcase how to use DeerFlow to:
+- Seamlessly integrate with MCP services
+- Conduct the Deep Research process and produce a comprehensive report
+- Create podcast audio based on the generated report
+
+
+---
+
 
 ## 📑 Table of Contents
+
 - [🚀 Quick Start](#quick-start)
 - [🛠️ Development](#development)
 - [🏗️ Architecture](#architecture)
