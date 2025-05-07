@@ -45,6 +45,7 @@ export const GeneralTab: Tab = ({
   const form = useForm<z.infer<typeof generalFormSchema>>({
     resolver: zodResolver(generalFormSchema, undefined, undefined),
     values: generalSettings,
+    mode: "all",
   });
 
   const currentSettings = form.watch();
@@ -102,10 +103,10 @@ export const GeneralTab: Tab = ({
                     <Input
                       className="w-60"
                       type="number"
-                      {...field}
+                      defaultValue={1}
                       min={1}
                       onChange={(event) =>
-                        field.onChange(parseInt(event.target.value))
+                        field.onChange(parseInt(event.target.value || "0"))
                       }
                     />
                   </FormControl>
@@ -127,10 +128,10 @@ export const GeneralTab: Tab = ({
                     <Input
                       className="w-60"
                       type="number"
-                      {...field}
+                      defaultValue={1}
                       min={1}
                       onChange={(event) =>
-                        field.onChange(parseInt(event.target.value))
+                        field.onChange(parseInt(event.target.value || "0"))
                       }
                     />
                   </FormControl>
