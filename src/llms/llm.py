@@ -1,10 +1,12 @@
 # Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 # SPDX-License-Identifier: MIT
 
-from langchain_openai import ChatOpenAI
-from src.config import load_yaml_config
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
+
+from langchain_openai import ChatOpenAI
+
+from src.config import load_yaml_config
 from src.config.agents import LLMType
 
 # Cache for LLM instances
@@ -43,9 +45,11 @@ def get_llm_by_type(
 
 
 # Initialize LLMs for different purposes - now these will be cached
-reasoning_llm = get_llm_by_type("reasoning")
 basic_llm = get_llm_by_type("basic")
-vl_llm = get_llm_by_type("vision")
+
+# In the future, we will use reasoning_llm and vl_llm for different purposes
+# reasoning_llm = get_llm_by_type("reasoning")
+# vl_llm = get_llm_by_type("vision")
 
 
 if __name__ == "__main__":
