@@ -1,5 +1,14 @@
 # Configuration Guide
 
+## Quick Settings
+
+Copy the `conf.yaml.example` file to `conf.yaml` and modify the configurations to match your specific settings and requirements.
+
+```bash
+cd deer-flow
+cp conf.yaml.example conf.yaml
+```
+
 ## Which models does DeerFlow support?
 
 In DeerFlow, currently we only support non-reasoning models, which means models like OpenAI's o1/o3 or DeepSeek's R1 are not supported yet, but we will add support for them in the future.
