@@ -13,7 +13,9 @@ from mcp.client.sse import sse_client
 logger = logging.getLogger(__name__)
 
 
-async def _get_tools_from_client_session(client_context_manager: Any, timeout_seconds: int = 10) -> List:
+async def _get_tools_from_client_session(
+    client_context_manager: Any, timeout_seconds: int = 10
+) -> List:
     """
     Helper function to get tools from a client session.
 
@@ -76,7 +78,9 @@ async def load_mcp_tools(
                 env=env,  # Optional environment variables
             )
 
-            return await _get_tools_from_client_session(stdio_client(server_params), timeout_seconds)
+            return await _get_tools_from_client_session(
+                stdio_client(server_params), timeout_seconds
+            )
 
         elif server_type == "sse":
             if not url:
@@ -84,7 +88,9 @@ async def load_mcp_tools(
                     status_code=400, detail="URL is required for sse type"
                 )
 
-            return await _get_tools_from_client_session(sse_client(url=url), timeout_seconds)
+            return await _get_tools_from_client_session(
+                sse_client(url=url), timeout_seconds
+            )
 
         else:
             raise HTTPException(
