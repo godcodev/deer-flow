@@ -5,7 +5,7 @@ import { Bird, Microscope, Podcast, Usb, User } from "lucide-react";
 
 import { BentoCard, BentoGrid } from "~/components/magicui/bento-grid";
 
-import { SectionHeader } from "./section-header";
+import { SectionHeader } from "../components/section-header";
 
 const features = [
   {
@@ -74,6 +74,7 @@ export function CoreFeatureSection() {
   return (
     <section className="relative flex w-full flex-col content-around items-center justify-center">
       <SectionHeader
+        anchor="core-features"
         title="Core Features"
         description="Find out what makes DeerFlow effective."
       />

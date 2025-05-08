@@ -7,12 +7,13 @@ import Link from "next/link";
 import { AuroraText } from "~/components/magicui/aurora-text";
 import { Button } from "~/components/ui/button";
 
-import { SectionHeader } from "./section-header";
+import { SectionHeader } from "../components/section-header";
 
 export function JoinCommunitySection() {
   return (
     <section className="flex w-full flex-col items-center justify-center pb-12">
       <SectionHeader
+        anchor="join-community"
         title={
           <AuroraText colors={["#60A5FA", "#A5FA60", "#A560FA"]}>
             Join the DeerFlow Community

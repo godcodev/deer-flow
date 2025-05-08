@@ -6,7 +6,7 @@ import { Bot } from "lucide-react";
 
 import { BentoCard } from "~/components/magicui/bento-grid";
 
-import { SectionHeader } from "./section-header";
+import { SectionHeader } from "../components/section-header";
 
 const caseStudies = [
   {
@@ -71,6 +71,7 @@ export function CaseStudySection() {
   return (
     <section className="relative container hidden flex-col items-center justify-center md:flex">
       <SectionHeader
+        anchor="case-studies"
         title="Case Studies"
         description="See DeerFlow in action through replays."
       />
