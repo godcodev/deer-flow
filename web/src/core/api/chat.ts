@@ -82,6 +82,7 @@ async function* chatReplayStream(
           ? "/mock/before-interrupt.txt"
           : "/mock/after-interrupt.txt";
     }
+    fastForwardReplaying = true;
   } else {
     const replayId = extractReplayIdFromSearchParams(window.location.search);
     if (replayId) {
