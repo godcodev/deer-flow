@@ -92,7 +92,7 @@ brew install marp-cli
 Optionally, install web UI dependencies via [pnpm](https://pnpm.io/installation):
 
 ```bash
-cd web
+cd deer-flow/web
 pnpm install
 ```
 
