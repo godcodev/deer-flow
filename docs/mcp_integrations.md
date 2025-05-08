@@ -18,11 +18,11 @@
 
 ## APIs
 
-### Get Information of MCP Server
+### Get metadata of MCP Server
 
 **POST /api/mcp/server/metadata**
 
-For stdio type:
+For `stdio` type:
 ```json
 {
   "transport": "stdio",
@@ -32,7 +32,7 @@ For stdio type:
 }
 ```
 
-For SSE type:
+For `sse` type:
 ```json
 {
   "transport": "sse",
