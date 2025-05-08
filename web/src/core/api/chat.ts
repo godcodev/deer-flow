@@ -1,6 +1,8 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
+import { env } from "~/env";
+
 import type { MCPServerMetadata } from "../mcp";
 import { extractReplayIdFromSearchParams } from "../replay/get-replay-id";
 import { fetchStream } from "../sse";
@@ -30,7 +32,11 @@ export async function* chatStream(
   },
   options: { abortSignal?: AbortSignal } = {},
 ) {
-  if (location.search.includes("mock") || location.search.includes("replay=")) {
+  if (
+    env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY ||
+    location.search.includes("mock") ||
+    location.search.includes("replay=")
+  ) {
     return yield* chatReplayStream(userMessage, params, options);
   }
   const stream = fetchStream(resolveServiceURL("chat/stream"), {
@@ -77,13 +83,13 @@ async function* chatReplayStream(
     if (replayId) {
       replayFilePath = `/replay/${replayId}.txt`;
     } else {
-      replayFilePath = "/mock/before-interrupt.txt";
+      // Fallback to a default replay
+      replayFilePath = `/replay/eiffel-tower-vs-tallest-building.txt`;
     }
   }
-  const res = await fetch(replayFilePath, {
-    signal: options.abortSignal,
+  const text = await fetchReplay(replayFilePath, {
+    abortSignal: options.abortSignal,
   });
-  const text = await res.text();
   const chunks = text.split("\n\n");
   for (const chunk of chunks) {
     const [eventRaw, dataRaw] = chunk.split("\n") as [string, string];
@@ -112,6 +118,43 @@ async function* chatReplayStream(
       }
     } catch (e) {
       console.error(e);
+    }
+  }
+}
+
+const replayCache = new Map<string, string>();
+export async function fetchReplay(
+  url: string,
+  options: { abortSignal?: AbortSignal } = {},
+) {
+  if (replayCache.has(url)) {
+    return replayCache.get(url)!;
+  }
+  const res = await fetch(url, {
+    signal: options.abortSignal,
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch replay: ${res.statusText}`);
+  }
+  const text = await res.text();
+  replayCache.set(url, text);
+  return text;
+}
+
+export async function fetchReplayTitle() {
+  const res = chatReplayStream(
+    "",
+    {
+      thread_id: "__mock__",
+      auto_accepted_plan: false,
+      max_plan_iterations: 3,
+      max_step_num: 1,
+    },
+    {},
+  );
+  for await (const event of res) {
+    if (event.type === "message_chunk") {
+      return event.data.content;
     }
   }
 }

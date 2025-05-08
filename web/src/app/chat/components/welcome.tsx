@@ -26,8 +26,8 @@ export function Welcome({ className }: { className?: string }) {
         >
           🦌 DeerFlow
         </a>
-        , a research tool built on cutting-edge language models, helps you
-        search on web, browse information, and handle complex tasks.
+        , a deep research assistant built on cutting-edge language models, helps
+        you search on web, browse information, and handle complex tasks.
       </div>
     </motion.div>
   );

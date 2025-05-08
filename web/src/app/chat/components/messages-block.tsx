@@ -14,9 +14,11 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { fastForwardReplay } from "~/core/api";
+import { useReplayMetadata } from "~/core/api/hooks";
 import type { Option } from "~/core/messages";
 import { useReplay } from "~/core/replay";
 import { sendMessage, useStore } from "~/core/store";
+import { env } from "~/env";
 import { cn } from "~/lib/utils";
 
 import { ConversationStarter } from "./conversation-starter";
@@ -28,6 +30,7 @@ export function MessagesBlock({ className }: { className?: string }) {
   const messageCount = useStore((state) => state.messageIds.length);
   const responding = useStore((state) => state.responding);
   const { isReplay } = useReplay();
+  const { title: replayTitle, hasError: replayHasError } = useReplayMetadata();
   const [replayStarted, setReplayStarted] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
@@ -123,7 +126,7 @@ export function MessagesBlock({ className }: { className?: string }) {
                   <CardHeader>
                     <CardTitle>
                       <RainbowText animated={responding}>
-                        {responding ? "Replaying" : "Replay Mode"}
+                        {responding ? "Replaying" : `${replayTitle}`}
                       </RainbowText>
                     </CardTitle>
                     <CardDescription>
@@ -137,26 +140,43 @@ export function MessagesBlock({ className }: { className?: string }) {
                     </CardDescription>
                   </CardHeader>
                 </div>
-                <div className="pr-4">
-                  {responding && (
-                    <Button
-                      className={cn(fastForwarding && "animate-pulse")}
-                      variant={fastForwarding ? "default" : "outline"}
-                      onClick={handleFastForwardReplay}
-                    >
-                      <FastForward size={16} />
-                      Fast Forward
-                    </Button>
-                  )}
-                  {!replayStarted && (
-                    <Button className="w-24" onClick={handleStartReplay}>
-                      <Play size={16} />
-                      Play
-                    </Button>
-                  )}
-                </div>
+                {!replayHasError && (
+                  <div className="pr-4">
+                    {responding && (
+                      <Button
+                        className={cn(fastForwarding && "animate-pulse")}
+                        variant={fastForwarding ? "default" : "outline"}
+                        onClick={handleFastForwardReplay}
+                      >
+                        <FastForward size={16} />
+                        Fast Forward
+                      </Button>
+                    )}
+                    {!replayStarted && (
+                      <Button className="w-24" onClick={handleStartReplay}>
+                        <Play size={16} />
+                        Play
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             </Card>
+            {!replayStarted && env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY && (
+              <div className="text-muted-foreground w-full text-center text-xs">
+                * This site is for demo purposes only. If you want to try your
+                own question, please{" "}
+                <a
+                  className="underline"
+                  href="https://github.com/bytedance/deer-flow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  click here
+                </a>{" "}
+                to clone it locally and run it.
+              </div>
+            )}
           </motion.div>
         </>
       )}
