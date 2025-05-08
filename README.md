@@ -26,7 +26,7 @@ In this demo, we showcase how to use DeerFlow to:
 - [What are the top trending repositories on GitHub?](https://deerflow.tech/chat?replay=github-top-trending-repo)
 - [Write an article about Nanjing's traditional dishes](https://deerflow.tech/chat?replay=nanjing-traditional-dishes)
 - [How to decorate a rental apartment?](https://deerflow.tech/chat?replay=rental-apartment-decoration)
-- [Visit our official website to explore more replays.](https://deerflow.tech/)
+- [Visit our official website to explore more replays.](https://deerflow.tech/#case-studies)
 
 ---
 
@@ -128,12 +128,12 @@ bootstrap.bat -d
 
 Open your browser and visit [`http://localhost:3000`](http://localhost:3000) to explore the web UI.
 
-Please visit the [`web`](./web/) directory for more details.
+Explore more details in the [`web`](./web/) directory.
 
 
 ## Supported Search Engines
 
-Deer supports multiple search engines that can be configured in your `.env` file using the `SEARCH_API` variable:
+DeerFlow supports multiple search engines that can be configured in your `.env` file using the `SEARCH_API` variable:
 
 - **Tavily** (default): A specialized search API for AI applications
     - Requires `TAVILY_API_KEY` in your `.env` file
@@ -202,7 +202,7 @@ SEARCH_API=tavily
 DeerFlow implements a modular multi-agent system architecture designed for automated research and code analysis. The system is built on LangGraph, enabling a flexible state-based workflow where components communicate through a well-defined message passing system.
 
 ![Architecture Diagram](./assets/architecture.png)
-> See it live at [deerflow.tech](https://deerflow.tech/)
+> See it live at [deerflow.tech](https://deerflow.tech/#multi-agent-architecture)
 
 The system employs a streamlined workflow with the following components:
 
