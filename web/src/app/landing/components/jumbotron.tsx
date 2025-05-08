@@ -28,7 +28,7 @@ export function Jumbotron() {
         squareSize={3}
         gridGap={6}
         color="#60A5FA"
-        maxOpacity={0.66}
+        maxOpacity={0.64}
         flickerChance={0.12}
       />
       <div className="relative z-10 flex flex-col items-center justify-center gap-12">
@@ -38,11 +38,11 @@ export function Jumbotron() {
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>
-        <p className="max-w-4xl p-2 text-center text-sm font-light opacity-80 md:text-2xl">
-          Meet <span className="font-medium">DeerFlow</span>, your ultimate Deep
-          Research assistant. With powerful tools like search engines, web
-          crawlers, Python and MCP services, it provides instant insights,
-          comprehensive reports, or even captivating podcasts.
+        <p className="max-w-4xl p-2 text-center text-sm opacity-85 md:text-2xl">
+          Meet DeerFlow, your personal Deep Research assistant. With powerful
+          tools like search engines, web crawlers, Python and MCP services, it
+          delivers instant insights, comprehensive reports, and even captivating
+          podcasts.
         </p>
         <div className="flex gap-6">
           <Button className="hidden text-lg md:flex md:w-42" size="lg" asChild>
