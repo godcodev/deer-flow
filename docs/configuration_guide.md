@@ -35,25 +35,25 @@ The following is a configuration example of `conf.yaml` for using OpenAI-Compati
 ```yaml
 # An example of Doubao models served by VolcEngine
 BASIC_MODEL:
-  api_base: "https://ark.cn-beijing.volces.com/api/v3"
+  base_url: "https://ark.cn-beijing.volces.com/api/v3"
   model: "doubao-1.5-pro-32k-250115"
   api_key: YOUR_API_KEY
 
 # An example of Aliyun models
 BASIC_MODEL:
-  api_base: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
   model: "qwen-max-latest"
   api_key: YOUR_API_KEY
 
 # An example of deepseek official models
 BASIC_MODEL:
-  api_base: "https://api.deepseek.com"
+  base_url: "https://api.deepseek.com"
   model: "deepseek-chat"
   api_key: YOU_API_KEY
 
 # An example of Google Gemini models using OpenAI-Compatible interface
 BASIC_MODEL:
-  api_base: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  base_url: "https://generativelanguage.googleapis.com/v1beta/openai/"
   model: "gemini-2.0-flash"
   api_key: YOUR_API_KEY
 ```
@@ -66,7 +66,7 @@ The following is a configuration example of `conf.yaml` for using Ollama models:
 ```yaml
 BASIC_MODEL:
   model: "ollama/ollama-model-name"
-  api_base: "http://localhost:11434" # Local service address of Ollama, which can be started/viewed via ollama serve
+  base_url: "http://localhost:11434" # Local service address of Ollama, which can be started/viewed via ollama serve
 ```
 
 ### How to use OpenRouter models?
