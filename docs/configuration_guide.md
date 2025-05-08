@@ -36,19 +36,19 @@ The following is a configuration example of `conf.yaml` for using OpenAI-Compati
 # An example of Doubao models served by VolcEngine
 BASIC_MODEL:
   api_base: "https://ark.cn-beijing.volces.com/api/v3"
-  model: "doubao/doubao-1.5-pro-32k-250115"
+  model: "doubao-1.5-pro-32k-250115"
   api_key: YOUR_API_KEY
 
 # An example of Aliyun models
 BASIC_MODEL:
   api_base: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-  model: "openai/qwen-max-latest"
+  model: "qwen-max-latest"
   api_key: YOUR_API_KEY
 
 # An example of deepseek official models
 BASIC_MODEL:
   api_base: "https://api.deepseek.com"
-  model: "openai/deepseek-chat"
+  model: "deepseek-chat"
   api_key: YOU_API_KEY
 
 # An example of Google Gemini models using OpenAI-Compatible interface
