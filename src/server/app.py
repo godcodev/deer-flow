@@ -33,7 +33,7 @@ from src.tools import VolcengineTTS
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Deer API",
+    title="DeerFlow API",
     description="API for Deer",
     version="0.1.0",
 )
@@ -285,11 +285,11 @@ async def mcp_server_metadata(request: MCPServerMetadataRequest):
     try:
         # Set default timeout with a longer value for this endpoint
         timeout = 300  # Default to 300 seconds for this endpoint
-        
+
         # Use custom timeout from request if provided
         if request.timeout_seconds is not None:
             timeout = request.timeout_seconds
-            
+
         # Load tools from the MCP server using the utility function
         tools = await load_mcp_tools(
             server_type=request.transport,

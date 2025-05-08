@@ -2,15 +2,16 @@
 # SPDX-License-Identifier: MIT
 
 """
-Entry point script for the Deer project.
+Entry point script for the DeerFlow project.
 """
 
 import argparse
 import asyncio
+
 from InquirerPy import inquirer
 
-from src.workflow import run_agent_workflow_async
 from src.config.questions import BUILT_IN_QUESTIONS, BUILT_IN_QUESTIONS_ZH_CN
+from src.workflow import run_agent_workflow_async
 
 
 def ask(
