@@ -17,6 +17,11 @@ In DeerFlow, currently we only support non-reasoning models, which means models 
 
 `doubao-1.5-pro-32k-250115`, `gpt-4o`, `qwen-max-latest`, `gemini-2.0-flash`, `deepseek-v3`, and theoretically any other non-reasoning chat models that implement the OpenAI API specification.
 
+> [!NOTE]
+> The Deep Research process requires the model to have a **longer context window**, which is not supported by all models.
+> A work-around is to set the `Max steps of a research plan` to `2` in the settings dialog located on the top right corner of the web page,
+> or set `max_step_num` to `2` when invoking the API.
+
 ### How to switch models?
 You can switch the model in use by modifying the `conf.yaml` file in the root directory of the project, using the configuration in the [litellm format](https://docs.litellm.ai/docs/providers/openai_compatible).
 
