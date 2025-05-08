@@ -74,10 +74,14 @@ async function* chatReplayStream(
   const urlParams = new URLSearchParams(window.location.search);
   let replayFilePath = "";
   if (urlParams.has("mock")) {
-    replayFilePath =
-      params.interrupt_feedback === "accepted"
-        ? "/mock/before-interrupt.txt"
-        : "/mock/after-interrupt.txt";
+    if (urlParams.get("mock")) {
+      replayFilePath = `/mock/${urlParams.get("mock")!}.txt`;
+    } else {
+      replayFilePath =
+        params.interrupt_feedback === "accepted"
+          ? "/mock/before-interrupt.txt"
+          : "/mock/after-interrupt.txt";
+    }
   } else {
     const replayId = extractReplayIdFromSearchParams(window.location.search);
     if (replayId) {
