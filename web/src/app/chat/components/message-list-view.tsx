@@ -4,13 +4,13 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { Download, Headphones } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { LoadingAnimation } from "~/components/deer-flow/loading-animation";
 import { Markdown } from "~/components/deer-flow/markdown";
 import { RainbowText } from "~/components/deer-flow/rainbow-text";
 import { RollingText } from "~/components/deer-flow/rolling-text";
-import { ScrollContainer } from "~/components/deer-flow/scroll-container";
+import { ScrollContainer, type ScrollContainerRef } from "~/components/deer-flow/scroll-container";
 import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
 import {
@@ -43,6 +43,7 @@ export function MessageListView({
     options?: { interruptFeedback?: string },
   ) => void;
 }) {
+  const scrollContainerRef = useRef<ScrollContainerRef>(null);
   const messageIds = useStore((state) => state.messageIds);
   const interruptMessage = useStore((state) => {
     if (messageIds.length >= 2) {
@@ -72,11 +73,23 @@ export function MessageListView({
     (state) => state.ongoingResearchId === state.openResearchId,
   );
 
+  const handleToggleResearch = useCallback(() => {
+    // Fix the issue where auto-scrolling to the bottom
+    // occasionally fails when toggling research.
+    const timer = setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollToBottom();
+      }
+    }, 500);
+    return () => { clearTimeout(timer); };
+  }, []);
+
   return (
     <ScrollContainer
       className={cn("flex h-full w-full flex-col overflow-hidden", className)}
       scrollShadowColor="var(--app-background)"
       autoScrollToBottom
+      ref={scrollContainerRef}
     >
       <ul className="flex flex-col">
         {messageIds.map((messageId) => (
@@ -87,6 +100,7 @@ export function MessageListView({
             interruptMessage={interruptMessage}
             onFeedback={onFeedback}
             onSendMessage={onSendMessage}
+            onToggleResearch={handleToggleResearch}
           />
         ))}
         <div className="flex h-8 w-full shrink-0"></div>
@@ -105,6 +119,7 @@ function MessageListItem({
   interruptMessage,
   onFeedback,
   onSendMessage,
+  onToggleResearch
 }: {
   className?: string;
   messageId: string;
@@ -115,6 +130,7 @@ function MessageListItem({
     message: string,
     options?: { interruptFeedback?: string },
   ) => void;
+  onToggleResearch?: () => void;
 }) {
   const message = useMessage(messageId);
   const startOfResearch = useStore((state) =>
@@ -150,7 +166,7 @@ function MessageListItem({
       } else if (startOfResearch) {
         content = (
           <div className="w-full px-4">
-            <ResearchCard researchId={message.id} />
+            <ResearchCard researchId={message.id} onToggleResearch={onToggleResearch} />
           </div>
         );
       } else {
@@ -205,7 +221,7 @@ function MessageListItem({
         className={cn(
           `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow`,
           message.role === "user" &&
-            "text-primary-foreground bg-brand rounded-ee-none",
+          "text-primary-foreground bg-brand rounded-ee-none",
           message.role === "assistant" && "bg-card rounded-es-none",
           className,
         )}
@@ -218,9 +234,11 @@ function MessageListItem({
   function ResearchCard({
     className,
     researchId,
+    onToggleResearch
   }: {
     className?: string;
     researchId: string;
+    onToggleResearch?: () => void;
   }) {
     const reportId = useStore((state) =>
       state.researchReportIds.get(researchId),
@@ -245,7 +263,8 @@ function MessageListItem({
       } else {
         openResearch(researchId);
       }
-    }, [openResearchId, researchId]);
+      onToggleResearch?.();
+    }, [openResearchId, researchId, onToggleResearch]);
     return (
       <Card className={cn("w-full", className)}>
         <CardHeader>
@@ -314,11 +333,10 @@ function PlanCard({
       <CardHeader>
         <CardTitle>
           <Markdown animate>
-            {`### ${
-              plan.title !== undefined && plan.title !== ""
-                ? plan.title
-                : "Deep Research"
-            }`}
+            {`### ${plan.title !== undefined && plan.title !== ""
+              ? plan.title
+              : "Deep Research"
+              }`}
           </Markdown>
         </CardTitle>
       </CardHeader>

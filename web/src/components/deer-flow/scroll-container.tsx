@@ -1,11 +1,24 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { useEffect, useRef } from "react";
+import { useEffect, useImperativeHandle, useRef, type ReactNode, type RefObject } from "react";
 import { useStickToBottom } from "use-stick-to-bottom";
 
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { cn } from "~/lib/utils";
+
+export interface ScrollContainerProps {
+  className?: string;
+  children?: ReactNode;
+  scrollShadow?: boolean;
+  scrollShadowColor?: string;
+  autoScrollToBottom?: boolean;
+  ref?: RefObject<ScrollContainerRef | null>;
+}
+
+export interface ScrollContainerRef {
+  scrollToBottom(): void;
+}
 
 export function ScrollContainer({
   className,
@@ -13,19 +26,19 @@ export function ScrollContainer({
   scrollShadow = true,
   scrollShadowColor = "var(--background)",
   autoScrollToBottom = false,
-}: {
-  className?: string;
-  children?: React.ReactNode;
-  scrollShadow?: boolean;
-  scrollShadowColor?: string;
-  autoScrollToBottom?: boolean;
-}) {
-  const { scrollRef, contentRef } = useStickToBottom({
-    initial: "instant",
-  });
+  ref
+}: ScrollContainerProps) {
+  const { scrollRef, contentRef, scrollToBottom, isAtBottom } = useStickToBottom({ initial: "instant" });
+  useImperativeHandle(ref, () => ({
+    scrollToBottom() {
+      if (isAtBottom) {
+        scrollToBottom();
+      }
+    }
+  }));
+
   const tempScrollRef = useRef<HTMLElement>(null);
   const tempContentRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
     if (!autoScrollToBottom) {
       tempScrollRef.current = scrollRef.current;
