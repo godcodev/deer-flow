@@ -1,19 +1,25 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { useReplay } from "../replay";
 
 import { fetchReplayTitle } from "./chat";
 
 export function useReplayMetadata() {
+  const { isReplay } = useReplay();
   const [title, setTitle] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useRef(false);
   const [error, setError] = useState<boolean>(false);
   useEffect(() => {
-    if (title || isLoading) {
+    if (!isReplay) {
       return;
     }
-    setIsLoading(true);
+    if (title || isLoading.current) {
+      return;
+    }
+    isLoading.current = true;
     fetchReplayTitle()
       .then((title) => {
         setError(false);
@@ -28,8 +34,8 @@ export function useReplayMetadata() {
         document.title = "DeerFlow";
       })
       .finally(() => {
-        setIsLoading(false);
+        isLoading.current = false;
       });
-  }, [isLoading, title]);
+  }, [isLoading, isReplay, title]);
   return { title, isLoading, hasError: error };
 }
