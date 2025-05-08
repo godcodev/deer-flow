@@ -81,6 +81,7 @@ cp .env.example .env
 # See the 'Supported Search Engines' and 'Text-to-Speech Integration' sections below for all available options
 
 # Configure conf.yaml for your LLM model and API keys
+# Please refer to 'docs/configuration_guide.md' for more details
 cp conf.yaml.example conf.yaml
 
 # Install marp for ppt generation
