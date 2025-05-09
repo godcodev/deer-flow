@@ -21,7 +21,7 @@ def ppt_composer_node(state: PPTState):
     model = get_llm_by_type(AGENT_LLM_MAP["ppt_composer"])
     ppt_content = model.invoke(
         [
-            SystemMessage(content=get_prompt_template("ppt_composer")),
+            SystemMessage(content=get_prompt_template("ppt/ppt_composer")),
             HumanMessage(content=state["input"]),
         ],
     )

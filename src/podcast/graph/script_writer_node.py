@@ -22,7 +22,7 @@ def script_writer_node(state: PodcastState):
     ).with_structured_output(Script, method="json_mode")
     script = model.invoke(
         [
-            SystemMessage(content=get_prompt_template("podcast_script_writer")),
+            SystemMessage(content=get_prompt_template("podcast/podcast_script_writer")),
             HumanMessage(content=state["input"]),
         ],
     )
