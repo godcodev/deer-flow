@@ -225,6 +225,12 @@ def coordinator_node(
                     break
         except Exception as e:
             logger.error(f"Error processing tool calls: {e}")
+    else:
+        logger.warning(
+            "Coordinator response contains no tool calls. Terminating workflow execution."
+        )
+        logger.debug(f"Coordinator response: {response}")
+
     return Command(
         update={"locale": locale},
         goto=goto,

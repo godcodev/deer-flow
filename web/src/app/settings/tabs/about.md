@@ -39,7 +39,7 @@ These outstanding projects form the backbone of DeerFlow and exemplify the trans
 ### Special Thanks
 Finally, we want to express our heartfelt gratitude to the core authors of `DeerFlow`:
 
-- **[DanielWalnut](https://github.com/hetaoBackend/)**
+- **[Daniel Walnut](https://github.com/hetaoBackend/)**
 - **[Henry Li](https://github.com/magiccube/)**
 
 Without their vision, passion and dedication, `DeerFlow` would not be what it is today.
