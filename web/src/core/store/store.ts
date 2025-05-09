@@ -182,24 +182,17 @@ function appendMessage(message: Message) {
     message.agent === "reporter" ||
     message.agent === "researcher"
   ) {
+    if (!getOngoingResearchId()) {
+      const id = message.id;
+      appendResearch(id);
+      openResearch(id);
+    }
     appendResearchActivity(message);
   }
   useStore.getState().appendMessage(message);
 }
 
 function updateMessage(message: Message) {
-  if (
-    message.agent === "researcher" ||
-    message.agent === "coder" ||
-    message.agent === "reporter"
-  ) {
-    const id = message.id;
-    if (!getOngoingResearchId()) {
-      appendResearch(id);
-      openResearch(id);
-    }
-  }
-
   if (
     getOngoingResearchId() &&
     message.agent === "reporter" &&
@@ -244,12 +237,15 @@ function appendResearchActivity(message: Message) {
   const researchId = getOngoingResearchId();
   if (researchId) {
     const researchActivityIds = useStore.getState().researchActivityIds;
-    useStore.setState({
-      researchActivityIds: new Map(researchActivityIds).set(researchId, [
-        ...researchActivityIds.get(researchId)!,
-        message.id,
-      ]),
-    });
+    const current = researchActivityIds.get(researchId)!;
+    if (!current.includes(message.id)) {
+      useStore.setState({
+        researchActivityIds: new Map(researchActivityIds).set(researchId, [
+          ...current,
+          message.id,
+        ]),
+      });
+    }
     if (message.agent === "reporter") {
       useStore.setState({
         researchReportIds: new Map(useStore.getState().researchReportIds).set(

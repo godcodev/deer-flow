@@ -65,8 +65,10 @@ export function ResearchBlock({
 
   // When the research id changes, set the active tab to activities
   useEffect(() => {
-    setActiveTab("activities");
-  }, [researchId]);
+    if (!hasReport) {
+      setActiveTab("activities");
+    }
+  }, [hasReport, researchId]);
 
   return (
     <div className={cn("h-full w-full", className)}>
