@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 class ScriptLine(BaseModel):
     speaker: Literal["male", "female"] = Field(default="male")
-    text: str = Field(default="")
+    paragraph: str = Field(default="")
 
 
 class Script(BaseModel):

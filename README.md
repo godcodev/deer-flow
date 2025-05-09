@@ -42,6 +42,7 @@ In this demo, we showcase how to use DeerFlow to:
 - [❓ FAQ](#faq)
 - [📜 License](#license)
 - [💖 Acknowledgments](#acknowledgments)
+- [⭐ Star History](#star-history)
 
 
 ## Quick Start
@@ -465,3 +466,7 @@ A heartfelt thank you goes out to the core authors of `DeerFlow`, whose vision, 
 - **[Henry Li](https://github.com/magiccube/)**
 
 Your unwavering commitment and expertise have been the driving force behind DeerFlow's success. We are honored to have you at the helm of this journey.
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=bytedance/deer-flow&type=Date)](https://star-history.com/#bytedance/deer-flow&Date)
