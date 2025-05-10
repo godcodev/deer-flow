@@ -13,6 +13,7 @@ import "katex/dist/katex.min.css";
 
 import { Button } from "~/components/ui/button";
 import { rehypeSplitWordsIntoSpans } from "~/core/rehype";
+import { autoFixMarkdown } from "~/core/utils/markdown";
 import { cn } from "~/lib/utils";
 
 import Image from "./image";
@@ -62,7 +63,9 @@ export function Markdown({
         }}
         {...props}
       >
-        {dropMarkdownQuote(processKatexInMarkdown(children))}
+        {autoFixMarkdown(
+          dropMarkdownQuote(processKatexInMarkdown(children ?? "")) ?? "",
+        )}
       </ReactMarkdown>
       {enableCopy && typeof children === "string" && (
         <div className="flex">
