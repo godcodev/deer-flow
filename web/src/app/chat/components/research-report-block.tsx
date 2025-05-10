@@ -62,7 +62,7 @@ export function ResearchReportBlock({
         />
       ) : (
         <>
-          <Markdown animate>{message?.content}</Markdown>
+          <Markdown animated>{message?.content}</Markdown>
           {message?.isStreaming && <LoadingAnimation className="my-12" />}
         </>
       )}

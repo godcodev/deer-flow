@@ -10,7 +10,10 @@ import { LoadingAnimation } from "~/components/deer-flow/loading-animation";
 import { Markdown } from "~/components/deer-flow/markdown";
 import { RainbowText } from "~/components/deer-flow/rainbow-text";
 import { RollingText } from "~/components/deer-flow/rolling-text";
-import { ScrollContainer, type ScrollContainerRef } from "~/components/deer-flow/scroll-container";
+import {
+  ScrollContainer,
+  type ScrollContainerRef,
+} from "~/components/deer-flow/scroll-container";
 import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
 import {
@@ -81,7 +84,9 @@ export function MessageListView({
         scrollContainerRef.current.scrollToBottom();
       }
     }, 500);
-    return () => { clearTimeout(timer); };
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
@@ -119,7 +124,7 @@ function MessageListItem({
   interruptMessage,
   onFeedback,
   onSendMessage,
-  onToggleResearch
+  onToggleResearch,
 }: {
   className?: string;
   messageId: string;
@@ -166,7 +171,10 @@ function MessageListItem({
       } else if (startOfResearch) {
         content = (
           <div className="w-full px-4">
-            <ResearchCard researchId={message.id} onToggleResearch={onToggleResearch} />
+            <ResearchCard
+              researchId={message.id}
+              onToggleResearch={onToggleResearch}
+            />
           </div>
         );
       } else {
@@ -221,7 +229,7 @@ function MessageListItem({
         className={cn(
           `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow`,
           message.role === "user" &&
-          "text-primary-foreground bg-brand rounded-ee-none",
+            "text-primary-foreground bg-brand rounded-ee-none",
           message.role === "assistant" && "bg-card rounded-es-none",
           className,
         )}
@@ -234,7 +242,7 @@ function MessageListItem({
   function ResearchCard({
     className,
     researchId,
-    onToggleResearch
+    onToggleResearch,
   }: {
     className?: string;
     researchId: string;
@@ -332,16 +340,17 @@ function PlanCard({
     <Card className={cn("w-full", className)}>
       <CardHeader>
         <CardTitle>
-          <Markdown animate>
-            {`### ${plan.title !== undefined && plan.title !== ""
-              ? plan.title
-              : "Deep Research"
-              }`}
+          <Markdown animated>
+            {`### ${
+              plan.title !== undefined && plan.title !== ""
+                ? plan.title
+                : "Deep Research"
+            }`}
           </Markdown>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Markdown className="opacity-80" animate>
+        <Markdown className="opacity-80" animated>
           {plan.thought}
         </Markdown>
         {plan.steps && (
@@ -349,10 +358,10 @@ function PlanCard({
             {plan.steps.map((step, i) => (
               <li key={`step-${i}`}>
                 <h3 className="mb text-lg font-medium">
-                  <Markdown animate>{step.title}</Markdown>
+                  <Markdown animated>{step.title}</Markdown>
                 </h3>
                 <div className="text-muted-foreground text-sm">
-                  <Markdown animate>{step.description}</Markdown>
+                  <Markdown animated>{step.description}</Markdown>
                 </div>
               </li>
             ))}

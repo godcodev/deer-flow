@@ -75,7 +75,7 @@ function ActivityMessage({ messageId }: { messageId: string }) {
     if (message.agent !== "reporter" && message.agent !== "planner") {
       return (
         <div className="px-4 py-2">
-          <Markdown animate>{message.content}</Markdown>
+          <Markdown animated>{message.content}</Markdown>
         </div>
       );
     }

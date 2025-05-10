@@ -24,20 +24,20 @@ export function Markdown({
   children,
   style,
   enableCopy,
-  animate = false,
+  animated = false,
   ...props
 }: ReactMarkdownOptions & {
   className?: string;
   enableCopy?: boolean;
   style?: React.CSSProperties;
-  animate?: boolean;
+  animated?: boolean;
 }) {
   const rehypePlugins = useMemo(() => {
-    if (animate) {
+    if (animated) {
       return [rehypeKatex, rehypeSplitWordsIntoSpans];
     }
     return [rehypeKatex];
-  }, [animate]);
+  }, [animated]);
   return (
     <div
       className={cn(
