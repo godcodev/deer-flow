@@ -17,7 +17,7 @@ import { fastForwardReplay } from "~/core/api";
 import { useReplayMetadata } from "~/core/api/hooks";
 import type { Option } from "~/core/messages";
 import { useReplay } from "~/core/replay";
-import { sendMessage, useStore } from "~/core/store";
+import { sendMessage, useMessageIds, useStore } from "~/core/store";
 import { env } from "~/env";
 import { cn } from "~/lib/utils";
 
@@ -27,7 +27,8 @@ import { MessageListView } from "./message-list-view";
 import { Welcome } from "./welcome";
 
 export function MessagesBlock({ className }: { className?: string }) {
-  const messageCount = useStore((state) => state.messageIds.length);
+  const messageIds = useMessageIds();
+  const messageCount = messageIds.length;
   const responding = useStore((state) => state.responding);
   const { isReplay } = useReplay();
   const { title: replayTitle, hasError: replayHasError } = useReplayMetadata();

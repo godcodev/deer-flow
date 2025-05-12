@@ -27,8 +27,11 @@ import type { Message, Option } from "~/core/messages";
 import {
   closeResearch,
   openResearch,
+  useLastFeedbackMessageId,
+  useLastInterruptMessage,
   useMessage,
-  useResearchTitle,
+  useMessageIds,
+  useResearchMessage,
   useStore,
 } from "~/core/store";
 import { parseJSON } from "~/core/utils";
@@ -47,27 +50,9 @@ export function MessageListView({
   ) => void;
 }) {
   const scrollContainerRef = useRef<ScrollContainerRef>(null);
-  const messageIds = useStore((state) => state.messageIds);
-  const interruptMessage = useStore((state) => {
-    if (messageIds.length >= 2) {
-      const lastMessage = state.messages.get(
-        messageIds[messageIds.length - 1]!,
-      );
-      return lastMessage?.finishReason === "interrupt" ? lastMessage : null;
-    }
-    return null;
-  });
-  const waitingForFeedbackMessageId = useStore((state) => {
-    if (messageIds.length >= 2) {
-      const lastMessage = state.messages.get(
-        messageIds[messageIds.length - 1]!,
-      );
-      if (lastMessage && lastMessage.finishReason === "interrupt") {
-        return state.messageIds[state.messageIds.length - 2];
-      }
-    }
-    return null;
-  });
+  const messageIds = useMessageIds();
+  const interruptMessage = useLastInterruptMessage();
+  const waitingForFeedbackMessageId = useLastFeedbackMessageId();
   const responding = useStore((state) => state.responding);
   const noOngoingResearch = useStore(
     (state) => state.ongoingResearchId === null,
@@ -138,9 +123,10 @@ function MessageListItem({
   onToggleResearch?: () => void;
 }) {
   const message = useMessage(messageId);
-  const startOfResearch = useStore((state) =>
-    state.researchIds.includes(messageId),
-  );
+  const researchIds = useStore((state) => state.researchIds);
+  const startOfResearch = useMemo(() => {
+    return researchIds.includes(messageId);
+  }, [researchIds, messageId]);
   if (message) {
     if (
       message.role === "user" ||
@@ -214,90 +200,92 @@ function MessageListItem({
     }
     return null;
   }
+}
 
-  function MessageBubble({
-    className,
-    message,
-    children,
-  }: {
-    className?: string;
-    message: Message;
-    children: React.ReactNode;
-  }) {
-    return (
-      <div
-        className={cn(
-          `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow`,
-          message.role === "user" &&
-            "text-primary-foreground bg-brand rounded-ee-none",
-          message.role === "assistant" && "bg-card rounded-es-none",
-          className,
-        )}
-      >
-        {children}
-      </div>
-    );
-  }
+function MessageBubble({
+  className,
+  message,
+  children,
+}: {
+  className?: string;
+  message: Message;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        `flex w-fit max-w-[85%] flex-col rounded-2xl px-4 py-3 shadow`,
+        message.role === "user" &&
+          "text-primary-foreground bg-brand rounded-ee-none",
+        message.role === "assistant" && "bg-card rounded-es-none",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
-  function ResearchCard({
-    className,
-    researchId,
-    onToggleResearch,
-  }: {
-    className?: string;
-    researchId: string;
-    onToggleResearch?: () => void;
-  }) {
-    const reportId = useStore((state) =>
-      state.researchReportIds.get(researchId),
-    );
-    const hasReport = useStore((state) =>
-      state.researchReportIds.has(researchId),
-    );
-    const reportGenerating = useStore(
-      (state) => hasReport && state.messages.get(reportId!)!.isStreaming,
-    );
-    const openResearchId = useStore((state) => state.openResearchId);
-    const state = useMemo(() => {
-      if (hasReport) {
-        return reportGenerating ? "Generating report..." : "Report generated";
-      }
-      return "Researching...";
-    }, [hasReport, reportGenerating]);
-    const title = useResearchTitle(researchId);
-    const handleOpen = useCallback(() => {
-      if (openResearchId === researchId) {
-        closeResearch();
-      } else {
-        openResearch(researchId);
-      }
-      onToggleResearch?.();
-    }, [openResearchId, researchId, onToggleResearch]);
-    return (
-      <Card className={cn("w-full", className)}>
-        <CardHeader>
-          <CardTitle>
-            <RainbowText animated={state !== "Report generated"}>
-              {title !== undefined && title !== "" ? title : "Deep Research"}
-            </RainbowText>
-          </CardTitle>
-        </CardHeader>
-        <CardFooter>
-          <div className="flex w-full">
-            <RollingText className="text-muted-foreground flex-grow text-sm">
-              {state}
-            </RollingText>
-            <Button
-              variant={!openResearchId ? "default" : "outline"}
-              onClick={handleOpen}
-            >
-              {researchId !== openResearchId ? "Open" : "Close"}
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    );
-  }
+function ResearchCard({
+  className,
+  researchId,
+  onToggleResearch,
+}: {
+  className?: string;
+  researchId: string;
+  onToggleResearch?: () => void;
+}) {
+  const reportId = useStore((state) => state.researchReportIds.get(researchId));
+  const hasReport = reportId !== undefined;
+  const reportGenerating = useStore(
+    (state) => hasReport && state.messages.get(reportId)!.isStreaming,
+  );
+  const openResearchId = useStore((state) => state.openResearchId);
+  const state = useMemo(() => {
+    if (hasReport) {
+      return reportGenerating ? "Generating report..." : "Report generated";
+    }
+    return "Researching...";
+  }, [hasReport, reportGenerating]);
+  const msg = useResearchMessage(researchId);
+  const title = useMemo(() => {
+    if (msg) {
+      return parseJSON(msg.content ?? "", { title: "" }).title;
+    }
+    return undefined;
+  }, [msg]);
+  const handleOpen = useCallback(() => {
+    if (openResearchId === researchId) {
+      closeResearch();
+    } else {
+      openResearch(researchId);
+    }
+    onToggleResearch?.();
+  }, [openResearchId, researchId, onToggleResearch]);
+  return (
+    <Card className={cn("w-full", className)}>
+      <CardHeader>
+        <CardTitle>
+          <RainbowText animated={state !== "Report generated"}>
+            {title !== undefined && title !== "" ? title : "Deep Research"}
+          </RainbowText>
+        </CardTitle>
+      </CardHeader>
+      <CardFooter>
+        <div className="flex w-full">
+          <RollingText className="text-muted-foreground flex-grow text-sm">
+            {state}
+          </RollingText>
+          <Button
+            variant={!openResearchId ? "default" : "outline"}
+            onClick={handleOpen}
+          >
+            {researchId !== openResearchId ? "Open" : "Close"}
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
+  );
 }
 
 const GREETINGS = ["Cool", "Sounds great", "Looks good", "Great", "Awesome"];

@@ -4,6 +4,7 @@
 import { nanoid } from "nanoid";
 import { toast } from "sonner";
 import { create } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 
 import { chatStream, generatePodcast } from "../api";
 import type { Message } from "../messages";
@@ -305,17 +306,54 @@ export async function listenToPodcast(researchId: string) {
   }
 }
 
-export function useResearchTitle(researchId: string) {
-  const planMessage = useMessage(
-    useStore.getState().researchPlanIds.get(researchId),
+export function useResearchMessage(researchId: string) {
+  return useStore(
+    useShallow((state) => {
+      const messageId = state.researchPlanIds.get(researchId);
+      return messageId ? state.messages.get(messageId) : undefined;
+    }),
   );
-  return planMessage
-    ? parseJSON(planMessage.content, { title: "" }).title
-    : undefined;
 }
 
 export function useMessage(messageId: string | null | undefined) {
-  return useStore((state) =>
-    messageId ? state.messages.get(messageId) : undefined,
+  return useStore(
+    useShallow((state) =>
+      messageId ? state.messages.get(messageId) : undefined,
+    ),
   );
+}
+
+export function useMessageIds() {
+  return useStore(useShallow((state) => state.messageIds));
+}
+
+export function useLastInterruptMessage() {
+  return useStore(
+    useShallow((state) => {
+      if (state.messageIds.length >= 2) {
+        const lastMessage = state.messages.get(
+          state.messageIds[state.messageIds.length - 1]!,
+        );
+        return lastMessage?.finishReason === "interrupt" ? lastMessage : null;
+      }
+      return null;
+    }),
+  );
+}
+
+export function useLastFeedbackMessageId() {
+  const waitingForFeedbackMessageId = useStore(
+    useShallow((state) => {
+      if (state.messageIds.length >= 2) {
+        const lastMessage = state.messages.get(
+          state.messageIds[state.messageIds.length - 1]!,
+        );
+        if (lastMessage && lastMessage.finishReason === "interrupt") {
+          return state.messageIds[state.messageIds.length - 2];
+        }
+      }
+      return null;
+    }),
+  );
+  return waitingForFeedbackMessageId;
 }
