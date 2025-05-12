@@ -77,10 +77,13 @@ async function* chatReplayStream(
     if (urlParams.get("mock")) {
       replayFilePath = `/mock/${urlParams.get("mock")!}.txt`;
     } else {
-      replayFilePath =
-        params.interrupt_feedback === "accepted"
-          ? "/mock/before-interrupt.txt"
-          : "/mock/after-interrupt.txt";
+      if (params.interrupt_feedback === "accepted") {
+        replayFilePath = "/mock/final-answer.txt";
+      } else if (params.interrupt_feedback === "edit_plan") {
+        replayFilePath = "/mock/re-plan.txt";
+      } else {
+        replayFilePath = "/mock/first-plan.txt";
+      }
     }
     fastForwardReplaying = true;
   } else {
