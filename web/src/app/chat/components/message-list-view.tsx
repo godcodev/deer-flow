@@ -328,7 +328,7 @@ function PlanCard({
     <Card className={cn("w-full", className)}>
       <CardHeader>
         <CardTitle>
-          <Markdown animated>
+          <Markdown animate>
             {`### ${
               plan.title !== undefined && plan.title !== ""
                 ? plan.title
@@ -404,6 +404,9 @@ function PodcastCard({
   const isGenerating = useMemo(() => {
     return message.isStreaming;
   }, [message.isStreaming]);
+  const hasError = useMemo(() => {
+    return data?.error !== undefined;
+  }, [data]);
   const [isPlaying, setIsPlaying] = useState(false);
   return (
     <Card className={cn("w-[508px]", className)}>
@@ -411,15 +414,21 @@ function PodcastCard({
         <div className="text-muted-foreground flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">
             {isGenerating ? <LoadingOutlined /> : <Headphones size={16} />}
-            <RainbowText animated={isGenerating}>
-              {isGenerating
-                ? "Generating podcast..."
-                : isPlaying
-                  ? "Now playing podcast..."
-                  : "Podcast"}
-            </RainbowText>
+            {!hasError ? (
+              <RainbowText animated={isGenerating}>
+                {isGenerating
+                  ? "Generating podcast..."
+                  : isPlaying
+                    ? "Now playing podcast..."
+                    : "Podcast"}
+              </RainbowText>
+            ) : (
+              <div className="text-red-500">
+                Error when generating podcast. Please try again.
+              </div>
+            )}
           </div>
-          {!isGenerating && (
+          {!hasError && !isGenerating && (
             <div className="flex">
               <Tooltip title="Download podcast">
                 <Button variant="ghost" size="icon" asChild>
@@ -441,13 +450,17 @@ function PodcastCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <audio
-          className="w-full"
-          src={audioUrl}
-          controls
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-        />
+        {audioUrl ? (
+          <audio
+            className="w-full"
+            src={audioUrl}
+            controls
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+          />
+        ) : (
+          <div className="w-full"></div>
+        )}
       </CardContent>
     </Card>
   );

@@ -294,7 +294,27 @@ export async function listenToPodcast(researchId: string) {
       };
       appendMessage(podcastMessage);
       // Generating podcast...
-      const audioUrl = await generatePodcast(reportMessage.content);
+      let audioUrl: string | undefined;
+      try {
+        audioUrl = await generatePodcast(reportMessage.content);
+      } catch (e) {
+        console.error(e);
+        useStore.setState((state) => ({
+          messages: new Map(useStore.getState().messages).set(
+            podCastMessageId,
+            {
+              ...state.messages.get(podCastMessageId)!,
+              content: JSON.stringify({
+                ...podcastObject,
+                error: e instanceof Error ? e.message : "Unknown error",
+              }),
+              isStreaming: false,
+            },
+          ),
+        }));
+        toast("An error occurred while generating podcast. Please try again.");
+        return;
+      }
       useStore.setState((state) => ({
         messages: new Map(useStore.getState().messages).set(podCastMessageId, {
           ...state.messages.get(podCastMessageId)!,
