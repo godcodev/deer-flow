@@ -4,6 +4,7 @@
 import { StarFilledIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
+import { NumberTicker } from "~/components/magicui/number-ticker";
 import { Button } from "~/components/ui/button";
 import { env } from "~/env";
 
@@ -72,9 +73,9 @@ export async function StarCounter() {
   return (
     <>
       <StarFilledIcon className="size-4 transition-colors duration-300 group-hover:text-yellow-500" />
-      <span className="font-mono tabular-nums">
-        {stars !== null ? stars.toLocaleString() : "—"}
-      </span>
+      {stars && (
+        <NumberTicker className="font-mono tabular-nums" value={stars} />
+      )}
     </>
   );
 }
