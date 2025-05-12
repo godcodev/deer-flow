@@ -28,7 +28,7 @@ from src.prompts.template import apply_prompt_template
 from src.utils.json_utils import repair_json_output
 
 from .types import State
-from ..config import SEARCH_MAX_RESULTS
+from ..config import SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine
 
 logger = logging.getLogger(__name__)
 
@@ -45,19 +45,24 @@ def handoff_to_planner(
 
 
 def background_investigation_node(state: State) -> Command[Literal["planner"]]:
-
     logger.info("background investigation node is running.")
-    searched_content = LoggedTavilySearch(max_results=SEARCH_MAX_RESULTS).invoke(
-        {"query": state["messages"][-1].content}
-    )
-    background_investigation_results = None
-    if isinstance(searched_content, list):
-        background_investigation_results = [
-            {"title": elem["title"], "content": elem["content"]}
-            for elem in searched_content
-        ]
+    query = state["messages"][-1].content
+    if SELECTED_SEARCH_ENGINE == SearchEngine.TAVILY:
+        searched_content = LoggedTavilySearch(max_results=SEARCH_MAX_RESULTS).invoke(
+            {"query": query}
+        )
+        background_investigation_results = None
+        if isinstance(searched_content, list):
+            background_investigation_results = [
+                {"title": elem["title"], "content": elem["content"]}
+                for elem in searched_content
+            ]
+        else:
+            logger.error(
+                f"Tavily search returned malformed response: {searched_content}"
+            )
     else:
-        logger.error(f"Tavily search returned malformed response: {searched_content}")
+        background_investigation_results = web_search_tool.invoke(query)
     return Command(
         update={
             "background_investigation_results": json.dumps(

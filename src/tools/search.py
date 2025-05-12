@@ -14,10 +14,9 @@ from src.tools.tavily_search.tavily_search_results_with_images import (
     TavilySearchResultsWithImages,
 )
 
-from .decorators import create_logged_tool
+from src.tools.decorators import create_logged_tool
 
 logger = logging.getLogger(__name__)
-
 
 LoggedTavilySearch = create_logged_tool(TavilySearchResultsWithImages)
 tavily_search_tool = LoggedTavilySearch(
@@ -53,5 +52,7 @@ arxiv_search_tool = LoggedArxivSearch(
 )
 
 if __name__ == "__main__":
-    results = tavily_search_tool.invoke("cute panda")
+    results = LoggedDuckDuckGoSearch(
+        name="web_search", max_results=SEARCH_MAX_RESULTS, output_format="list"
+    ).invoke("cute panda")
     print(json.dumps(results, indent=2, ensure_ascii=False))
