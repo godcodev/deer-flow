@@ -328,7 +328,7 @@ function PlanCard({
     <Card className={cn("w-full", className)}>
       <CardHeader>
         <CardTitle>
-          <Markdown animate>
+          <Markdown animated>
             {`### ${
               plan.title !== undefined && plan.title !== ""
                 ? plan.title
