@@ -34,6 +34,9 @@ const config = {
     });
     return config;
   },
+
+  // ... rest of the configuration.
+  output: "standalone",
 };
 
 export default config;
