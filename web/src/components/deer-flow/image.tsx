@@ -44,7 +44,7 @@ function Image({
   );
   return (
     <span className={cn("block w-fit overflow-hidden", className)}>
-      {isError ? (
+      {isError || !src ? (
         fallback
       ) : (
         <Tooltip title={alt ?? "No caption"}>
