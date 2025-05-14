@@ -9,7 +9,7 @@ from langchain_community.tools import BraveSearch, DuckDuckGoSearchResults
 from langchain_community.tools.arxiv import ArxivQueryRun
 from langchain_community.utilities import ArxivAPIWrapper, BraveSearchWrapper
 
-from src.config import SEARCH_MAX_RESULTS
+from src.config import SEARCH_MAX_RESULTS, SearchEngine
 from src.tools.tavily_search.tavily_search_results_with_images import (
     TavilySearchResultsWithImages,
 )
@@ -19,13 +19,16 @@ from src.tools.decorators import create_logged_tool
 logger = logging.getLogger(__name__)
 
 LoggedTavilySearch = create_logged_tool(TavilySearchResultsWithImages)
-tavily_search_tool = LoggedTavilySearch(
-    name="web_search",
-    max_results=SEARCH_MAX_RESULTS,
-    include_raw_content=True,
-    include_images=True,
-    include_image_descriptions=True,
-)
+if os.getenv("SEARCH_API", "") == SearchEngine.TAVILY.value:
+    tavily_search_tool = LoggedTavilySearch(
+        name="web_search",
+        max_results=SEARCH_MAX_RESULTS,
+        include_raw_content=True,
+        include_images=True,
+        include_image_descriptions=True,
+    )
+else:
+    tavily_search_tool = None
 
 LoggedDuckDuckGoSearch = create_logged_tool(DuckDuckGoSearchResults)
 duckduckgo_search_tool = LoggedDuckDuckGoSearch(
