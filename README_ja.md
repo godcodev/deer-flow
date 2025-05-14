@@ -322,6 +322,25 @@ Studio UI で研究トピックを送信すると、次を含む全ワークフ�
 - 各セクションの研究と執筆段階
 - 最終レポート生成
 
+### LangSmith トレースの有効化
+
+DeerFlow は LangSmith トレース機能をサポートしており、ワークフローのデバッグとモニタリングに役立ちます。LangSmith トレースを有効にするには：
+
+1. `.env` ファイルに次の設定があることを確認してください（`.env.example` を参照）：
+   ```bash
+   LANGSMITH_TRACING=true
+   LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+   LANGSMITH_API_KEY="xxx"
+   LANGSMITH_PROJECT="xxx"
+   ```
+
+2. 次のコマンドを実行して LangSmith トレースを開始します：
+   ```bash
+   langgraph dev
+   ```
+
+これにより、LangGraph Studio でトレース可視化が有効になり、トレースがモニタリングと分析のために LangSmith に送信されます。
+
 ## Docker
 
 このプロジェクトは Docker でも実行できます。

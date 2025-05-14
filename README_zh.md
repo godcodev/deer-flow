@@ -322,6 +322,25 @@ langgraph dev
 - 每个部分的研究和写作阶段
 - 最终报告生成
 
+### 启用 LangSmith 追踪
+
+DeerFlow 支持 LangSmith 追踪功能，帮助您调试和监控工作流。要启用 LangSmith 追踪：
+
+1. 确保您的 `.env` 文件中有以下配置（参见 `.env.example`）：
+   ```bash
+   LANGSMITH_TRACING=true
+   LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+   LANGSMITH_API_KEY="xxx"
+   LANGSMITH_PROJECT="xxx"
+   ```
+
+2. 通过运行以下命令本地启动 LangSmith 追踪：
+   ```bash
+   langgraph dev
+   ```
+
+这将在 LangGraph Studio 中启用追踪可视化，并将您的追踪发送到 LangSmith 进行监控和分析。
+
 ## Docker
 
 您也可以使用 Docker 运行此项目。

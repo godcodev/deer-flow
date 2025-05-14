@@ -333,6 +333,25 @@ Wenn Sie ein Forschungsthema in der Studio UI einreichen, können Sie die gesamt
 - Die Forschungs- und Schreibphasen für jeden Abschnitt
 - Die Erstellung des endgültigen Berichts
 
+### Aktivieren von LangSmith-Tracing
+
+DeerFlow unterstützt LangSmith-Tracing, um Ihnen beim Debuggen und Überwachen Ihrer Workflows zu helfen. Um LangSmith-Tracing zu aktivieren:
+
+1. Stellen Sie sicher, dass Ihre `.env`-Datei die folgenden Konfigurationen enthält (siehe `.env.example`):
+   ```bash
+   LANGSMITH_TRACING=true
+   LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+   LANGSMITH_API_KEY="xxx"
+   LANGSMITH_PROJECT="xxx"
+   ```
+
+2. Starten Sie das Tracing mit LangSmith lokal, indem Sie folgenden Befehl ausführen:
+   ```bash
+   langgraph dev
+   ```
+
+Dies aktiviert die Trace-Visualisierung in LangGraph Studio und sendet Ihre Traces zur Überwachung und Analyse an LangSmith.
+
 ## Beispiele
 
 Die folgenden Beispiele demonstrieren die Fähigkeiten von DeerFlow:

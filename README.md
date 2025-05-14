@@ -347,6 +347,25 @@ When you submit a research topic in the Studio UI, you'll be able to see the ent
 - The research and writing phases for each section
 - The final report generation
 
+### Enabling LangSmith Tracing
+
+DeerFlow supports LangSmith tracing to help you debug and monitor your workflows. To enable LangSmith tracing:
+
+1. Make sure your `.env` file has the following configurations (see `.env.example`):
+   ```bash
+   LANGSMITH_TRACING=true
+   LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+   LANGSMITH_API_KEY="xxx"
+   LANGSMITH_PROJECT="xxx"
+   ```
+
+2. Start tracing and visualize the graph locally with LangSmith by running:
+   ```bash
+   langgraph dev
+   ```
+
+This will enable trace visualization in LangGraph Studio and send your traces to LangSmith for monitoring and analysis.
+
 ## Docker
 
 You can also run this project with Docker.
