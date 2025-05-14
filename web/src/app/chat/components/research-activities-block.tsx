@@ -304,7 +304,55 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
           </SyntaxHighlighter>
         </div>
       </div>
+      {toolCall.result && <PythonToolCallResult result={toolCall.result} />}
     </section>
+  );
+}
+
+function PythonToolCallResult({ result }: { result: string }) {
+  const { resolvedTheme } = useTheme();
+  const hasError = useMemo(
+    () => result.includes("Error executing code:\n"),
+    [result],
+  );
+  const error = useMemo(() => {
+    if (hasError) {
+      const parts = result.split("```\nError: ");
+      if (parts.length > 1) {
+        return parts[1]!.trim();
+      }
+    }
+    return null;
+  }, [result, hasError]);
+  const stdout = useMemo(() => {
+    if (!hasError) {
+      const parts = result.split("```\nStdout: ");
+      if (parts.length > 1) {
+        return parts[1]!.trim();
+      }
+    }
+    return null;
+  }, [result, hasError]);
+  return (
+    <>
+      <div className="mt-4 font-medium italic">
+        {hasError ? "Error when executing the above code" : "Execution output"}
+      </div>
+      <div className="bg-accent mt-2 max-h-[400px] max-w-[calc(100%-120px)] overflow-y-auto rounded-md p-2 text-sm">
+        <SyntaxHighlighter
+          language="plaintext"
+          style={resolvedTheme === "dark" ? dark : docco}
+          customStyle={{
+            color: hasError ? "red" : "inherit",
+            background: "transparent",
+            border: "none",
+            boxShadow: "none",
+          }}
+        >
+          {error ?? stdout ?? "(empty)"}
+        </SyntaxHighlighter>
+      </div>
+    </>
   );
 }
 
