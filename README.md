@@ -370,7 +370,7 @@ This will enable trace visualization in LangGraph Studio and send your traces to
 
 You can also run this project with Docker.
 
-First, you need read the [configuration](#configuration) below. Make sure `.env`, `.conf.yaml` files are ready.
+First, you need read the [configuration](docs/configuration_guide.md) below. Make sure `.env`, `.conf.yaml` files are ready.
 
 Second, to build a Docker image of your own web server:
 
