@@ -147,7 +147,7 @@ export function MultiAgentVisualization({ className }: { className?: string }) {
           </Tooltip>
           <div className="text-muted-foreground ml-2 flex items-center justify-center">
             <Slider
-              className="w-120"
+              className="w-40 sm:w-80 md:w-100 lg:w-120"
               max={playbook.steps.length - 1}
               min={0}
               step={1}
