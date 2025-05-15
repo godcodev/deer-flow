@@ -52,6 +52,9 @@ filterwarnings = [
     "ignore::UserWarning",
 ]
 
+[tool.coverage.report]
+fail_under = 25
+
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
 

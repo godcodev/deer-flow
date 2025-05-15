@@ -23,7 +23,23 @@ jobs:
         uv pip install -e ".[dev]"
         uv pip install -e ".[test]"
 
-    - name: Run test cases
+    - name: Run test cases with coverage
       run: |
         source .venv/bin/activate
-        TAVILY_API_KEY=mock-key make test
+        TAVILY_API_KEY=mock-key make coverage
+
+    - name: Generate HTML Coverage Report
+      run: |
+        source .venv/bin/activate
+        python -m coverage html -d coverage_html
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage_html/
+        
+    - name: Display Coverage Summary
+      run: |
+        source .venv/bin/activate
+        python -m coverage report
