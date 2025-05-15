@@ -20,28 +20,36 @@ import Image from "./image";
 import { Tooltip } from "./tooltip";
 import { Link } from "./link";
 
-const components: ReactMarkdownOptions["components"] = {
-  a: ({ href, children }) => <Link href={href}>{children}</Link>,
-  img: ({ src, alt }) => (
-    <a href={src as string} target="_blank" rel="noopener noreferrer">
-      <Image className="rounded" src={src as string} alt={alt ?? ""} />
-    </a>
-  ),
-};
-
 export function Markdown({
   className,
   children,
   style,
   enableCopy,
   animated = false,
+  checkLinkCredibility = false,
   ...props
 }: ReactMarkdownOptions & {
   className?: string;
   enableCopy?: boolean;
   style?: React.CSSProperties;
   animated?: boolean;
+  checkLinkCredibility?: boolean;
 }) {
+  const components: ReactMarkdownOptions["components"] = useMemo(() => {
+    return {
+      a: ({ href, children }) => (
+        <Link href={href} checkLinkCredibility={checkLinkCredibility}>
+          {children}
+        </Link>
+      ),
+      img: ({ src, alt }) => (
+        <a href={src as string} target="_blank" rel="noopener noreferrer">
+          <Image className="rounded" src={src as string} alt={alt ?? ""} />
+        </a>
+      ),
+    };
+  }, [checkLinkCredibility]);
+
   const rehypePlugins = useMemo(() => {
     if (animated) {
       return [rehypeKatex, rehypeSplitWordsIntoSpans];

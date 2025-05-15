@@ -19,6 +19,7 @@ export function Tooltip({
   open,
   side,
   sideOffset,
+  delayDuration = 750,
 }: {
   className?: string;
   style?: CSSProperties;
@@ -27,10 +28,11 @@ export function Tooltip({
   open?: boolean;
   side?: "left" | "right" | "top" | "bottom";
   sideOffset?: number;
+  delayDuration?: number;
 }) {
   return (
     <TooltipProvider>
-      <ShadcnTooltip delayDuration={750} open={open}>
+      <ShadcnTooltip delayDuration={delayDuration} open={open}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
           className={cn(className)}
