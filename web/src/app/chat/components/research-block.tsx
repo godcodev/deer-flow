@@ -97,6 +97,7 @@ export function ResearchBlock({
                   className="text-gray-400"
                   size="icon"
                   variant="ghost"
+                  disabled={isReplay}
                   onClick={handleEdit}
                 >
                   {editing ? <Undo2 /> : <Pencil />}

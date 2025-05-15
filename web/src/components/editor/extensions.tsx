@@ -78,16 +78,12 @@ const taskItem = TaskItem.configure({
 });
 
 const horizontalRule = HorizontalRule.configure({
-  HTMLAttributes: {
-    class: cx("mt-4 mb-6 border-t border-muted-foreground"),
-  },
+  HTMLAttributes: {},
 });
 
 const starterKit = StarterKit.configure({
   bulletList: {
-    HTMLAttributes: {
-      class: cx("list-disc list-outside leading-3 -mt-2"),
-    },
+    HTMLAttributes: {},
   },
   orderedList: {
     HTMLAttributes: {
@@ -95,9 +91,7 @@ const starterKit = StarterKit.configure({
     },
   },
   listItem: {
-    HTMLAttributes: {
-      class: cx("leading-normal -mb-2"),
-    },
+    HTMLAttributes: {},
   },
   blockquote: {
     HTMLAttributes: {
@@ -107,7 +101,6 @@ const starterKit = StarterKit.configure({
   codeBlock: false,
   code: {
     HTMLAttributes: {
-      class: cx("rounded-md bg-muted  px-1.5 py-1 font-mono font-medium"),
       spellcheck: "false",
     },
   },
