@@ -13,10 +13,12 @@ import { cn } from "~/lib/utils";
 export function ResearchReportBlock({
   className,
   messageId,
+  editing,
 }: {
   className?: string;
   researchId: string;
   messageId: string;
+  editing: boolean;
 }) {
   const message = useMessage(messageId);
   const { isReplay } = useReplay();
@@ -55,7 +57,7 @@ export function ResearchReportBlock({
       ref={contentRef}
       className={cn("relative flex flex-col pt-4 pb-8", className)}
     >
-      {!isReplay && isCompleted ? (
+      {!isReplay && isCompleted && editing ? (
         <ReportEditor
           content={message?.content}
           onMarkdownChange={handleMarkdownChange}

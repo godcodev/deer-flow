@@ -4,6 +4,10 @@
   color: inherit;
 }
 
+.ProseMirror {
+  line-height: 1.75;
+}
+
 .ProseMirror .is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;

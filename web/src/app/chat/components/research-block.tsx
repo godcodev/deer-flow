@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { Check, Copy, Headphones, X } from "lucide-react";
+import { Check, Copy, Headphones, Pencil, Undo2, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import { ScrollContainer } from "~/components/deer-flow/scroll-container";
@@ -47,6 +47,7 @@ export function ResearchBlock({
     await listenToPodcast(researchId);
   }, [researchId]);
 
+  const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const handleCopy = useCallback(() => {
     if (!reportId) {
@@ -62,6 +63,10 @@ export function ResearchBlock({
       setCopied(false);
     }, 1000);
   }, [reportId]);
+
+  const handleEdit = useCallback(() => {
+    setEditing((editing) => !editing);
+  }, []);
 
   // When the research id changes, set the active tab to activities
   useEffect(() => {
@@ -85,6 +90,16 @@ export function ResearchBlock({
                   onClick={handleGeneratePodcast}
                 >
                   <Headphones />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Edit">
+                <Button
+                  className="text-gray-400"
+                  size="icon"
+                  variant="ghost"
+                  onClick={handleEdit}
+                >
+                  {editing ? <Undo2 /> : <Pencil />}
                 </Button>
               </Tooltip>
               <Tooltip title="Copy">
@@ -147,6 +162,7 @@ export function ResearchBlock({
                   className="mt-4"
                   researchId={researchId}
                   messageId={reportId}
+                  editing={editing}
                 />
               )}
             </ScrollContainer>

@@ -377,3 +377,14 @@ export function useLastFeedbackMessageId() {
   );
   return waitingForFeedbackMessageId;
 }
+
+export function useToolCalls() {
+  return useStore(
+    useShallow((state) => {
+      return state.messageIds
+        ?.map((id) => getMessage(id)?.toolCalls)
+        .filter((toolCalls) => toolCalls != null)
+        .flat();
+    }),
+  );
+}
