@@ -27,7 +27,7 @@ export const Link = ({
     return href ? credibleLinks.has(href) : true;
   }, [credibleLinks, href]);
 
-  if (isCredible) {
+  if (!isCredible) {
     return (
       <Tooltip title="This link might be a hallucination from AI model and may not be reliable.">
         <a
