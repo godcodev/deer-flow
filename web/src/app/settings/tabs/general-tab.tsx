@@ -32,6 +32,9 @@ const generalFormSchema = z.object({
   maxStepNum: z.number().min(1, {
     message: "Max step number must be at least 1.",
   }),
+  maxSearchResults: z.number().min(1, {
+    message: "Max search results must be at least 1.",
+  }),
 });
 
 export const GeneralTab: Tab = ({
@@ -138,6 +141,30 @@ export const GeneralTab: Tab = ({
                   </FormControl>
                   <FormDescription>
                     By default, each research plan has 3 steps.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxSearchResults"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Max search results</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="w-60"
+                      type="number"
+                      defaultValue={field.value}
+                      min={1}
+                      onChange={(event) =>
+                        field.onChange(parseInt(event.target.value || "0"))
+                      }
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    By default, each search step has 3 results.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

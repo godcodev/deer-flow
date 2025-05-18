@@ -13,6 +13,7 @@ const DEFAULT_SETTINGS: SettingsState = {
     enableBackgroundInvestigation: false,
     maxPlanIterations: 1,
     maxStepNum: 3,
+    maxSearchResults: 3,
   },
   mcp: {
     servers: [],
@@ -25,6 +26,7 @@ export type SettingsState = {
     enableBackgroundInvestigation: boolean;
     maxPlanIterations: number;
     maxStepNum: number;
+    maxSearchResults: number;
   };
   mcp: {
     servers: MCPServerMetadata[];

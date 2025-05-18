@@ -12,12 +12,11 @@ from langchain_core.tools import tool
 from langgraph.types import Command, interrupt
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
-from src.agents.agents import coder_agent, research_agent, create_agent
-
+from src.agents import create_agent
 from src.tools.search import LoggedTavilySearch
 from src.tools import (
     crawl_tool,
-    web_search_tool,
+    get_web_search_tool,
     python_repl_tool,
 )
 
@@ -29,7 +28,7 @@ from src.prompts.template import apply_prompt_template
 from src.utils.json_utils import repair_json_output
 
 from .types import State
-from ..config import SEARCH_MAX_RESULTS, SELECTED_SEARCH_ENGINE, SearchEngine
+from ..config import SELECTED_SEARCH_ENGINE, SearchEngine
 
 logger = logging.getLogger(__name__)
 
@@ -45,13 +44,16 @@ def handoff_to_planner(
     return
 
 
-def background_investigation_node(state: State) -> Command[Literal["planner"]]:
+def background_investigation_node(
+    state: State, config: RunnableConfig
+) -> Command[Literal["planner"]]:
     logger.info("background investigation node is running.")
+    configurable = Configuration.from_runnable_config(config)
     query = state["messages"][-1].content
     if SELECTED_SEARCH_ENGINE == SearchEngine.TAVILY:
-        searched_content = LoggedTavilySearch(max_results=SEARCH_MAX_RESULTS).invoke(
-            {"query": query}
-        )
+        searched_content = LoggedTavilySearch(
+            max_results=configurable.max_search_results
+        ).invoke({"query": query})
         background_investigation_results = None
         if isinstance(searched_content, list):
             background_investigation_results = [
@@ -63,7 +65,9 @@ def background_investigation_node(state: State) -> Command[Literal["planner"]]:
                 f"Tavily search returned malformed response: {searched_content}"
             )
     else:
-        background_investigation_results = web_search_tool.invoke(query)
+        background_investigation_results = get_web_search_tool(
+            configurable.max_search_results
+        ).invoke(query)
     return Command(
         update={
             "background_investigation_results": json.dumps(
@@ -403,7 +407,6 @@ async def _setup_and_execute_agent_step(
     state: State,
     config: RunnableConfig,
     agent_type: str,
-    default_agent,
     default_tools: list,
 ) -> Command[Literal["research_team"]]:
     """Helper function to set up an agent with appropriate tools and execute a step.
@@ -417,7 +420,6 @@ async def _setup_and_execute_agent_step(
         state: The current state
         config: The runnable config
         agent_type: The type of agent ("researcher" or "coder")
-        default_agent: The default agent to use if no MCP servers are configured
         default_tools: The default tools to add to the agent
 
     Returns:
@@ -455,8 +457,9 @@ async def _setup_and_execute_agent_step(
             agent = create_agent(agent_type, agent_type, loaded_tools, agent_type)
             return await _execute_agent_step(state, agent, agent_type)
     else:
-        # Use default agent if no MCP servers are configured
-        return await _execute_agent_step(state, default_agent, agent_type)
+        # Use default tools if no MCP servers are configured
+        agent = create_agent(agent_type, agent_type, default_tools, agent_type)
+        return await _execute_agent_step(state, agent, agent_type)
 
 
 async def researcher_node(
@@ -464,12 +467,12 @@ async def researcher_node(
 ) -> Command[Literal["research_team"]]:
     """Researcher node that do research"""
     logger.info("Researcher node is researching.")
+    configurable = Configuration.from_runnable_config(config)
     return await _setup_and_execute_agent_step(
         state,
         config,
         "researcher",
-        research_agent,
-        [web_search_tool, crawl_tool],
+        [get_web_search_tool(configurable.max_search_results), crawl_tool],
     )
 
 
@@ -482,6 +485,5 @@ async def coder_node(
         state,
         config,
         "coder",
-        coder_agent,
         [python_repl_tool],
     )
