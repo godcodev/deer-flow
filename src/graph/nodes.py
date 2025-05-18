@@ -134,16 +134,14 @@ def planner_node(
         new_plan = Plan.model_validate(curr_plan)
         return Command(
             update={
-                "messages": [
-                    AIMessage(content=full_response, name="planner").model_dump()
-                ],
+                "messages": [AIMessage(content=full_response, name="planner")],
                 "current_plan": new_plan,
             },
             goto="reporter",
         )
     return Command(
         update={
-            "messages": [AIMessage(content=full_response, name="planner").model_dump()],
+            "messages": [AIMessage(content=full_response, name="planner")],
             "current_plan": full_response,
         },
         goto="human_feedback",
@@ -164,7 +162,7 @@ def human_feedback_node(
             return Command(
                 update={
                     "messages": [
-                        HumanMessage(content=feedback, name="feedback").model_dump(),
+                        HumanMessage(content=feedback, name="feedback"),
                     ],
                 },
                 goto="planner",
@@ -252,7 +250,7 @@ def reporter_node(state: State):
         "messages": [
             HumanMessage(
                 f"# Research Requirements\n\n## Task\n\n{current_plan.title}\n\n## Description\n\n{current_plan.thought}"
-            ).model_dump()
+            )
         ],
         "locale": state.get("locale", "en-US"),
     }
@@ -264,7 +262,7 @@ def reporter_node(state: State):
         HumanMessage(
             content="IMPORTANT: Structure your report according to the format in the prompt. Remember to include:\n\n1. Key Points - A bulleted list of the most important findings\n2. Overview - A brief introduction to the topic\n3. Detailed Analysis - Organized into logical sections\n4. Survey Note (optional) - For more comprehensive reports\n5. Key Citations - List all references at the end\n\nFor citations, DO NOT include inline citations in the text. Instead, place all citations in the 'Key Citations' section at the end using the format: `- [Source Title](URL)`. Include an empty line between each citation for better readability.\n\nPRIORITIZE USING MARKDOWN TABLES for data presentation and comparison. Use tables whenever presenting comparative data, statistics, features, or options. Structure tables with clear headers and aligned columns. Example table format:\n\n| Feature | Description | Pros | Cons |\n|---------|-------------|------|------|\n| Feature 1 | Description 1 | Pros 1 | Cons 1 |\n| Feature 2 | Description 2 | Pros 2 | Cons 2 |",
             name="system",
-        ).model_dump()
+        )
     )
 
     for observation in observations:
@@ -272,7 +270,7 @@ def reporter_node(state: State):
             HumanMessage(
                 content=f"Below are some observations for the research task:\n\n{observation}",
                 name="observation",
-            ).model_dump()
+            )
         )
     logger.debug(f"Current invoke messages: {invoke_messages}")
     response = get_llm_by_type(AGENT_LLM_MAP["reporter"]).invoke(invoke_messages)
@@ -338,7 +336,7 @@ async def _execute_agent_step(
         "messages": [
             HumanMessage(
                 content=f"{completed_steps_info}# Current Task\n\n## Title\n\n{current_step.title}\n\n## Description\n\n{current_step.description}\n\n## Locale\n\n{state.get('locale', 'en-US')}"
-            ).model_dump()
+            )
         ]
     }
 
@@ -348,7 +346,7 @@ async def _execute_agent_step(
             HumanMessage(
                 content="IMPORTANT: DO NOT include inline citations in the text. Instead, track all sources and include a References section at the end using link reference format. Include an empty line between each citation for better readability. Use this format for each reference:\n- [Source Title](URL)\n\n- [Another Source](URL)",
                 name="system",
-            ).model_dump()
+            )
         )
 
     # Invoke the agent
@@ -368,7 +366,7 @@ async def _execute_agent_step(
                 HumanMessage(
                     content=response_content,
                     name=agent_name,
-                ).model_dump(),
+                )
             ],
             "observations": observations + [response_content],
         },
