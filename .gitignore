@@ -11,6 +11,7 @@ static/browser_history/*.gif
 
 # Virtual environments
 .venv
+venv/
 
 # Environment variables
 .env
