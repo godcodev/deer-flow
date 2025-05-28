@@ -59,14 +59,6 @@ export function ScrollContainer({
     }
   }, [autoScrollToBottom, contentRef, scrollRef]);
 
-  useLayoutEffect(() => {
-    if (contentRef.current) {
-      if (contentRef.current.parentElement) {
-        contentRef.current.parentElement.style.display = "block";
-      }
-    }
-  }, [contentRef]);
-
   return (
     <div className={cn("relative", className)}>
       {scrollShadow && (
