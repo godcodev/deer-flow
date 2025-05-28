@@ -15,13 +15,13 @@ import {
 } from "novel";
 import { Markdown } from "tiptap-markdown";
 import { useDebouncedCallback } from "use-debounce";
-import { cx } from "class-variance-authority";
 
 import "~/styles/prosemirror.css";
 import { resourceSuggestion } from "./resource-suggestion";
 import React, { forwardRef, useMemo, useRef } from "react";
 import type { Resource } from "~/core/messages";
 import { useRAGProvider } from "~/core/api/hooks";
+import { LoadingOutlined } from "@ant-design/icons";
 
 export interface MessageInputRef {
   focus: () => void;
@@ -152,7 +152,11 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
     }, [onEnter, provider]);
 
     if (loading) {
-      return null;
+      return (
+        <div className={className}>
+          <LoadingOutlined />
+        </div>
+      );
     }
 
     return (
