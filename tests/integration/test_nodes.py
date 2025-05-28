@@ -68,7 +68,7 @@ def mock_web_search_tool():
         yield mock
 
 
-@pytest.mark.parametrize("search_engine", [SearchEngine.TAVILY, "other"])
+@pytest.mark.parametrize("search_engine", [SearchEngine.TAVILY.value, "other"])
 def test_background_investigation_node_tavily(
     mock_state,
     mock_tavily_search,
@@ -93,10 +93,8 @@ def test_background_investigation_node_tavily(
         results = json.loads(update["background_investigation_results"])
         assert isinstance(results, list)
 
-        if search_engine == SearchEngine.TAVILY:
-            mock_tavily_search.return_value.invoke.assert_called_once_with(
-                {"query": "test query"}
-            )
+        if search_engine == SearchEngine.TAVILY.value:
+            mock_tavily_search.return_value.invoke.assert_called_once_with("test query")
             assert len(results) == 2
             assert results[0]["title"] == "Test Title 1"
             assert results[0]["content"] == "Test Content 1"
@@ -111,7 +109,7 @@ def test_background_investigation_node_malformed_response(
     mock_state, mock_tavily_search, patch_config_from_runnable_config, mock_config
 ):
     """Test background_investigation_node with malformed Tavily response"""
-    with patch("src.graph.nodes.SELECTED_SEARCH_ENGINE", SearchEngine.TAVILY):
+    with patch("src.graph.nodes.SELECTED_SEARCH_ENGINE", SearchEngine.TAVILY.value):
         # Mock a malformed response
         mock_tavily_search.return_value.invoke.return_value = "invalid response"
 
