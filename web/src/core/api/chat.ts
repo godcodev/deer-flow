@@ -4,6 +4,7 @@
 import { env } from "~/env";
 
 import type { MCPServerMetadata } from "../mcp";
+import type { Resource } from "../messages";
 import { extractReplayIdFromSearchParams } from "../replay/get-replay-id";
 import { fetchStream } from "../sse";
 import { sleep } from "../utils";
@@ -15,6 +16,7 @@ export async function* chatStream(
   userMessage: string,
   params: {
     thread_id: string;
+    resources?: Array<Resource>;
     auto_accepted_plan: boolean;
     max_plan_iterations: number;
     max_step_num: number;

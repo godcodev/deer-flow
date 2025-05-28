@@ -14,8 +14,8 @@ class StepType:
 
 
 class Step:
-    def __init__(self, need_web_search, title, description, step_type):
-        self.need_web_search = need_web_search
+    def __init__(self, need_search, title, description, step_type):
+        self.need_search = need_search
         self.title = title
         self.description = description
         self.step_type = step_type
@@ -90,7 +90,7 @@ def test_state_initialization():
 def test_state_with_custom_values():
     """Test that State can be initialized with custom values."""
     test_step = Step(
-        need_web_search=True,
+        need_search=True,
         title="Test Step",
         description="Step description",
         step_type=StepType.RESEARCH,

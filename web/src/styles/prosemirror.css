@@ -1,7 +1,9 @@
-@import "./globals.css";
-
 .prose {
-  color: inherit;
+  max-width: inherit;
+}
+
+.prose .placeholder {
+  opacity: 0.65;
 }
 
 .ProseMirror {
@@ -15,12 +17,21 @@
   pointer-events: none;
   height: 0;
 }
+
 .ProseMirror p.is-empty::before {
   content: attr(data-placeholder);
   float: left;
   color: hsl(var(--muted-foreground));
   pointer-events: none;
   height: 0;
+}
+
+.ProseMirror .mention {
+  background-color: var(--purple-light);
+  border-radius: 0.4rem;
+  box-decoration-break: clone;
+  color: var(--brand);
+  padding: 0.1rem 0.3rem;
 }
 
 /* Custom image styles */

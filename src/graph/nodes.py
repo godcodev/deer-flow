@@ -17,6 +17,7 @@ from src.tools.search import LoggedTavilySearch
 from src.tools import (
     crawl_tool,
     get_web_search_tool,
+    get_retriever_tool,
     python_repl_tool,
 )
 
@@ -206,10 +207,11 @@ def human_feedback_node(
 
 
 def coordinator_node(
-    state: State,
+    state: State, config: RunnableConfig
 ) -> Command[Literal["planner", "background_investigator", "__end__"]]:
     """Coordinator node that communicate with customers."""
     logger.info("Coordinator talking.")
+    configurable = Configuration.from_runnable_config(config)
     messages = apply_prompt_template("coordinator", state)
     response = (
         get_llm_by_type(AGENT_LLM_MAP["coordinator"])
@@ -242,7 +244,7 @@ def coordinator_node(
         logger.debug(f"Coordinator response: {response}")
 
     return Command(
-        update={"locale": locale},
+        update={"locale": locale, "resources": configurable.resources},
         goto=goto,
     )
 
@@ -326,14 +328,14 @@ async def _execute_agent_step(
         logger.warning("No unexecuted step found")
         return Command(goto="research_team")
 
-    logger.info(f"Executing step: {current_step.title}")
+    logger.info(f"Executing step: {current_step.title}, agent: {agent_name}")
 
     # Format completed steps information
     completed_steps_info = ""
     if completed_steps:
         completed_steps_info = "# Existing Research Findings\n\n"
         for i, step in enumerate(completed_steps):
-            completed_steps_info += f"## Existing Finding {i+1}: {step.title}\n\n"
+            completed_steps_info += f"## Existing Finding {i + 1}: {step.title}\n\n"
             completed_steps_info += f"<finding>\n{step.execution_res}\n</finding>\n\n"
 
     # Prepare the input for the agent with completed steps info
@@ -347,6 +349,19 @@ async def _execute_agent_step(
 
     # Add citation reminder for researcher agent
     if agent_name == "researcher":
+        if state.get("resources"):
+            resources_info = "**The user mentioned the following resource files:**\n\n"
+            for resource in state.get("resources"):
+                resources_info += f"- {resource.title} ({resource.description})\n"
+
+            agent_input["messages"].append(
+                HumanMessage(
+                    content=resources_info
+                    + "\n\n"
+                    + "You MUST use the **local_search_tool** to retrieve the information from the resource files.",
+                )
+            )
+
         agent_input["messages"].append(
             HumanMessage(
                 content="IMPORTANT: DO NOT include inline citations in the text. Instead, track all sources and include a References section at the end using link reference format. Include an empty line between each citation for better readability. Use this format for each reference:\n- [Source Title](URL)\n\n- [Another Source](URL)",
@@ -377,6 +392,7 @@ async def _execute_agent_step(
         )
         recursion_limit = default_recursion_limit
 
+    logger.info(f"Agent input: {agent_input}")
     result = await agent.ainvoke(
         input=agent_input, config={"recursion_limit": recursion_limit}
     )
@@ -468,11 +484,16 @@ async def researcher_node(
     """Researcher node that do research"""
     logger.info("Researcher node is researching.")
     configurable = Configuration.from_runnable_config(config)
+    tools = [get_web_search_tool(configurable.max_search_results), crawl_tool]
+    retriever_tool = get_retriever_tool(state.get("resources", []))
+    if retriever_tool:
+        tools.insert(0, retriever_tool)
+    logger.info(f"Researcher tools: {tools}")
     return await _setup_and_execute_agent_step(
         state,
         config,
         "researcher",
-        [get_web_search_tool(configurable.max_search_results), crawl_tool],
+        tools,
     )
 
 

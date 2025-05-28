@@ -15,7 +15,7 @@ import {
 } from "~/components/ui/card";
 import { fastForwardReplay } from "~/core/api";
 import { useReplayMetadata } from "~/core/api/hooks";
-import type { Option } from "~/core/messages";
+import type { Option, Resource } from "~/core/messages";
 import { useReplay } from "~/core/replay";
 import { sendMessage, useMessageIds, useStore } from "~/core/store";
 import { env } from "~/env";
@@ -36,7 +36,13 @@ export function MessagesBlock({ className }: { className?: string }) {
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
   const handleSend = useCallback(
-    async (message: string, options?: { interruptFeedback?: string }) => {
+    async (
+      message: string,
+      options?: {
+        interruptFeedback?: string;
+        resources?: Array<Resource>;
+      },
+    ) => {
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
       try {
@@ -45,6 +51,7 @@ export function MessagesBlock({ className }: { className?: string }) {
           {
             interruptFeedback:
               options?.interruptFeedback ?? feedback?.option.value,
+            resources: options?.resources,
           },
           {
             abortSignal: abortController.signal,

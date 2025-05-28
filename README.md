@@ -189,6 +189,18 @@ SEARCH_API=tavily
   - Crawling with Jina
   - Advanced content extraction
 
+- 📃 **RAG Integration**
+
+  - Supports mentioning files from [RAGFlow](https://github.com/infiniflow/ragflow) within the input box. [Start up RAGFlow server](https://ragflow.io/docs/dev/).
+
+  ```bash
+     # .env
+     RAG_PROVIDER=ragflow
+     RAGFLOW_API_URL="http://localhost:9388"
+     RAGFLOW_API_KEY="ragflow-xxx"
+     RAGFLOW_RETRIEVAL_SIZE=10
+  ```
+
 - 🔗 **MCP Seamless Integration**
   - Expand capabilities for private domain access, knowledge graph, web browsing and more
   - Facilitates integration of diverse research tools and methodologies
@@ -352,6 +364,7 @@ When you submit a research topic in the Studio UI, you'll be able to see the ent
 DeerFlow supports LangSmith tracing to help you debug and monitor your workflows. To enable LangSmith tracing:
 
 1. Make sure your `.env` file has the following configurations (see `.env.example`):
+
    ```bash
    LANGSMITH_TRACING=true
    LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
@@ -538,6 +551,8 @@ We would like to extend our sincere appreciation to the following projects for t
 
 - **[LangChain](https://github.com/langchain-ai/langchain)**: Their exceptional framework powers our LLM interactions and chains, enabling seamless integration and functionality.
 - **[LangGraph](https://github.com/langchain-ai/langgraph)**: Their innovative approach to multi-agent orchestration has been instrumental in enabling DeerFlow's sophisticated workflows.
+- **[Novel](https://github.com/steven-tey/novel)**: Their Notion-style WYSIWYG editor supports our report editing and AI-assisted rewriting.
+- **[RAGFlow](https://github.com/infiniflow/ragflow)**: We have achieved support for research on users' private knowledge bases through integration with RAGFlow.
 
 These projects exemplify the transformative power of open-source collaboration, and we are proud to build upon their foundations.
 

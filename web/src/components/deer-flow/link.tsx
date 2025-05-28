@@ -37,7 +37,7 @@ export const Link = ({
   }, [credibleLinks, href, responding, checkLinkCredibility]);
 
   return (
-    <span className="flex items-center gap-1.5">
+    <span className="inline-flex items-center gap-1.5">
       <a href={href} target="_blank" rel="noopener noreferrer">
         {children}
       </a>

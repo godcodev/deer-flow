@@ -7,7 +7,7 @@ import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
 import { chatStream, generatePodcast } from "../api";
-import type { Message } from "../messages";
+import type { Message, Resource } from "../messages";
 import { mergeMessage } from "../messages";
 import { parseJSON } from "../utils";
 
@@ -78,8 +78,10 @@ export async function sendMessage(
   content?: string,
   {
     interruptFeedback,
+    resources,
   }: {
     interruptFeedback?: string;
+    resources?: Array<Resource>;
   } = {},
   options: { abortSignal?: AbortSignal } = {},
 ) {
@@ -90,6 +92,7 @@ export async function sendMessage(
       role: "user",
       content: content,
       contentChunks: [content],
+      resources,
     });
   }
 
@@ -99,6 +102,7 @@ export async function sendMessage(
     {
       thread_id: THREAD_ID,
       interrupt_feedback: interruptFeedback,
+      resources,
       auto_accepted_plan: settings.autoAcceptedPlan,
       enable_background_investigation:
         settings.enableBackgroundInvestigation ?? true,

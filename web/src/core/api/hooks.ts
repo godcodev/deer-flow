@@ -3,9 +3,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { env } from "~/env";
+
 import { useReplay } from "../replay";
 
 import { fetchReplayTitle } from "./chat";
+import { getRAGConfig } from "./rag";
 
 export function useReplayMetadata() {
   const { isReplay } = useReplay();
@@ -38,4 +41,27 @@ export function useReplayMetadata() {
       });
   }, [isLoading, isReplay, title]);
   return { title, isLoading, hasError: error };
+}
+
+export function useRAGProvider() {
+  const [loading, setLoading] = useState(true);
+  const [provider, setProvider] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY) {
+      setLoading(false);
+      return;
+    }
+    getRAGConfig()
+      .then(setProvider)
+      .catch((e) => {
+        setProvider(null);
+        console.error("Failed to get RAG provider", e);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  return { provider, loading };
 }

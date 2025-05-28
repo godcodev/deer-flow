@@ -276,8 +276,8 @@ function CrawlToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
 }
 
 function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
-  const code = useMemo<string>(() => {
-    return (toolCall.args as { code: string }).code;
+  const code = useMemo<string | undefined>(() => {
+    return (toolCall.args as { code?: string }).code;
   }, [toolCall.args]);
   const { resolvedTheme } = useTheme();
   return (
@@ -302,7 +302,7 @@ function PythonToolCall({ toolCall }: { toolCall: ToolCallRuntime }) {
               boxShadow: "none",
             }}
           >
-            {code.trim()}
+            {code?.trim() ?? ""}
           </SyntaxHighlighter>
         </div>
       </div>

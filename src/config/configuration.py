@@ -2,16 +2,21 @@
 # SPDX-License-Identifier: MIT
 
 import os
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from typing import Any, Optional
 
 from langchain_core.runnables import RunnableConfig
+
+from src.rag.retriever import Resource
 
 
 @dataclass(kw_only=True)
 class Configuration:
     """The configurable fields."""
 
+    resources: list[Resource] = field(
+        default_factory=list
+    )  # Resources to be used for the research
     max_plan_iterations: int = 1  # Maximum number of plan iterations
     max_step_num: int = 3  # Maximum number of steps in a plan
     max_search_results: int = 3  # Maximum number of search results
