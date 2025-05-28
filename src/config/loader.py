@@ -18,6 +18,8 @@ def replace_env_vars(value: str) -> str:
 
 def process_dict(config: Dict[str, Any]) -> Dict[str, Any]:
     """Recursively process dictionary to replace environment variables."""
+    if not config:
+        return {}
     result = {}
     for key, value in config.items():
         if isinstance(value, dict):
