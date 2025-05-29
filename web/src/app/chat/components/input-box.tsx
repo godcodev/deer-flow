@@ -81,7 +81,7 @@ export function InputBox({
           {feedback && (
             <motion.div
               ref={feedbackRef}
-              className="bg-background border-brand absolute top-0 left-0 mt-3 ml-2 flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5"
+              className="bg-background border-brand absolute top-0 left-0 mt-2 ml-4 flex items-center justify-center gap-1 rounded-2xl border px-2 py-0.5"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
@@ -99,7 +99,7 @@ export function InputBox({
           )}
         </AnimatePresence>
         <MessageInput
-          className={cn("h-24 px-4 pt-3")}
+          className={cn("h-24 px-4 pt-5", feedback && "pt-9")}
           ref={inputRef}
           onEnter={handleSendMessage}
         />
@@ -127,7 +127,6 @@ export function InputBox({
                 backgroundInvestigation && "!border-brand !text-brand",
               )}
               variant="outline"
-              size="lg"
               onClick={() =>
                 setEnableBackgroundInvestigation(!backgroundInvestigation)
               }

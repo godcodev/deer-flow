@@ -116,6 +116,7 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
           transformCopiedText: false,
         }),
         Placeholder.configure({
+          showOnlyCurrent: false,
           placeholder: provider
             ? "What can I do for you? \nYou may refer to RAG resources by using @."
             : "What can I do for you?",
@@ -169,7 +170,7 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
             editorProps={{
               attributes: {
                 class:
-                  "prose prose-base dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
+                  "prose prose-base dark:prose-invert inline-editor font-default focus:outline-none max-w-full",
               },
             }}
             onCreate={({ editor }) => {
