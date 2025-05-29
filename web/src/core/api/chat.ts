@@ -103,7 +103,8 @@ async function* chatReplayStream(
   const text = await fetchReplay(replayFilePath, {
     abortSignal: options.abortSignal,
   });
-  const chunks = text.split("\n\n");
+  const normalizedText = text.replace(/\r\n/g, "\n");
+  const chunks = normalizedText.split("\n\n");
   for (const chunk of chunks) {
     const [eventRaw, dataRaw] = chunk.split("\n") as [string, string];
     const [, event] = eventRaw.split("event: ", 2) as [string, string];
