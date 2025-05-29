@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+# SPDX-License-Identifier: MIT
+
 import logging
 from typing import List, Optional, Type
 from langchain_core.tools import BaseTool
@@ -19,9 +22,7 @@ class RetrieverInput(BaseModel):
 
 class RetrieverTool(BaseTool):
     name: str = "local_search_tool"
-    description: str = (
-        "Useful for retrieving information from the file with `rag://` uri prefix, it should be higher priority than the web search or writing code. Input should be a search keywords."
-    )
+    description: str = "Useful for retrieving information from the file with `rag://` uri prefix, it should be higher priority than the web search or writing code. Input should be a search keywords."
     args_schema: Type[BaseModel] = RetrieverInput
 
     retriever: Retriever = Field(default_factory=Retriever)

@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+# SPDX-License-Identifier: MIT
+
 import os
 import requests
 from src.rag.retriever import Chunk, Document, Resource, Retriever

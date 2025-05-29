@@ -49,7 +49,6 @@ export function InputBox({
 
   const handleSendMessage = useCallback(
     (message: string, resources: Array<Resource>) => {
-      console.log(message, resources);
       if (responding) {
         onCancel?.();
       } else {
