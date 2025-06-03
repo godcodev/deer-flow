@@ -102,7 +102,8 @@ class VolcengineTTS:
         }
 
         try:
-            logger.debug(f"Sending TTS request for text: {text[:50]}...")
+            sanitized_text = text.replace("\r\n", "").replace("\n", "")
+            logger.debug(f"Sending TTS request for text: {sanitized_text[:50]}...")
             response = requests.post(
                 self.api_url, json.dumps(request_json), headers=self.header
             )
