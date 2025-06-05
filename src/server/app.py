@@ -40,6 +40,8 @@ from src.tools import VolcengineTTS
 
 logger = logging.getLogger(__name__)
 
+INTERNAL_SERVER_ERROR_DETAIL = "Internal Server Error"
+
 app = FastAPI(
     title="DeerFlow API",
     description="API for Deer",
@@ -234,7 +236,7 @@ async def text_to_speech(request: TTSRequest):
         )
     except Exception as e:
         logger.exception(f"Error in TTS endpoint: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL)
 
 
 @app.post("/api/podcast/generate")
@@ -248,7 +250,7 @@ async def generate_podcast(request: GeneratePodcastRequest):
         return Response(content=audio_bytes, media_type="audio/mp3")
     except Exception as e:
         logger.exception(f"Error occurred during podcast generation: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL)
 
 
 @app.post("/api/ppt/generate")
@@ -267,7 +269,7 @@ async def generate_ppt(request: GeneratePPTRequest):
         )
     except Exception as e:
         logger.exception(f"Error occurred during ppt generation: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL)
 
 
 @app.post("/api/prose/generate")
@@ -291,7 +293,7 @@ async def generate_prose(request: GenerateProseRequest):
         )
     except Exception as e:
         logger.exception(f"Error occurred during prose generation: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL)
 
 
 @app.post("/api/mcp/server/metadata", response_model=MCPServerMetadataResponse)
@@ -329,7 +331,7 @@ async def mcp_server_metadata(request: MCPServerMetadataRequest):
     except Exception as e:
         if not isinstance(e, HTTPException):
             logger.exception(f"Error in MCP server metadata endpoint: {str(e)}")
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL)
         raise
 
 
