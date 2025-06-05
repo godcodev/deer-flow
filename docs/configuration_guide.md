@@ -49,7 +49,7 @@ BASIC_MODEL:
 BASIC_MODEL:
   base_url: "https://api.deepseek.com"
   model: "deepseek-chat"
-  api_key: YOU_API_KEY
+  api_key: YOUR_API_KEY
 
 # An example of Google Gemini models using OpenAI-Compatible interface
 BASIC_MODEL:
