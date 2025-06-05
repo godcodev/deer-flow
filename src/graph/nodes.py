@@ -24,7 +24,7 @@ from src.tools import (
 from src.config.agents import AGENT_LLM_MAP
 from src.config.configuration import Configuration
 from src.llms.llm import get_llm_by_type
-from src.prompts.planner_model import Plan, StepType
+from src.prompts.planner_model import Plan
 from src.prompts.template import apply_prompt_template
 from src.utils.json_utils import repair_json_output
 
@@ -45,22 +45,24 @@ def handoff_to_planner(
     return
 
 
-def background_investigation_node(
-    state: State, config: RunnableConfig
-) -> Command[Literal["planner"]]:
+def background_investigation_node(state: State, config: RunnableConfig):
     logger.info("background investigation node is running.")
     configurable = Configuration.from_runnable_config(config)
     query = state["messages"][-1].content
+    background_investigation_results = None
     if SELECTED_SEARCH_ENGINE == SearchEngine.TAVILY.value:
         searched_content = LoggedTavilySearch(
             max_results=configurable.max_search_results
         ).invoke(query)
-        background_investigation_results = None
         if isinstance(searched_content, list):
             background_investigation_results = [
-                {"title": elem["title"], "content": elem["content"]}
-                for elem in searched_content
+                f"## {elem['title']}\n\n{elem['content']}" for elem in searched_content
             ]
+            return {
+                "background_investigation_results": "\n\n".join(
+                    background_investigation_results
+                )
+            }
         else:
             logger.error(
                 f"Tavily search returned malformed response: {searched_content}"
@@ -69,14 +71,11 @@ def background_investigation_node(
         background_investigation_results = get_web_search_tool(
             configurable.max_search_results
         ).invoke(query)
-    return Command(
-        update={
-            "background_investigation_results": json.dumps(
-                background_investigation_results, ensure_ascii=False
-            )
-        },
-        goto="planner",
-    )
+    return {
+        "background_investigation_results": json.dumps(
+            background_investigation_results, ensure_ascii=False
+        )
+    }
 
 
 def planner_node(
@@ -287,24 +286,10 @@ def reporter_node(state: State):
     return {"final_report": response_content}
 
 
-def research_team_node(
-    state: State,
-) -> Command[Literal["planner", "researcher", "coder"]]:
+def research_team_node(state: State):
     """Research team node that collaborates on tasks."""
     logger.info("Research team is collaborating on tasks.")
-    current_plan = state.get("current_plan")
-    if not current_plan or not current_plan.steps:
-        return Command(goto="planner")
-    if all(step.execution_res for step in current_plan.steps):
-        return Command(goto="planner")
-    for step in current_plan.steps:
-        if not step.execution_res:
-            break
-    if step.step_type and step.step_type == StepType.RESEARCH:
-        return Command(goto="researcher")
-    if step.step_type and step.step_type == StepType.PROCESSING:
-        return Command(goto="coder")
-    return Command(goto="planner")
+    pass
 
 
 async def _execute_agent_step(

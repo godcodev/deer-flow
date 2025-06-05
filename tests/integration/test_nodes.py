@@ -82,27 +82,25 @@ def test_background_investigation_node_tavily(
         result = background_investigation_node(mock_state, mock_config)
 
         # Verify the result structure
-        assert isinstance(result, Command)
-        assert result.goto == "planner"
+        assert isinstance(result, dict)
 
         # Verify the update contains background_investigation_results
-        update = result.update
-        assert "background_investigation_results" in update
+        assert "background_investigation_results" in result
 
         # Parse and verify the JSON content
-        results = json.loads(update["background_investigation_results"])
-        assert isinstance(results, list)
+        results = result["background_investigation_results"]
 
         if search_engine == SearchEngine.TAVILY.value:
             mock_tavily_search.return_value.invoke.assert_called_once_with("test query")
-            assert len(results) == 2
-            assert results[0]["title"] == "Test Title 1"
-            assert results[0]["content"] == "Test Content 1"
+            assert (
+                results
+                == "## Test Title 1\n\nTest Content 1\n\n## Test Title 2\n\nTest Content 2"
+            )
         else:
             mock_web_search_tool.return_value.invoke.assert_called_once_with(
                 "test query"
             )
-            assert len(results) == 2
+            assert len(json.loads(results)) == 2
 
 
 def test_background_investigation_node_malformed_response(
@@ -116,13 +114,11 @@ def test_background_investigation_node_malformed_response(
         result = background_investigation_node(mock_state, mock_config)
 
         # Verify the result structure
-        assert isinstance(result, Command)
-        assert result.goto == "planner"
+        assert isinstance(result, dict)
 
         # Verify the update contains background_investigation_results
-        update = result.update
-        assert "background_investigation_results" in update
+        assert "background_investigation_results" in result
 
         # Parse and verify the JSON content
-        results = json.loads(update["background_investigation_results"])
-        assert results is None
+        results = result["background_investigation_results"]
+        assert json.loads(results) is None
