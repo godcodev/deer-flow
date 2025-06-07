@@ -70,7 +70,7 @@ class EnhancedTavilySearchAPIWrapper(OriginalTavilySearchAPIWrapper):
                 "include_images": include_images,
                 "include_image_descriptions": include_image_descriptions,
             }
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(trust_env=True) as session:
                 async with session.post(f"{TAVILY_API_URL}/search", json=params) as res:
                     if res.status == 200:
                         data = await res.text()
