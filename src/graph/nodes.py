@@ -248,9 +248,10 @@ def coordinator_node(
     )
 
 
-def reporter_node(state: State):
+def reporter_node(state: State, config: RunnableConfig):
     """Reporter node that write a final report."""
     logger.info("Reporter write final report")
+    configurable = Configuration.from_runnable_config(config)
     current_plan = state.get("current_plan")
     input_ = {
         "messages": [
@@ -260,7 +261,7 @@ def reporter_node(state: State):
         ],
         "locale": state.get("locale", "en-US"),
     }
-    invoke_messages = apply_prompt_template("reporter", input_)
+    invoke_messages = apply_prompt_template("reporter", input_, configurable)
     observations = state.get("observations", [])
 
     # Add a reminder about the new report format, citation style, and table usage

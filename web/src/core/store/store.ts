@@ -109,6 +109,7 @@ export async function sendMessage(
       max_plan_iterations: settings.maxPlanIterations,
       max_step_num: settings.maxStepNum,
       max_search_results: settings.maxSearchResults,
+      report_style: settings.reportStyle,
       mcp_settings: settings.mcpSettings,
     },
     options,

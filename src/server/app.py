@@ -14,6 +14,7 @@ from fastapi.responses import Response, StreamingResponse
 from langchain_core.messages import AIMessageChunk, ToolMessage, BaseMessage
 from langgraph.types import Command
 
+from src.config.report_style import ReportStyle
 from src.config.tools import SELECTED_RAG_PROVIDER
 from src.graph.builder import build_graph_with_memory
 from src.podcast.graph.builder import build_graph as build_podcast_graph
@@ -77,6 +78,7 @@ async def chat_stream(request: ChatRequest):
             request.interrupt_feedback,
             request.mcp_settings,
             request.enable_background_investigation,
+            request.report_style,
         ),
         media_type="text/event-stream",
     )
@@ -92,7 +94,8 @@ async def _astream_workflow_generator(
     auto_accepted_plan: bool,
     interrupt_feedback: str,
     mcp_settings: dict,
-    enable_background_investigation,
+    enable_background_investigation: bool,
+    report_style: ReportStyle,
 ):
     input_ = {
         "messages": messages,
@@ -118,6 +121,7 @@ async def _astream_workflow_generator(
             "max_step_num": max_step_num,
             "max_search_results": max_search_results,
             "mcp_settings": mcp_settings,
+            "report_style": report_style.value,
         },
         stream_mode=["messages", "updates"],
         subgraphs=True,

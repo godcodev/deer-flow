@@ -9,6 +9,7 @@ import { Detective } from "~/components/deer-flow/icons/detective";
 import MessageInput, {
   type MessageInputRef,
 } from "~/components/deer-flow/message-input";
+import { ReportStyleDialog } from "~/components/deer-flow/report-style-dialog";
 import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
 import type { Option, Resource } from "~/core/messages";
@@ -104,7 +105,7 @@ export function InputBox({
         />
       </div>
       <div className="flex items-center px-4 py-2">
-        <div className="flex grow">
+        <div className="flex grow gap-2">
           <Tooltip
             className="max-w-60"
             title={
@@ -133,6 +134,7 @@ export function InputBox({
               <Detective /> Investigation
             </Button>
           </Tooltip>
+          <ReportStyleDialog />
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <Tooltip title={responding ? "Stop" : "Send"}>
