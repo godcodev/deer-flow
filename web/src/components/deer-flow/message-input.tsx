@@ -26,6 +26,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 export interface MessageInputRef {
   focus: () => void;
   submit: () => void;
+  setContent: (content: string) => void;
 }
 
 export interface MessageInputProps {
@@ -82,8 +83,9 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
     const debouncedUpdates = useDebouncedCallback(
       async (editor: EditorInstance) => {
         if (onChange) {
-          const markdown = editor.storage.markdown.getMarkdown();
-          onChange(markdown);
+          // Get the plain text content for prompt enhancement
+          const { text } = formatMessage(editor.getJSON() ?? []);
+          onChange(text);
         }
       },
       200,
@@ -99,6 +101,11 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
             editorRef.current?.getJSON() ?? [],
           );
           onEnter(text, resources);
+        }
+      },
+      setContent: (content: string) => {
+        if (editorRef.current) {
+          editorRef.current.commands.setContent(content);
         }
       },
     }));

@@ -94,3 +94,13 @@ class GenerateProseRequest(BaseModel):
     command: Optional[str] = Field(
         "", description="The user custom command of the prose writer"
     )
+
+
+class EnhancePromptRequest(BaseModel):
+    prompt: str = Field(..., description="The original prompt to enhance")
+    context: Optional[str] = Field(
+        "", description="Additional context about the intended use"
+    )
+    report_style: Optional[str] = Field(
+        "academic", description="The style of the report"
+    )
