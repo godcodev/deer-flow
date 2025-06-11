@@ -87,7 +87,7 @@ async def chat_stream(request: ChatRequest):
 
 
 async def _astream_workflow_generator(
-    messages: List[ChatMessage],
+    messages: List[dict],
     thread_id: str,
     resources: List[Resource],
     max_plan_iterations: int,
@@ -107,6 +107,7 @@ async def _astream_workflow_generator(
         "observations": [],
         "auto_accepted_plan": auto_accepted_plan,
         "enable_background_investigation": enable_background_investigation,
+        "research_topic": messages[-1]["content"] if messages else "",
     }
     if not auto_accepted_plan and interrupt_feedback:
         resume_msg = f"[{interrupt_feedback}]"

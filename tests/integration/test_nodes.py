@@ -20,6 +20,7 @@ MOCK_SEARCH_RESULTS = [
 def mock_state():
     return {
         "messages": [HumanMessage(content="test query")],
+        "research_topic": "test query",
         "background_investigation_results": None,
     }
 
