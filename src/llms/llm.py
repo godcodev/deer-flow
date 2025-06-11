@@ -70,9 +70,3 @@ def get_llm_by_type(
 # In the future, we will use reasoning_llm and vl_llm for different purposes
 # reasoning_llm = get_llm_by_type("reasoning")
 # vl_llm = get_llm_by_type("vision")
-
-
-if __name__ == "__main__":
-    # Initialize LLMs for different purposes - now these will be cached
-    basic_llm = get_llm_by_type("basic")
-    print(basic_llm.invoke("Hello"))
