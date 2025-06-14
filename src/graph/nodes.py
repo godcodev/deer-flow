@@ -104,7 +104,8 @@ def planner_node(
     if AGENT_LLM_MAP["planner"] == "basic":
         llm = get_llm_by_type(AGENT_LLM_MAP["planner"]).with_structured_output(
             Plan,
-            method="json_mode",
+            method="json_schema",
+            strict=True,
         )
     else:
         llm = get_llm_by_type(AGENT_LLM_MAP["planner"])
