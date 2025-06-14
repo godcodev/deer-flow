@@ -7,7 +7,10 @@ export function parseJSON<T>(json: string | null | undefined, fallback: T) {
   try {
     const raw = json
       .trim()
+      .replace(/^```js\s*/, "")
       .replace(/^```json\s*/, "")
+      .replace(/^```ts\s*/, "")
+      .replace(/^```plaintext\s*/, "")
       .replace(/^```\s*/, "")
       .replace(/\s*```$/, "");
     return parse(raw) as T;
