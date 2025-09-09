@@ -138,36 +138,6 @@ def _get_agent_name(agent, message_metadata):
     return agent_name
 
 
-def _create_event_stream_message(
-    message_chunk, message_metadata, thread_id, agent_name
-):
-    """Create base event stream message."""
-    event_stream_message = {
-        "thread_id": thread_id,
-        "agent": agent_name,
-        "id": message_chunk.id,
-        "role": "assistant",
-        "checkpoint_ns": message_metadata.get("checkpoint_ns", ""),
-        "langgraph_node": message_metadata.get("langgraph_node", ""),
-        "langgraph_path": message_metadata.get("langgraph_path", ""),
-        "langgraph_step": message_metadata.get("langgraph_step", ""),
-        "content": message_chunk.content,
-    }
-
-    # Add optional fields
-    if message_chunk.additional_kwargs.get("reasoning_content"):
-        event_stream_message["reasoning_content"] = message_chunk.additional_kwargs[
-            "reasoning_content"
-        ]
-
-    if message_chunk.response_metadata.get("finish_reason"):
-        event_stream_message["finish_reason"] = message_chunk.response_metadata.get(
-            "finish_reason"
-        )
-
-    return event_stream_message
-
-
 def _create_interrupt_event(thread_id, event_data):
     """Create interrupt event."""
     return _make_event(
