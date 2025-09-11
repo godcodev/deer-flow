@@ -1,6 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 from enum import Enum
 from typing import List, Optional
 
