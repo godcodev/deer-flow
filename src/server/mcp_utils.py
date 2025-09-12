@@ -1,6 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 import logging
 from datetime import timedelta
 from typing import Any, Dict, List, Optional
