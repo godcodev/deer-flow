@@ -1,7 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 import json
 from typing import Dict, List, Optional
 
