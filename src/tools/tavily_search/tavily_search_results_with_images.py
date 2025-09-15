@@ -1,6 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 import json
 import logging
 from typing import Dict, List, Optional, Tuple, Union
