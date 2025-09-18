@@ -1,6 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 from langgraph.graph import END, START, StateGraph
 
 from src.ppt.graph.ppt_composer_node import ppt_composer_node
