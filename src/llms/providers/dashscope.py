@@ -1,7 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
-# Standard library imports
 from typing import Any, Dict, Iterator, List, Mapping, Optional, Type, Union, cast
 
 # Third-party imports
