@@ -1,6 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 from langgraph.graph import END, START, StateGraph
 
 from src.podcast.graph.audio_mixer_node import audio_mixer_node
