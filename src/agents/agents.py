@@ -1,6 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 from langgraph.prebuilt import create_react_agent
 
 from src.config.agents import AGENT_LLM_MAP
