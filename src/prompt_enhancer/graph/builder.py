@@ -1,6 +1,3 @@
-# Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-# SPDX-License-Identifier: MIT
-
 from langgraph.graph import StateGraph
 
 from src.prompt_enhancer.graph.enhancer_node import prompt_enhancer_node
