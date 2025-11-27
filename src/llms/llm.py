@@ -53,49 +53,44 @@ def _create_llm_use_conf(llm_type: LLMType, conf: Dict[str, Any]) -> BaseChatMod
     if not config_key:
         raise ValueError(f"Unknown LLM type: {llm_type}")
 
+    # Base config
     llm_conf = conf.get(config_key, {})
     if not isinstance(llm_conf, dict):
         raise ValueError(f"Invalid LLM configuration for {llm_type}: {llm_conf}")
 
-    # Get configuration from environment variables
+    # Environment config takes precedence
     env_conf = _get_env_llm_conf(llm_type)
-
-    # Merge configurations, with environment variables taking precedence
     merged_conf = {**llm_conf, **env_conf}
 
     if not merged_conf:
         raise ValueError(f"No configuration found for LLM type: {llm_type}")
 
-    # Add max_retries to handle rate limit errors
-    if "max_retries" not in merged_conf:
-        merged_conf["max_retries"] = 3
+    # Default retries
+    merged_conf.setdefault("max_retries", 3)
 
-    # Handle SSL verification settings
+    # SSL verification handling
     verify_ssl = merged_conf.pop("verify_ssl", True)
-
-    # Create custom HTTP client if SSL verification is disabled
     if not verify_ssl:
-        http_client = httpx.Client(verify=False)
-        http_async_client = httpx.AsyncClient(verify=False)
-        merged_conf["http_client"] = http_client
-        merged_conf["http_async_client"] = http_async_client
+        merged_conf["http_client"] = httpx.Client(verify=False)
+        merged_conf["http_async_client"] = httpx.AsyncClient(verify=False)
 
+    # Azure routing
     if "azure_endpoint" in merged_conf or os.getenv("AZURE_OPENAI_ENDPOINT"):
         return AzureChatOpenAI(**merged_conf)
 
-    # Check if base_url is dashscope endpoint
-    if "base_url" in merged_conf and "dashscope." in merged_conf["base_url"]:
-        if llm_type == "reasoning":
-            merged_conf["extra_body"] = {"enable_thinking": True}
-        else:
-            merged_conf["extra_body"] = {"enable_thinking": False}
+    # Dashscope routing
+    base_url = merged_conf.get("base_url", "")
+    if "dashscope." in base_url:
+        merged_conf["extra_body"] = {"enable_thinking": llm_type == "reasoning"}
         return ChatDashscope(**merged_conf)
 
+    # DeepSeek reasoning mode
     if llm_type == "reasoning":
         merged_conf["api_base"] = merged_conf.pop("base_url", None)
         return ChatDeepSeek(**merged_conf)
-    else:
-        return ChatOpenAI(**merged_conf)
+
+    # Default: OpenAI-compatible chat model
+    return ChatOpenAI(**merged_conf)
 
 
 def get_llm_by_type(llm_type: LLMType) -> BaseChatModel:
