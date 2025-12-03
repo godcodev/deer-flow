@@ -18,35 +18,34 @@ class RAGFlowProvider(Retriever):
     cross_languages: Optional[List[str]] = None
 
     def __init__(self):
-        api_url = os.getenv("RAGFLOW_API_URL")
-        if not api_url:
-            raise ValueError("RAGFLOW_API_URL is not set")
-        self.api_url = api_url
+        def get_env(name: str, required: bool = True) -> Optional[str]:
+            value = os.getenv(name)
+            if required and not value:
+                raise ValueError(f"{name} is not set")
+            return value
 
-        api_key = os.getenv("RAGFLOW_API_KEY")
-        if not api_key:
-            raise ValueError("RAGFLOW_API_KEY is not set")
-        self.api_key = api_key
+        self.api_url = get_env("RAGFLOW_API_URL")
+        self.api_key = get_env("RAGFLOW_API_KEY")
 
         page_size = os.getenv("RAGFLOW_PAGE_SIZE")
         if page_size:
             self.page_size = int(page_size)
 
-        self.cross_languages = None
-        cross_languages = os.getenv("RAGFLOW_CROSS_LANGUAGES")
-        if cross_languages:
-            self.cross_languages = cross_languages.split(",")
+        cross_lang = os.getenv("RAGFLOW_CROSS_LANGUAGES")
+        self.cross_languages = cross_lang.split(",") if cross_lang else None
 
     def query_relevant_documents(
-        self, query: str, resources: list[Resource] = []
+        self, query: str, resources: Optional[list[Resource]] = None
     ) -> list[Document]:
+        resources = resources or []
+
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
         }
 
-        dataset_ids: list[str] = []
-        document_ids: list[str] = []
+        dataset_ids = []
+        document_ids = []
 
         for resource in resources:
             dataset_id, document_id = parse_uri(resource.uri)
@@ -65,28 +64,33 @@ class RAGFlowProvider(Retriever):
             payload["cross_languages"] = self.cross_languages
 
         response = requests.post(
-            f"{self.api_url}/api/v1/retrieval", headers=headers, json=payload
+            f"{self.api_url}/api/v1/retrieval",
+            headers=headers,
+            json=payload,
         )
 
         if response.status_code != 200:
             raise Exception(f"Failed to query documents: {response.text}")
 
-        result = response.json()
-        data = result.get("data", {})
+        data = response.json().get("data", {})
         doc_aggs = data.get("doc_aggs", [])
-        docs: dict[str, Document] = {
-            doc.get("doc_id"): Document(
-                id=doc.get("doc_id"),
-                title=doc.get("doc_name"),
+
+        # Build docs dict
+        docs = {
+            d["doc_id"]: Document(
+                id=d["doc_id"],
+                title=d.get("doc_name"),
                 chunks=[],
             )
-            for doc in doc_aggs
+            for d in doc_aggs
+            if d.get("doc_id")
         }
 
+        # Add chunks
         for chunk in data.get("chunks", []):
-            doc = docs.get(chunk.get("document_id"))
-            if doc:
-                doc.chunks.append(
+            doc_id = chunk.get("document_id")
+            if doc_id in docs:
+                docs[doc_id].chunks.append(
                     Chunk(
                         content=chunk.get("content"),
                         similarity=chunk.get("similarity"),
@@ -101,29 +105,26 @@ class RAGFlowProvider(Retriever):
             "Content-Type": "application/json",
         }
 
-        params = {}
-        if query:
-            params["name"] = query
+        params = {"name": query} if query else {}
 
         response = requests.get(
-            f"{self.api_url}/api/v1/datasets", headers=headers, params=params
+            f"{self.api_url}/api/v1/datasets",
+            headers=headers,
+            params=params,
         )
 
         if response.status_code != 200:
             raise Exception(f"Failed to list resources: {response.text}")
 
-        result = response.json()
-        resources = []
-
-        for item in result.get("data", []):
-            item = Resource(
+        items = response.json().get("data", [])
+        return [
+            Resource(
                 uri=f"rag://dataset/{item.get('id')}",
                 title=item.get("name", ""),
                 description=item.get("description", ""),
             )
-            resources.append(item)
-
-        return resources
+            for item in items
+        ]
 
 
 def parse_uri(uri: str) -> tuple[str, str]:
