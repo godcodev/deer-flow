@@ -168,29 +168,27 @@ class VikingDBKnowledgeBaseProvider(Retriever):
     def _make_signed_request(
         self, method: str, path: str, params: dict = None, data: dict = None
     ):
-        if data is None:
-            payload = b""
-        else:
-            payload = json.dumps(data).encode("utf-8")
-
-        if params is None:
-            params = {}
+        params = params or {}
+        payload = json.dumps(data).encode("utf-8") if data is not None else b""
 
         url = f"https://{self.api_url}{path}"
         headers = {}
+
         signed_headers = self._create_signature(method, path, params, headers, payload)
+
         try:
             response = requests.request(
                 method=method,
                 url=url,
                 headers=signed_headers,
                 params=params,
-                data=payload if payload else None,
+                data=payload or None,
                 timeout=30,
             )
             return response
         except Exception as e:
             raise ValueError(f"Request failed: {e}")
+
 
     def query_relevant_documents(
         self, query: str, resources: list[Resource] = []
