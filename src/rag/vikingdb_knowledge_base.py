@@ -111,42 +111,59 @@ class VikingDBKnowledgeBaseProvider(Retriever):
         date_stamp = now.strftime("%Y%m%dT%H%M%SZ")
         auth_date = date_stamp[:8]
 
-        headers["X-Date"] = date_stamp
-        headers["Host"] = self.api_url.replace("https://", "").replace("http://", "")
-        headers["X-Content-Sha256"] = self._hash_sha256(payload).hex()
-        headers["Content-Type"] = "application/json"
+        # Precompute reused values
+        host = self.api_url.replace("https://", "").replace("http://", "")
+        payload_hash = self._hash_sha256(payload).hex()
 
+        # Update headers in-place
+        headers.update({
+            "X-Date": date_stamp,
+            "Host": host,
+            "X-Content-Sha256": payload_hash,
+            "Content-Type": "application/json",
+        })
+
+        # Build canonical request
         canonical_request, signed_headers = self._create_canonical_request(
             method, path, query_params, headers, payload
         )
 
         algorithm = "HMAC-SHA256"
         credential_scope = f"{auth_date}/{self.region}/{self.service}/request"
+
         canonical_request_hash = self._hash_sha256(
             canonical_request.encode("utf-8")
         ).hex()
 
-        string_to_sign = "\n".join(
-            [algorithm, date_stamp, credential_scope, canonical_request_hash]
-        )
+        # Build string to sign
+        string_to_sign = "\n".join((
+            algorithm,
+            date_stamp,
+            credential_scope,
+            canonical_request_hash,
+        ))
 
+        # Signing key
         signing_key = self._get_signed_key(
             self.api_sk, auth_date, self.region, self.service
         )
+
+        # Compute signature
         signature = hmac.new(
-            signing_key, string_to_sign.encode("utf-8"), hashlib.sha256
+            signing_key,
+            string_to_sign.encode("utf-8"),
+            hashlib.sha256
         ).hexdigest()
 
-        authorization = (
+        headers["Authorization"] = (
             f"{algorithm} "
             f"Credential={self.api_ak}/{credential_scope}, "
             f"SignedHeaders={signed_headers}, "
             f"Signature={signature}"
         )
 
-        headers["Authorization"] = authorization
-
         return headers
+
 
     def _make_signed_request(
         self, method: str, path: str, params: dict = None, data: dict = None
