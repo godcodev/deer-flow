@@ -119,11 +119,12 @@ class RAGFlowProvider(Retriever):
             raise Exception(f"Failed to list resources: {response.text}")
 
         items = response.json().get("data", [])
+
         return [
             Resource(
                 uri=f"rag://dataset/{item.get('id')}",
                 title=item.get("name", ""),
-                description=item.get("description", ""),
+                description=item.get("description", "")
             )
             for item in items
         ]
