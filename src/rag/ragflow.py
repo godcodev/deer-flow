@@ -44,6 +44,7 @@ class RAGFlowProvider(Retriever):
             "Content-Type": "application/json",
         }
 
+        # Extract dataset_ids and document_ids in a single pass
         dataset_ids = []
         document_ids = []
 
@@ -75,18 +76,18 @@ class RAGFlowProvider(Retriever):
         data = response.json().get("data", {})
         doc_aggs = data.get("doc_aggs", [])
 
-        # Build docs dict
+        # Create document dictionary directly using a dict comprehension
         docs = {
             d["doc_id"]: Document(
                 id=d["doc_id"],
                 title=d.get("doc_name"),
-                chunks=[],
+                chunks=[]
             )
             for d in doc_aggs
             if d.get("doc_id")
         }
 
-        # Add chunks
+        # Append chunks to matching documents
         for chunk in data.get("chunks", []):
             doc_id = chunk.get("document_id")
             if doc_id in docs:
@@ -98,6 +99,7 @@ class RAGFlowProvider(Retriever):
                 )
 
         return list(docs.values())
+
 
     def list_resources(self, query: str | None = None) -> list[Resource]:
         headers = {
