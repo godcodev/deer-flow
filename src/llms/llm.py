@@ -11,17 +11,23 @@ from src.config import load_yaml_config
 from src.config.agents import LLMType
 from src.llms.providers.dashscope import ChatDashscope
 
-# Cache for LLM instances
+
+# -------------------------------------------------------
+# Global Cache
+# -------------------------------------------------------
 _llm_cache: dict[LLMType, BaseChatModel] = {}
 
 
+# -------------------------------------------------------
+# Helpers for config paths and key mapping
+# -------------------------------------------------------
 def _get_config_file_path() -> str:
-    """Get the path to the configuration file."""
+    """Return absolute path to conf.yaml."""
     return str((Path(__file__).parent.parent.parent / "conf.yaml").resolve())
 
 
-def _get_llm_type_config_keys() -> dict[str, str]:
-    """Get mapping of LLM types to their configuration keys."""
+def _llm_type_to_config_key() -> dict[str, str]:
+    """Map LLMType to their configuration sections in YAML."""
     return {
         "reasoning": "REASONING_MODEL",
         "basic": "BASIC_MODEL",
@@ -30,119 +36,118 @@ def _get_llm_type_config_keys() -> dict[str, str]:
     }
 
 
-def _get_env_llm_conf(llm_type: str) -> Dict[str, Any]:
+# -------------------------------------------------------
+# Environment variable helpers
+# -------------------------------------------------------
+def _read_env_llm_config(llm_type: str) -> Dict[str, Any]:
     """
-    Get LLM configuration from environment variables.
-    Environment variables should follow the format: {LLM_TYPE}__{KEY}
-    e.g., BASIC_MODEL__api_key, BASIC_MODEL__base_url
+    Collect configuration from environment variables.
+    Expected format:
+        {TYPE}_MODEL__key=value
+    Example:
+        BASIC_MODEL__api_key=xyz
     """
     prefix = f"{llm_type.upper()}_MODEL__"
-    conf = {}
+    env_conf = {}
+
     for key, value in os.environ.items():
         if key.startswith(prefix):
-            conf_key = key[len(prefix) :].lower()
-            conf[conf_key] = value
-    return conf
+            normalized_key = key[len(prefix):].lower()
+            env_conf[normalized_key] = value
+
+    return env_conf
 
 
-def _create_llm_use_conf(llm_type: LLMType, conf: Dict[str, Any]) -> BaseChatModel:
-    """Create LLM instance using configuration."""
-    llm_type_config_keys = _get_llm_type_config_keys()
-    config_key = llm_type_config_keys.get(llm_type)
+# -------------------------------------------------------
+# LLM model factory
+# -------------------------------------------------------
+def _build_llm_instance(llm_type: LLMType, config: Dict[str, Any]) -> BaseChatModel:
+    """Create an LLM instance using merged config from YAML + environment."""
+    type_to_key = _llm_type_to_config_key()
+    config_key = type_to_key.get(llm_type)
 
     if not config_key:
         raise ValueError(f"Unknown LLM type: {llm_type}")
 
-    # Base config
-    llm_conf = conf.get(config_key, {})
-    if not isinstance(llm_conf, dict):
-        raise ValueError(f"Invalid LLM configuration for {llm_type}: {llm_conf}")
+    yaml_conf = config.get(config_key, {})
+    if not isinstance(yaml_conf, dict):
+        raise ValueError(f"Invalid configuration for LLM type '{llm_type}': {yaml_conf}")
 
-    # Environment config takes precedence
-    env_conf = _get_env_llm_conf(llm_type)
-    merged_conf = {**llm_conf, **env_conf}
+    env_conf = _read_env_llm_config(llm_type)
+    merged = {**yaml_conf, **env_conf}
 
-    if not merged_conf:
+    if not merged:
         raise ValueError(f"No configuration found for LLM type: {llm_type}")
 
     # Default retries
-    merged_conf.setdefault("max_retries", 3)
+    merged.setdefault("max_retries", 3)
 
-    # SSL verification handling
-    verify_ssl = merged_conf.pop("verify_ssl", True)
-    if not verify_ssl:
-        merged_conf["http_client"] = httpx.Client(verify=False)
-        merged_conf["http_async_client"] = httpx.AsyncClient(verify=False)
+    # SSL verification
+    if merged.pop("verify_ssl", True) is False:
+        merged["http_client"] = httpx.Client(verify=False)
+        merged["http_async_client"] = httpx.AsyncClient(verify=False)
 
-    # Azure routing
-    if "azure_endpoint" in merged_conf or os.getenv("AZURE_OPENAI_ENDPOINT"):
-        return AzureChatOpenAI(**merged_conf)
+    # Azure model
+    if "azure_endpoint" in merged or os.getenv("AZURE_OPENAI_ENDPOINT"):
+        return AzureChatOpenAI(**merged)
 
-    # Dashscope routing
-    base_url = merged_conf.get("base_url", "")
+    # Dashscope model
+    base_url = merged.get("base_url", "")
     if "dashscope." in base_url:
-        merged_conf["extra_body"] = {"enable_thinking": llm_type == "reasoning"}
-        return ChatDashscope(**merged_conf)
+        merged["extra_body"] = {"enable_thinking": llm_type == "reasoning"}
+        return ChatDashscope(**merged)
 
     # DeepSeek reasoning mode
     if llm_type == "reasoning":
-        merged_conf["api_base"] = merged_conf.pop("base_url", None)
-        return ChatDeepSeek(**merged_conf)
+        merged["api_base"] = merged.pop("base_url", None)
+        return ChatDeepSeek(**merged)
 
-    # Default: OpenAI-compatible chat model
-    return ChatOpenAI(**merged_conf)
+    # Default OpenAI-compatible model
+    return ChatOpenAI(**merged)
 
 
+# -------------------------------------------------------
+# Public API: LLM retrieval and configuration inspection
+# -------------------------------------------------------
 def get_llm_by_type(llm_type: LLMType) -> BaseChatModel:
-    """
-    Get LLM instance by type. Returns cached instance if available.
-    """
+    """Return a cached LLM instance for the given type, creating it if needed."""
     if llm_type in _llm_cache:
         return _llm_cache[llm_type]
 
-    conf = load_yaml_config(_get_config_file_path())
-    llm = _create_llm_use_conf(llm_type, conf)
+    config = load_yaml_config(_get_config_file_path())
+    llm = _build_llm_instance(llm_type, config)
     _llm_cache[llm_type] = llm
+
     return llm
 
 
 def get_configured_llm_models() -> dict[str, list[str]]:
     """
-    Get all configured LLM models grouped by type.
-
-    Returns:
-        Dictionary mapping LLM type to list of configured model names.
+    List all configured LLM model names grouped by type.
+    Combines YAML and environment variables.
     """
     try:
-        conf = load_yaml_config(_get_config_file_path())
-        llm_type_config_keys = _get_llm_type_config_keys()
-
-        configured_models: dict[str, list[str]] = {}
+        config = load_yaml_config(_get_config_file_path())
+        type_to_key = _llm_type_to_config_key()
+        result: dict[str, list[str]] = {}
 
         for llm_type in get_args(LLMType):
-            # Get configuration from YAML file
-            config_key = llm_type_config_keys.get(llm_type, "")
-            yaml_conf = conf.get(config_key, {}) if config_key else {}
+            yaml_conf = config.get(type_to_key.get(llm_type, ""), {})
+            env_conf = _read_env_llm_config(llm_type)
 
-            # Get configuration from environment variables
-            env_conf = _get_env_llm_conf(llm_type)
+            merged = {**yaml_conf, **env_conf}
+            model_name = merged.get("model")
 
-            # Merge configurations, with environment variables taking precedence
-            merged_conf = {**yaml_conf, **env_conf}
-
-            # Check if model is configured
-            model_name = merged_conf.get("model")
             if model_name:
-                configured_models.setdefault(llm_type, []).append(model_name)
+                result.setdefault(llm_type, []).append(model_name)
 
-        return configured_models
+        return result
 
     except Exception as e:
-        # Log error and return empty dict to avoid breaking the application
         print(f"Warning: Failed to load LLM configuration: {e}")
         return {}
 
 
-# In the future, we will use reasoning_llm and vl_llm for different purposes
+# Future usage example:
 # reasoning_llm = get_llm_by_type("reasoning")
-# vl_llm = get_llm_by_type("vision")
+# vision_llm = get_llm_by_type("vision")
