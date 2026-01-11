@@ -3,11 +3,13 @@ import logging
 import uuid
 from datetime import datetime
 from typing import List, Optional, Tuple
+
 import psycopg
+from langgraph.store.memory import InMemoryStore
 from psycopg.rows import dict_row
 from pymongo import MongoClient
-from langgraph.store.memory import InMemoryStore
-from src.config.configuration import get_bool_env, get_str_env
+
+from src.config.loader import get_bool_env, get_str_env
 
 
 class ChatStreamManager:
@@ -205,13 +207,25 @@ class ChatStreamManager:
                 return False
 
             # Choose persistence method based on available connection
+            success = False
             if self.mongo_db is not None:
-                return self._persist_to_mongodb(thread_id, messages)
+                success = self._persist_to_mongodb(thread_id, messages)
             elif self.postgres_conn is not None:
-                return self._persist_to_postgresql(thread_id, messages)
+                success = self._persist_to_postgresql(thread_id, messages)
             else:
                 self.logger.warning("No database connection available")
                 return False
+
+            if success:
+                try:
+                    for item in memories:
+                        self.store.delete(store_namespace, item.key)
+                except Exception as e:
+                    self.logger.error(
+                        f"Error cleaning up memory store for thread {thread_id}: {e}"
+                    )
+
+            return success
 
         except Exception as e:
             self.logger.error(
