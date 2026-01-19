@@ -1,36 +1,55 @@
-from langgraph.graph import END, START, StateGraph
+import json
+import logging
 
-from src.podcast.graph.audio_mixer_node import audio_mixer_node
-from src.podcast.graph.script_writer_node import script_writer_node
-from src.podcast.graph.state import PodcastState
-from src.podcast.graph.tts_node import tts_node
+import openai
+from langchain_core.messages import HumanMessage, SystemMessage
 
+from src.config.agents import AGENT_LLM_MAP
+from src.llms.llm import get_llm_by_type
+from src.prompts.template import get_prompt_template
+from src.utils.json_utils import repair_json_output
 
-def build_graph():
-    """Build and return the podcast workflow graph."""
-    # build state graph
-    builder = StateGraph(PodcastState)
-    builder.add_node("script_writer", script_writer_node)
-    builder.add_node("tts", tts_node)
-    builder.add_node("audio_mixer", audio_mixer_node)
-    builder.add_edge(START, "script_writer")
-    builder.add_edge("script_writer", "tts")
-    builder.add_edge("tts", "audio_mixer")
-    builder.add_edge("audio_mixer", END)
-    return builder.compile()
+from ..types import Script
+from .state import PodcastState
+
+logger = logging.getLogger(__name__)
 
 
-workflow = build_graph()
+def script_writer_node(state: PodcastState):
+    logger.info("Generating script for podcast...")
+    base_model = get_llm_by_type(AGENT_LLM_MAP["podcast_script_writer"])
 
-if __name__ == "__main__":
-    from dotenv import load_dotenv
+    messages = [
+        SystemMessage(content=get_prompt_template("podcast/podcast_script_writer")),
+        HumanMessage(content=state["input"]),
+    ]
 
-    load_dotenv()
+    try:
+        # Try structured output with json_mode first
+        model = base_model.with_structured_output(Script, method="json_mode")
+        script = model.invoke(messages)
+    except openai.BadRequestError as e:
+        # Fall back for models that don't support json_object (e.g., Kimi K2)
+        if "json_object" in str(e).lower():
+            logger.warning(
+                f"Model doesn't support json_mode, falling back to prompting: {e}"
+            )
+            response = base_model.invoke(messages)
+            content = response.content if hasattr(response, "content") else str(response)
+            try:
+                repaired = repair_json_output(content)
+                script_dict = json.loads(repaired)
+            except json.JSONDecodeError as json_err:
+                logger.error(
+                    "Failed to parse JSON from podcast script writer fallback "
+                    "response: %s; content: %r",
+                    json_err,
+                    content,
+                )
+                raise
+            script = Script.model_validate(script_dict)
+        else:
+            raise
 
-    report_content = open("examples/nanjing_tangbao.md").read()
-    final_state = workflow.invoke({"input": report_content})
-    for line in final_state["script"].lines:
-        print("<M>" if line.speaker == "male" else "<F>", line.text)
-
-    with open("final.mp3", "wb") as f:
-        f.write(final_state["output"])
+    logger.debug("Generated podcast script: %s", script)
+    return {"script": script, "audio_chunks": []}
