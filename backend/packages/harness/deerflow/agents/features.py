@@ -1,3 +1,8 @@
+"""Declarative feature flags and middleware positioning for create_deerflow_agent.
+
+Pure data classes and decorators — no I/O, no side effects.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
